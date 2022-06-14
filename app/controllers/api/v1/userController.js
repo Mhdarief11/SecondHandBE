@@ -35,16 +35,15 @@ function checkPassword(encryptedPassword, password) {
 
 class userController {
   static async register(req, res) {
-    const { fullname, email, confPassword } = req.body;
+    const { fullname, email } = req.body;
     const password = await encryptPassword(req.body.password);
-
-    if (req.body.password !== confPassword) {
-      res.status(422).json({
-        status: "FAIL",
-        message: "Password dan Confirm Password tidak cocok",
+    const notavail = await userService.findByEmail(req.body.email);
+    if (notavail) {
+      return res.status(400).send({
+        message: "Email digunakan",
       });
-      return;
     }
+
     userService
       .create({ fullname, email, password })
       .then(async (post) => {

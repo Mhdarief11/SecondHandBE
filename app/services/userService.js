@@ -7,4 +7,7 @@ module.exports = {
   find(dataEmail) {
     return userRepository.find(dataEmail);
   },
+  findByEmail(email) {
+    return userRepository.getByEmail(email);
+  },
 };
