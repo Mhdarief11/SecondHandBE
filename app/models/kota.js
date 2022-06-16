@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      kota.hasMany(models.user, { foreingKey: 'idkota' })
+      kota.hasMany(models.user, { foreignKey: 'idkota' })
     }
   }
   kota.init(

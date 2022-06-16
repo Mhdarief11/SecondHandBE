@@ -9,9 +9,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      user.hasMany(models.barang, { foreingKey: 'iduser' })
-      user.belongsTo(models.transaksi, { foreingKey: 'iduser' })
-      user.belongsTo(models.transaksi, { foreingKey: 'iduser_seller' })
+      user.hasMany(models.barang, { foreignKey: 'iduser' })
+      user.hasOne(models.transaksi, { foreignKey: 'iduser' })
+      user.hasOne(models.transaksi, { foreignKey: 'iduser_seller' })
     }
   }
   user.init(

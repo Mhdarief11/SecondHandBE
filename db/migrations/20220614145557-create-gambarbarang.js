@@ -10,9 +10,9 @@ module.exports = {
       },
       idbarang: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         refereces: {
-          model: 'barang',
+          model: 'barangs',
           key: 'id',
         },
       },
