@@ -103,6 +103,26 @@ class userController {
       updatedAt: user.updatedAt,
     })
   }
+  
+  static async update(req, res, next) {
+    const { id } = req.params;
+    const { nama, idkota, alamat, nohp, } = req.body;
+
+    const { status, status_code, message, data } = await userService.updateById({
+        id,
+        nama,
+        idkota,
+        alamat,
+        nohp,
+        gambar: req.uploaded_image,
+    });
+
+    res.status(status_code).send({
+        status: status,
+        message: message,
+        data: data,
+    });
+};
 }
 
 module.exports = userController

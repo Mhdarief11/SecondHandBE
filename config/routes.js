@@ -10,6 +10,8 @@ const apiRouter = express.Router()
 // apiRouter.post("/api/v1/posts", controllers.api.v1.postController.create);
 // apiRouter.put("/api/v1/posts/:id", controllers.api.v1.postController.update);
 // apiRouter.get("/api/v1/posts/:id", controllers.api.v1.postController.show);
+apiRouter.put("/api/v1/users/:id", controllers.api.v1.userController.update);
+
 // apiRouter.delete(
 //   "/api/v1/posts/:id",
 //   controllers.api.v1.postController.destroy
