@@ -10,7 +10,7 @@ module.exports = {
       },
       iduser: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         refereces: {
           model: 'users',
           key: 'id',
@@ -18,7 +18,7 @@ module.exports = {
       },
       iduser_seller: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         refereces: {
           model: 'users',
           key: 'id',

@@ -10,7 +10,7 @@ module.exports = {
       },
       idkota: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
           model: 'kota',
           key: 'id',
