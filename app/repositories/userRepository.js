@@ -9,6 +9,18 @@ module.exports = {
       where: { email },
     })
   },
+  getByPk(id) {
+    return user.findOne({
+      where: { id },
+    })
+  },
+  update(id, data) {
+    return user.update(data, {
+      where: {
+        id,
+      },
+    });
+  },
   updateById({ id, nama, idkota, alamat, nohp, gambar }) {
     const updateById = user.update({
         nama,
