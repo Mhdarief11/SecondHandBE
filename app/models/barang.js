@@ -10,8 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       barang.hasMany(models.gambarbarang, { foreignKey: 'idbarang' })
-      barang.belongsTo(models.transaksi, { foreignKey: 'idbarang' })
-      barang.belongsTo(models.user)
+      barang.hasOne(models.transaksi, { foreignKey: 'idbarang' })
     }
   }
   barang.init(

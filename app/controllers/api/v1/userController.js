@@ -6,7 +6,9 @@ const Salt = 10
 
 /* Create token function */
 function createToken(data) {
-  return jwt.sign(data, process.env.JWT_SECRET || 'secret')
+  return jwt.sign(data, process.env.JWT_SECRET || 'secret', {
+    expiresIn: 30 * 60,
+  })
 }
 
 function encryptPassword(password) {
@@ -102,6 +104,36 @@ class userController {
       token,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
+    })
+  }
+
+  static async authorize(req, res, next) {
+    try {
+      const bearerToken = req.headers.authorization
+      const token = bearerToken.split('Bearer ')[1]
+
+      const tokenPayLoad = jwt.verify(token, process.env.JWT_SECRET || 'secret')
+
+      req.user = JSON.parse(
+        JSON.stringify(await userService.findPKUser(tokenPayLoad.id)),
+      )
+      // delete encrypted password
+      delete req.user.password
+      next()
+    } catch (error) {
+      if (error.message.includes('jwt expired')) {
+        res.status(401).json({ message: 'Token Expired' })
+      }
+
+      res.status(401).json({
+        message: error.message,
+      })
+    }
+  }
+
+  static async whoAmI(req, res) {
+    res.status(201).json({
+      data: req.user,
     })
   }
 }
