@@ -1,35 +1,36 @@
-const userService = require('../../../services/userService')
-const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
-const Salt = 10
+const userService = require("../../../services/userService");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const { user } = require("../../../models");
+const Salt = 10;
 
 /* Create token function */
 function createToken(data) {
-  return jwt.sign(data, process.env.JWT_SECRET || 'secret')
+  return jwt.sign(data, process.env.JWT_SECRET || "secret");
 }
 
 function encryptPassword(password) {
   return new Promise((resolve, reject) => {
     bcrypt.hash(password, Salt, (err, encryptedPassword) => {
       if (!!err) {
-        reject(err)
-        return
+        reject(err);
+        return;
       }
-      resolve(encryptedPassword)
-    })
-  })
+      resolve(encryptedPassword);
+    });
+  });
 }
 
 function checkPassword(encryptedPassword, password) {
   return new Promise((resolve, reject) => {
     bcrypt.compare(password, encryptedPassword, (err, isPasswordCorrect) => {
       if (!!err) {
-        reject(err)
-        return
+        reject(err);
+        return;
       }
-      resolve(isPasswordCorrect)
-    })
-  })
+      resolve(isPasswordCorrect);
+    });
+  });
 }
 
 class userController {
@@ -44,9 +45,9 @@ class userController {
     }
 
     userService
-      .create({ fullname, email, password })
-      .then(async (post) => {
-        const user = await user.findOne({
+      .create({ nama, email, password })
+      .then(async ({ id, nama, email }) => {
+        const User = await user.findOne({
           where: { email },
         });
         const token = createToken({
@@ -73,14 +74,14 @@ class userController {
     const email = req.body.email.toLowerCase();
     const password = req.body.password;
 
-    const user = await userService.find(email);
+    const User = await userService.find(email);
 
-    if (!user) {
+    if (!User) {
       res.status(404).json({ message: "Email tidak ketemu" });
       return;
     }
 
-    const isPasswordCorrect = await checkPassword(user.password, password);
+    const isPasswordCorrect = await checkPassword(User.password, password);
 
     if (!isPasswordCorrect) {
       res.status(401).json({ message: "salah" });
@@ -89,19 +90,19 @@ class userController {
 
     // buat token
     const token = createToken({
-      id: user.id,
-      email: user.email,
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt,
+      id: User.id,
+      email: User.email,
+      createdAt: User.createdAt,
+      updatedAt: User.updatedAt,
     });
 
     //return
     res.status(201).json({
-      id: user.id,
-      email: user.email,
+      id: User.id,
+      email: User.email,
       token,
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt,
+      createdAt: User.createdAt,
+      updatedAt: User.updatedAt,
     });
   }
 
@@ -143,4 +144,4 @@ class userController {
   }
 }
 
-module.exports = userController
+module.exports = userController;
