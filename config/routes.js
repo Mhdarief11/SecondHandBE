@@ -14,6 +14,7 @@ apiRouter.post("/api/v1/register", controllers.api.v1.userController.register);
 //login
 
 apiRouter.post("/api/v1/auth/login", controllers.api.v1.userController.login);
+apiRouter.post("/api/v1/auth/google", controllers.api.v1.userController.Google);
 
 // apiRouter.put("/api/v1/posts/:id", controllers.api.v1.postController.update);
 // apiRouter.get("/api/v1/posts/:id", controllers.api.v1.postController.show);

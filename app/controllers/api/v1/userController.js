@@ -1,4 +1,5 @@
 const userService = require("../../../services/userService");
+const axios = require("axios");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { user } = require("../../../models");
@@ -103,6 +104,42 @@ class userController {
       createdAt: User.createdAt,
       updatedAt: User.updatedAt,
     });
+  }
+  static async Google(req, res) {
+    const { access_token } = req.body;
+
+    try {
+      const response = await axios.get(
+        `https://www.googleapis.com/oauth2/v3/userinfo?access_token=${access_token}`
+      );
+
+      const { sub, email, namagoogle } = response.data;
+
+      let User = await user.findOne({ where: { googleId: sub } });
+
+      if (!User)
+        User = await user.create({
+          email,
+
+          nama: namagoogle,
+
+          googleId: sub,
+
+          registeredVia: "google",
+
+          // type_user: 3,
+        });
+
+      delete User.encryptedPassword;
+
+      const token = createToken(User);
+
+      res.status(201).json({ token });
+    } catch (err) {
+      console.log(err.message);
+
+      res.status(401).json({ error: { name: err.name, message: err.message } });
+    }
   }
 }
 
