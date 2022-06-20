@@ -35,14 +35,17 @@ module.exports = {
         deskripsi: req.body.deskripsi,
       }
       const addProduct = await productService.addProduct(product)
-      console.log(req.body)
+      // console.log(req.body)
 
-      // upload image in cloud
-      uploadOnMemory.array('images', 4)
-
-      const filebase64 = req.file.buffer.toString('base64')
-      const file = `data:${req.file.mimetype};base64,${filebase64}`
-
+      var file64 = []
+      var file = []
+      for (var i = 0; i < req.files.length; i++) {
+        file64.push(req.files[i].buffer.toString('base64'))
+        file.push(`data:${req.files[i].mimetype};base64,${file64[i]}`)
+        console.log(req.files[i].mimetype)
+      }
+      // const filebase64 = req.files.buffer.toString('base64')
+      // const file = `data:${req.files.mimetype};base64,${filebase64}`
       cloudinary.uploader.upload(file, function (err, result) {
         if (err) {
           console.log(err)
@@ -50,19 +53,21 @@ module.exports = {
             message: 'Upload file failed',
           })
         }
+        productService.addImageProduct({
+          idbarang: addProduct.id,
+          gambar: result.secure_url,
+        })
+        res.status(201).json({
+          message: 'New Product Added',
+          product: addProduct,
+          image: result.secure_url,
+        })
       })
-
-      const addImageProduct = await productService.addImageProduct({
-        idbarang: res.product.id,
-        gambar: result.secure_url,
+    } catch (error) {
+      res.status(400).json({
+        message: error.message,
       })
-
-      res.status(201).json({
-        message: 'New product added',
-        product: addProduct,
-        image: addImageProduct,
-      })
-    } catch (error) {}
+    }
   },
 
   // tambah kategori baru

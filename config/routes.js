@@ -1,6 +1,7 @@
 const express = require('express')
 const controllers = require('../app/controllers')
 const apiRouter = express.Router()
+const uploadOnMemory = require('../app/services/uploadOnMemory')
 
 apiRouter.post(
   '/api/v1/auth/register',
@@ -16,6 +17,7 @@ apiRouter.get('/api/v1/products', controllers.api.v1.productController.listAll)
 // tambah barang
 apiRouter.post(
   '/api/v1/products',
+  uploadOnMemory.array('image', 4),
   controllers.api.v1.userController.authorize,
   controllers.api.v1.productController.addProduct,
 )
