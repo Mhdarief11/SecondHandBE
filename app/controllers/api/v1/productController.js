@@ -37,32 +37,37 @@ module.exports = {
       const addProduct = await productService.addProduct(product)
       // console.log(req.body)
 
-      var file64 = []
-      var file = []
-      for (var i = 0; i < req.files.length; i++) {
-        file64.push(req.files[i].buffer.toString('base64'))
-        file.push(`data:${req.files[i].mimetype};base64,${file64[i]}`)
-        console.log(req.files[i].mimetype)
-      }
+      // console.log(req.files)
       // const filebase64 = req.files.buffer.toString('base64')
       // const file = `data:${req.files.mimetype};base64,${filebase64}`
-      cloudinary.uploader.upload(file, function (err, result) {
+      const upload = await cloudinary.uploader.upload(localUrl, function (
+        err,
+        result,
+      ) {
         if (err) {
           console.log(err)
-          return res.status(400).json({
-            message: 'Upload file failed',
+          res.status(400).json({
+            message: err.message,
           })
+          return
         }
         productService.addImageProduct({
           idbarang: addProduct.id,
           gambar: result.secure_url,
         })
-        res.status(201).json({
-          message: 'New Product Added',
-          product: addProduct,
-          image: result.secure_url,
-        })
       })
+      res.status(201).json({
+        message: 'New Product Added',
+        product: addProduct,
+      })
+
+      var urls = []
+      for (var i = 0; i < req.files.length; i++) {
+        var localUrl = req.files[i].buffer.toString('base64')
+        console.log(localUrl)
+        var result = await upload(localUrl)
+        urls.push(result.url)
+      }
     } catch (error) {
       res.status(400).json({
         message: error.message,
