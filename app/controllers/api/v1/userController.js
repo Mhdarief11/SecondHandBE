@@ -107,7 +107,7 @@ class userController {
     });
   }
 
-  static async update(req, res, next) {
+  static async update(req, res) {
     // const { nama, idkota, alamat, nohp } = req.body;
     // let statuss, status_code, message;
     const { id } = req.params;
@@ -192,6 +192,21 @@ class userController {
     //   message: message,
     //   // data: data,
     // });
+  }
+
+  static async listKota(req, res) {
+    userService.cities().then(({data, count}) => {
+      res.status(200).json({
+        status: "OK",
+        data: { DaftarKota: data },
+        meta: {TotalKota: count},
+      });
+    }).catch((err) => {
+      res.status(400).json({
+                        status: "FAIL",
+                        message: err.message,
+                    });
+    })
   }
 }
 

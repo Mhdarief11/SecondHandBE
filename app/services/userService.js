@@ -17,4 +17,17 @@ module.exports = {
     const data = { nama, alamat, nohp, gambar };
     return userRepository.update(id, data);
   },
+  async cities() {
+    try {
+      const kota = await userRepository.listCities();
+      const kotaCount = await userRepository.citiesCount();
+
+      return {
+        data: kota,
+        count: kotaCount,
+      }
+    } catch (err) {
+      throw err;
+    }
+  },
 };

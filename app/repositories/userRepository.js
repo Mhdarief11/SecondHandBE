@@ -1,4 +1,4 @@
-const { user } = require('../models')
+const { user, kota } = require('../models')
 
 module.exports = {
   create(createArgs) {
@@ -21,4 +21,10 @@ module.exports = {
       },
     });
   },
+  listCities() {
+    return kota.findAll();
+  },
+  citiesCount() {
+    return kota.count();
+  }
 }

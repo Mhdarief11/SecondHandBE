@@ -27,6 +27,9 @@ apiRouter.put("/api/v1/users/:id", uploadOnMemory.single("gambar"), controllers.
 //   controllers.api.v1.postController.destroy
 // );
 
+// DAFTAR KOTA
+apiRouter.get("/api/v1/cities", controllers.api.v1.userController.listKota);
+
 /**
  * TODO: Delete this, this is just a demonstration of
  *       error handler
