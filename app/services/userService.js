@@ -1,4 +1,4 @@
-const userRepository = require("../repositories/userRepository");
+const userRepository = require('../repositories/userRepository')
 
 module.exports = {
   async create(requestBody) {
@@ -7,11 +7,11 @@ module.exports = {
   find(dataEmail) {
     return userRepository.find(dataEmail);
   },
-  findByEmail(email) {
-    return userRepository.getByEmail(email);
-  },
-  findByPk(id) {
-    return userRepository.getByPk(id);
+  // findByEmail(email) {
+  //   return userRepository.getByEmail(email);
+  // },
+  findPKUser(dataPK) {
+    return userRepository.findPKUser(dataPK);
   },
   update(id, idkota, nama, alamat, nohp, gambar) {
     const data = { idkota, nama, alamat, nohp, gambar };
@@ -25,7 +25,7 @@ module.exports = {
       return {
         data: kota,
         count: kotaCount,
-      }
+      };
     } catch (err) {
       throw err;
     }

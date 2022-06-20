@@ -35,6 +35,7 @@ module.exports = {
       },
       minat: {
         type: Sequelize.BOOLEAN,
+        allowNull: true,
       },
       createdAt: {
         allowNull: false,

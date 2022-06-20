@@ -9,11 +9,6 @@ module.exports = {
       where: { email },
     })
   },
-  getByPk(id) {
-    return user.findOne({
-      where: { id },
-    })
-  },
   update(id, data) {
     return user.update(data, {
       where: {
@@ -26,5 +21,8 @@ module.exports = {
   },
   citiesCount() {
     return kota.count();
-  }
+  },
+  findPKUser(dataPK) {
+    return user.findByPk(dataPK)
+  },
 }
