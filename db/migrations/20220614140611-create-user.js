@@ -39,6 +39,14 @@ module.exports = {
       gambar: {
         type: Sequelize.STRING,
       },
+      googleId: {
+        allowNull: true,
+        type: Sequelize.STRING,
+      },
+      registeredVia: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
