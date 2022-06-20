@@ -39,6 +39,7 @@ class userController {
   static async register(req, res) {
     const { nama, email } = req.body
     const password = await encryptPassword(req.body.password)
+    const registeredVia = 'website'
     // const notavail = await userService.findByEmail(req.body.email)
     // // if (notavail) {
     //   return res.status(400).send({
@@ -47,7 +48,7 @@ class userController {
     // }
 
     userService
-      .create({ nama, email, password })
+      .create({ nama, email, password, registeredVia })
       .then(async ({ id, nama, email }) => {
         const User = await user.findOne({
           where: { email },
@@ -59,9 +60,8 @@ class userController {
           updatedAt: User.updatedAt,
         })
         res.status(201).json({
-          status: 'OK',
           token: token,
-          data: { id, nama, email },
+          data: { id, nama, email, registeredVia },
         })
       })
       .catch((err) => {
@@ -138,16 +138,16 @@ class userController {
     })
   }
   static async Google(req, res) {
-    const { access_token } = req.body;
+    const { access_token } = req.body
 
     try {
       const response = await axios.get(
-        `https://www.googleapis.com/oauth2/v3/userinfo?access_token=${access_token}`
-      );
+        `https://www.googleapis.com/oauth2/v3/userinfo?access_token=${access_token}`,
+      )
 
-      const { sub, email, namagoogle } = response.data;
+      const { sub, email, namagoogle } = response.data
 
-      let User = await user.findOne({ where: { googleId: sub } });
+      let User = await user.findOne({ where: { googleId: sub } })
 
       if (!User)
         User = await user.create({
@@ -157,20 +157,20 @@ class userController {
 
           googleId: sub,
 
-          registeredVia: "google",
+          registeredVia: 'google',
 
           // type_user: 3,
-        });
+        })
 
-      delete User.encryptedPassword;
+      delete User.encryptedPassword
 
-      const token = createToken(User);
+      const token = createToken(User)
 
-      res.status(201).json({ token });
+      res.status(201).json({ token })
     } catch (err) {
-      console.log(err.message);
+      console.log(err.message)
 
-      res.status(401).json({ error: { name: err.name, message: err.message } });
+      res.status(401).json({ error: { name: err.name, message: err.message } })
     }
   }
 }
