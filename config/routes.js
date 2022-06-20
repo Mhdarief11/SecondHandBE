@@ -1,6 +1,7 @@
 const express = require("express");
 const controllers = require("../app/controllers");
 const apiRouter = express.Router();
+const uploadOnMemory = require("../app/uploadOnMemory")
 
 /**
  * TODO: Implement your own API
@@ -15,9 +16,11 @@ apiRouter.post("/api/v1/register", controllers.api.v1.userController.register);
 
 apiRouter.post("/api/v1/auth/login", controllers.api.v1.userController.login);
 
+// UPDATE USER PROFILE
+apiRouter.put("/api/v1/users/:id", uploadOnMemory.single("gambar"), controllers.api.v1.userController.update);
 // apiRouter.put("/api/v1/posts/:id", controllers.api.v1.postController.update);
 // apiRouter.get("/api/v1/posts/:id", controllers.api.v1.postController.show);
-apiRouter.put("/api/v1/users/:id", controllers.api.v1.userController.update);
+// apiRouter.put("/api/v1/users/:id", controllers.api.v1.userController.update);
 
 // apiRouter.delete(
 //   "/api/v1/posts/:id",

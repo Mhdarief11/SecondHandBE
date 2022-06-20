@@ -21,19 +21,4 @@ module.exports = {
       },
     });
   },
-  updateById({ id, nama, idkota, alamat, nohp, gambar }) {
-    const updateById = user.update({
-        nama,
-        idkota,
-        alamat,
-        nohp,
-        gambar,
-    }, {
-        where: {
-            id
-        }
-    });
-
-    return updateById;
-  },
 }
