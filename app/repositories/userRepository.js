@@ -9,4 +9,7 @@ module.exports = {
       where: { email },
     })
   },
+  findPKUser(dataPK) {
+    return user.findByPk(dataPK)
+  },
 }
