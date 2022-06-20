@@ -5,8 +5,10 @@
 
 const userController = require('./userController')
 const productController = require('./productController')
+const cityController = require('./cityController')
 
 module.exports = {
   userController,
   productController,
+  cityController,
 }

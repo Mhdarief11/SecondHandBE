@@ -17,14 +17,16 @@ apiRouter.get('/api/v1/products', controllers.api.v1.productController.listAll)
 apiRouter.post(
   '/api/v1/products',
   controllers.api.v1.userController.authorize,
-  controllers.api.v1.userController.whoAmI,
   controllers.api.v1.productController.addProduct,
 )
-// tambah kategori barang
+// add new products category
 apiRouter.post(
   '/api/v1/category',
   controllers.api.v1.productController.addCategory,
 )
+
+// list all city
+apiRouter.get('/api/v1/cities', controllers.api.v1.cityController.listAllCity)
 
 /**
  * TODO: Delete this, this is just a demonstration of

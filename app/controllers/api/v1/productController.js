@@ -27,14 +27,15 @@ module.exports = {
   // tambah barang baru
   async addProduct(req, res) {
     try {
-      const addProduct = await barangService.tambahBarang({
+      const product = {
         iduser: req.user.id,
         idkategori: req.body.kategori,
         nama: req.body.nama,
         harga: req.body.harga,
         deskripsi: req.body.deskripsi,
-      })
-      console.log(addProduct)
+      }
+      const addProduct = await productService.addProduct(product)
+      console.log(req.body)
 
       // upload image in cloud
       uploadOnMemory.array('images', 4)
@@ -51,10 +52,10 @@ module.exports = {
         }
       })
 
-      // const addImageProduct = await productService.addImageProduct({
-      //   idbarang: res.product.id,
-      //   gambar: result.secure_url,
-      // })
+      const addImageProduct = await productService.addImageProduct({
+        idbarang: res.product.id,
+        gambar: result.secure_url,
+      })
 
       res.status(201).json({
         message: 'New product added',

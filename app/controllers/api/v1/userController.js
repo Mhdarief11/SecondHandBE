@@ -48,20 +48,20 @@ class userController {
 
     userService
       .create({ nama, email, password })
-      .then(async (post) => {
-        const user = await user.findOne({
+      .then(async ({ id, nama, email }) => {
+        const User = await user.findOne({
           where: { email },
         })
         const token = createToken({
-          id: user.id,
-          email: user.email,
-          createdAt: user.createdAt,
-          updatedAt: user.updatedAt,
+          id: User.id,
+          email: User.email,
+          createdAt: User.createdAt,
+          updatedAt: User.updatedAt,
         })
         res.status(201).json({
           status: 'OK',
           token: token,
-          data: post,
+          data: { id, nama, email },
         })
       })
       .catch((err) => {
@@ -75,14 +75,14 @@ class userController {
     const email = req.body.email.toLowerCase()
     const password = req.body.password
 
-    const user = await userService.find(email)
+    const User = await userService.find(email)
 
-    if (!user) {
+    if (!User) {
       res.status(404).json({ message: 'Email tidak ketemu' })
       return
     }
 
-    const isPasswordCorrect = await checkPassword(user.password, password)
+    const isPasswordCorrect = await checkPassword(User.password, password)
 
     if (!isPasswordCorrect) {
       res.status(401).json({ message: 'salah' })
@@ -91,19 +91,19 @@ class userController {
 
     // buat token
     const token = createToken({
-      id: user.id,
-      email: user.email,
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt,
+      id: User.id,
+      email: User.email,
+      createdAt: User.createdAt,
+      updatedAt: User.updatedAt,
     })
 
     //return
     res.status(201).json({
-      id: user.id,
-      email: user.email,
+      id: User.id,
+      email: User.email,
       token,
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt,
+      createdAt: User.createdAt,
+      updatedAt: User.updatedAt,
     })
   }
 
@@ -123,6 +123,7 @@ class userController {
     } catch (error) {
       if (error.message.includes('jwt expired')) {
         res.status(401).json({ message: 'Token Expired' })
+        return
       }
 
       res.status(401).json({
@@ -132,7 +133,7 @@ class userController {
   }
 
   static async whoAmI(req, res) {
-    res.status(201).json({
+    res.status(200).json({
       data: req.user,
     })
   }
