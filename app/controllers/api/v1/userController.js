@@ -111,9 +111,9 @@ class userController {
     // const { nama, idkota, alamat, nohp } = req.body;
     // let statuss, status_code, message;
     const { id } = req.params;
-    const { nama, alamat, nohp } = req.body;
-    const picBase64 = req.file.buffer.toString("base64");
+    const { nama, alamat, nohp, idkota } = req.body;
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    const picBase64 = req.file.buffer.toString("base64");
     const gambarName = "profileimgDan" + uniqueSuffix + "Dan" + id + "Dan" + req.file.originalname;
     // var gambarId;
 
@@ -121,7 +121,7 @@ class userController {
     // console.log("GAMBAR 64: " + picBase64);
 
     // For uploading profile picture, based64
-    
+
     // imageKitConfig
     //   .upload({
     //     file: picBase64, //required
@@ -137,13 +137,28 @@ class userController {
     //       status: error.name,
     //       message: error.message,
     //     });
-    //   }); 
+    //   });
+
+    const User = await userService.findByPk(id);
+
+    if (User == null) {
+      res.status(404).json({ message: "User Tidak Ditemukan !" });
+      return;
+    }
+
+    console.log(User.email)
+
+    // Uploading images with base64
+    /*
+    const uploadResponse_base64 = await uploadFileBase64(imagekit, picBase64, gambarName);
+    console.log(`Base64 upload response:`, JSON.stringify(uploadResponse_base64, undefined, 2), "\n");
+    */
 
     imageKitConfig.upload(
       {
         file: picBase64, //required
-        fileName: gambarName,
-        folder: "/userProfile",
+        fileName: gambarNam,
+        folder: "/userProfile"
       },
       function (error, result) {
         if (error) {
@@ -160,12 +175,10 @@ class userController {
       }
     );
 
-      // console.log("GAMBARID = " + gambarId)
+    // console.log("GAMBARID = " + gambarId)
 
     userService
-      // .update(id, nama, idkota, alamat, nohp)
-      // .update(id, nama, alamat, nohp, gambarId)
-      .update(id, nama, alamat, nohp, gambarName)
+      .update(id, idkota, nama, alamat, nohp, gambarName)
       .then(() => {
         res.status(200).json({
           status: "OK",
@@ -177,37 +190,42 @@ class userController {
           message: err.message,
         });
       });
-
-    // const { status, status_code, message, data } = await userService.updateById({
-    //   id,
-    //   nama,
-    //   idkota,
-    //   alamat,
-    //   nohp,
-    //   gambar: req.uploaded_image,
-    // });
-
-    // res.status(status_code).send({
-    //   status: statuss,
-    //   message: message,
-    //   // data: data,
-    // });
   }
 
   static async listKota(req, res) {
-    userService.cities().then(({data, count}) => {
-      res.status(200).json({
-        status: "OK",
-        data: { DaftarKota: data },
-        meta: {TotalKota: count},
+    userService
+      .cities()
+      .then(({ data, count }) => {
+        res.status(200).json({
+          status: "OK",
+          data: { DaftarKota: data },
+          meta: { TotalKota: count },
+        });
+      })
+      .catch((err) => {
+        res.status(400).json({
+          status: "FAIL",
+          message: err.message,
+        });
       });
-    }).catch((err) => {
-      res.status(400).json({
-                        status: "FAIL",
-                        message: err.message,
-                    });
-    })
   }
+
+  // Uploading images with base64
+  /*
+  async uploadFileBase64(imagekitInstance, file64, fileName) {
+    //Uncomment to send extensions parameter
+    // var extensions =  [
+    //   {
+    //       name: "google-auto-tagging",
+    //       maxTags: 5,
+    //       minConfidence: 95
+    //   }
+    // ];
+    //const response = await imagekitInstance.upload({ file: file64, fileName, extensions });
+    const response = await imagekitInstance.upload({ file: file64, fileName });
+    return response;
+  }
+  */
 }
 
 module.exports = userController;

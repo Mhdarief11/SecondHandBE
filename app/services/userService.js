@@ -13,8 +13,8 @@ module.exports = {
   findByPk(id) {
     return userRepository.getByPk(id);
   },
-  update(id, nama, alamat, nohp, gambar) {
-    const data = { nama, alamat, nohp, gambar };
+  update(id, idkota, nama, alamat, nohp, gambar) {
+    const data = { idkota, nama, alamat, nohp, gambar };
     return userRepository.update(id, data);
   },
   async cities() {
