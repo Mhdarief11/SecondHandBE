@@ -1,4 +1,4 @@
-const { user } = require('../models')
+const { user, kota } = require('../models')
 
 module.exports = {
   create(createArgs) {
@@ -8,6 +8,19 @@ module.exports = {
     return user.findOne({
       where: { email },
     })
+  },
+  update(id, data) {
+    return user.update(data, {
+      where: {
+        id,
+      },
+    });
+  },
+  listCities() {
+    return kota.findAll();
+  },
+  citiesCount() {
+    return kota.count();
   },
   findPKUser(dataPK) {
     return user.findByPk(dataPK)

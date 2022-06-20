@@ -1,15 +1,17 @@
 const express = require("express");
 const controllers = require("../app/controllers");
 const apiRouter = express.Router();
-const uploadOnMemory = require("../app/services/uploadOnMemory");
+const uploadOnMemory = require("../app/services/uploadOnMemory")
 
 apiRouter.post(
   "/api/v1/auth/register",
   controllers.api.v1.userController.register
 );
 
-//login
+// UPDATE USER PROFILE
+apiRouter.put("/api/v1/users/:id", uploadOnMemory.single("gambar"), controllers.api.v1.userController.update);
 
+//login
 apiRouter.post("/api/v1/auth/login", controllers.api.v1.userController.login);
 apiRouter.post("/api/v1/auth/google", controllers.api.v1.userController.login);
 
