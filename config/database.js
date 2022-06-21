@@ -1,9 +1,9 @@
 /** Destruct environment variable to get database configuration */
 const {
-  DB_USERNAME = 'jwinnkro',
-  DB_PASSWORD = 'OgJsWz-YRr-okvnF6c_be8-mtU_qv-5R',
-  DB_HOST = 'rosie.db.elephantsql.com',
-  DB_NAME = 'jwinnkro',
+  DB_USERNAME = '',
+  DB_PASSWORD = '',
+  DB_HOST = '',
+  DB_NAME = '',
 } = process.env
 
 module.exports = {
