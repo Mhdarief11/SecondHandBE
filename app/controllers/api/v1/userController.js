@@ -2,7 +2,8 @@ const userService = require('../../../services/userService')
 const bcrypt = require('bcryptjs')
 const axios = require('axios')
 const jwt = require('jsonwebtoken')
-const imageKitConfig = require('../../../services/ImageKit')
+const ImageKit = require('imagekit')
+const configImageKit = require('../../../services/ImageKit')
 const { user } = require('../../../models')
 const Salt = 10
 
@@ -81,14 +82,14 @@ class userController {
     const User = await userService.find(email)
 
     if (!User) {
-      res.status(404).json({ message: 'Email tidak ketemu' })
+      res.status(404).json({ message: 'Email not found' })
       return
     }
 
     const isPasswordCorrect = await checkPassword(User.password, password)
 
     if (!isPasswordCorrect) {
-      res.status(401).json({ message: 'salah' })
+      res.status(401).json({ message: 'Password incorrect' })
       return
     }
 
@@ -142,7 +143,6 @@ class userController {
   }
   static async Google(req, res) {
     const { access_token } = req.body
-
     try {
       const response = await axios.get(
         `https://www.googleapis.com/oauth2/v3/userinfo?access_token=${access_token}`,
@@ -169,45 +169,54 @@ class userController {
 
       res.status(201).json({ token })
     } catch (err) {
-      console.log(err.message)
-
-      res.status(401).json({ error: { message: err.message } })
+      res.status(401).json({ message: err.message })
     }
   }
 
   static async update(req, res) {
-    const { id } = req.params;
-    const { nama, alamat, nohp, idkota } = req.body;
-    let profilePic;
+    const imageKitConfig = new ImageKit(configImageKit)
+    const { id } = req.params
+    const { nama, alamat, nohp, idkota } = req.body
+    let profilePic
+
     // Convert Image File To Base64
-    const picBase64 = req.file.buffer.toString("base64");
+    const picBase64 = req.file.buffer.toString('base64')
     // Custom Profile Image File Name
-    var fileExtension = req.file.originalname.split(".").pop();
-    const gambarName = "profileimgDan" + Date.now() + "Dan" + id + `Dan.${fileExtension}`;
+    var fileExtension = req.file.originalname.split('.').pop()
+    const gambarName =
+      'profileimgDan' + Date.now() + 'Dan' + id + `Dan.${fileExtension}`
 
     // console.log("NAMA GAMBAR " + gambarName);
 
     // Process to check if user has Profile Image
-    const User = await userService.findPKUser(id);
+    const User = await userService.findPKUser(id)
     if (User == null) {
-      res.status(404).json({ message: "User Tidak Ditemukan !" });
-      return;
+      res.status(404).json({ message: 'User Tidak Ditemukan !' })
+      return
     }
 
     // Process to delete old profile img or add new profile img
     if (User.gambar == null) {
       // uploading profile image to ImageKit CLoud
-      const uploadImg_base64 = await imageKitConfig.upload({ file: picBase64, fileName: gambarName, folder: "/userProfile" });
+      const uploadImg_base64 = await imageKitConfig.upload({
+        file: picBase64,
+        fileName: gambarName,
+        folder: '/userProfile',
+      })
 
-      profilePic = uploadImg_base64.fileId;
+      profilePic = uploadImg_base64.fileId
     } else {
       // Deleting old profile image
-      imageKitConfig.deleteFile(User.gambar);
+      imageKitConfig.deleteFile(User.gambar)
 
       // uploading profile image to ImageKit CLoud
-      const uploadImg_base64 = await imageKitConfig.upload({ file: picBase64, fileName: gambarName, folder: "/userProfile" });
+      const uploadImg_base64 = await imageKitConfig.upload({
+        file: picBase64,
+        fileName: gambarName,
+        folder: '/userProfile',
+      })
 
-      profilePic = uploadImg_base64.fileId;
+      profilePic = uploadImg_base64.fileId
     }
 
     userService
@@ -225,7 +234,6 @@ class userController {
         })
       })
   }
-
 }
 
 module.exports = userController
