@@ -1,5 +1,6 @@
 const userService = require('../../../services/userService')
 const bcrypt = require('bcryptjs')
+const axios = require('axios')
 const jwt = require('jsonwebtoken')
 const ImageKit = require("imagekit")
 const configImageKit = require('../../../services/ImageKit')
@@ -148,23 +149,21 @@ class userController {
         `https://www.googleapis.com/oauth2/v3/userinfo?access_token=${access_token}`,
       )
 
-      const { sub, email, namagoogle } = response.data
+      const { sub, email, name, picture } = response.data
 
       let User = await user.findOne({ where: { googleId: sub } })
-
+      // console.log(response.data)
       if (!User)
         User = await user.create({
           email,
-
-          nama: namagoogle,
-
+          nama: name,
           googleId: sub,
-
+          password: '',
+          gambar: picture,
           registeredVia: 'google',
-
-          // type_user: 3,
         })
 
+      User = JSON.parse(JSON.stringify(User))
       delete User.encryptedPassword
 
       const token = createToken(User)
@@ -173,7 +172,7 @@ class userController {
     } catch (err) {
       console.log(err.message)
 
-      res.status(401).json({ error: { name: err.name, message: err.message } })
+      res.status(401).json({ error: { message: err.message } })
     }
   }
 

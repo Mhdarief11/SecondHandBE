@@ -1,4 +1,6 @@
-const ImageKit = require('imagekit')
+require('dotenv').config()
+
+var ImageKit = require('imagekit')
 
 const configImageKit = {
   publicKey: process.env.IMAGEKITPUBLIC,
