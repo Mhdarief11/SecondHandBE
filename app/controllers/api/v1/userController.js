@@ -2,7 +2,8 @@ const userService = require('../../../services/userService')
 const bcrypt = require('bcryptjs')
 const axios = require('axios')
 const jwt = require('jsonwebtoken')
-const imageKitConfig = require('../../../services/ImageKit')
+const ImageKit = require("imagekit")
+const configImageKit = require('../../../services/ImageKit')
 const { user } = require('../../../models')
 const Salt = 10
 
@@ -176,9 +177,11 @@ class userController {
   }
 
   static async update(req, res) {
-    const { id } = req.params
-    const { nama, alamat, nohp, idkota } = req.body
-    let profilePic
+    const imageKitConfig = new ImageKit(configImageKit);
+    const { id } = req.params;
+    const { nama, alamat, nohp, idkota } = req.body;
+    let profilePic;
+
     // Convert Image File To Base64
     const picBase64 = req.file.buffer.toString('base64')
     // Custom Profile Image File Name
