@@ -2,7 +2,7 @@ const userService = require('../../../services/userService')
 const bcrypt = require('bcryptjs')
 const axios = require('axios')
 const jwt = require('jsonwebtoken')
-const ImageKit = require("imagekit")
+const ImageKit = require('imagekit')
 const configImageKit = require('../../../services/ImageKit')
 const { user } = require('../../../models')
 const Salt = 10
@@ -82,14 +82,14 @@ class userController {
     const User = await userService.find(email)
 
     if (!User) {
-      res.status(404).json({ message: 'Email tidak ketemu' })
+      res.status(404).json({ message: 'Email not found' })
       return
     }
 
     const isPasswordCorrect = await checkPassword(User.password, password)
 
     if (!isPasswordCorrect) {
-      res.status(401).json({ message: 'salah' })
+      res.status(401).json({ message: 'Password incorrect' })
       return
     }
 
@@ -143,7 +143,6 @@ class userController {
   }
   static async Google(req, res) {
     const { access_token } = req.body
-
     try {
       const response = await axios.get(
         `https://www.googleapis.com/oauth2/v3/userinfo?access_token=${access_token}`,
@@ -170,17 +169,15 @@ class userController {
 
       res.status(201).json({ token })
     } catch (err) {
-      console.log(err.message)
-
-      res.status(401).json({ error: { message: err.message } })
+      res.status(401).json({ message: err.message })
     }
   }
 
   static async update(req, res) {
-    const imageKitConfig = new ImageKit(configImageKit);
-    const { id } = req.params;
-    const { nama, alamat, nohp, idkota } = req.body;
-    let profilePic;
+    const imageKitConfig = new ImageKit(configImageKit)
+    const { id } = req.params
+    const { nama, alamat, nohp, idkota } = req.body
+    let profilePic
 
     // Convert Image File To Base64
     const picBase64 = req.file.buffer.toString('base64')

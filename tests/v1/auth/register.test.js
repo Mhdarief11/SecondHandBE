@@ -4,8 +4,8 @@ const app = require('../../../app')
 describe('POST /api/v1/auth/register', () => {
   it('should response with 201 as status code', async () => {
     const nama = 'yehezkiel'
-    const email = 'yehezkiel@mail.com'
-    const password = ''
+    const email = 'yehezkielve@mail.com'
+    const password = 'coba123'
     const registeredVia = 'website'
 
     return request(app)
@@ -17,6 +17,7 @@ describe('POST /api/v1/auth/register', () => {
         expect(res.body).toEqual(
           expect.objectContaining({
             token: expect.any(String),
+            data: expect.any(Object),
           }),
         )
       })
