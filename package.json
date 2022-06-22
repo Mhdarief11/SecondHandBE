@@ -4,18 +4,20 @@
   "main": "app/index.js",
   "license": "MIT",
   "scripts": {
-    "start": "bin/www",
-    "develop": "nodemon -q bin/www",
+    "start": "node -r dotenv/config bin/www",
+    "develop": "nodemon -r dotenv/config bin/www",
     "db:create": "./node_modules/.bin/sequelize-cli db:create",
     "db:drop": "./node_modules/.bin/sequelize-cli db:drop",
     "db:migrate": "./node_modules/.bin/sequelize-cli db:migrate",
     "db:rollback": "./node_modules/.bin/sequelize-cli db:migrate:undo",
-    "db:seed": "./node_modules/.bin/sequelize-cli db:seed:all"
+    "db:seed": "./node_modules/.bin/sequelize-cli db:seed:all",
+    "test": "jest --coverage"
   },
   "dependencies": {
     "axios": "^0.27.2",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^1.30.0",
+    "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "express": "^4.17.3",
     "imagekit": "^3.2.5",
@@ -25,9 +27,11 @@
     "pg": "^8.7.3",
     "sequelize": "^6.18.0",
     "sequelize-cli": "^6.4.1",
-    "cors": "^2.8.5"
+    "sqlite3": "^5.0.8"
   },
   "devDependencies": {
-    "nodemon": "^2.0.15"
+    "jest": "^28.1.1",
+    "nodemon": "^2.0.15",
+    "supertest": "^6.2.3"
   }
 }

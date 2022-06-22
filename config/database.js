@@ -1,31 +1,31 @@
 /** Destruct environment variable to get database configuration */
-const {
-  DB_USERNAME = 'jwinnkro',
-  DB_PASSWORD = 'OgJsWz-YRr-okvnF6c_be8-mtU_qv-5R',
-  DB_HOST = 'rosie.db.elephantsql.com',
-  DB_NAME = 'jwinnkro',
-} = process.env
+// const {
+//   DB_USERNAME = '',
+//   DB_PASSWORD = '',
+//   DB_HOST = '',
+//   DB_NAME = '',
+// } = process.env
+const path = require('path')
+const DB_TEST_FILE_PATH = path.join(__dirname, '../db/test.sqlite')
 
 module.exports = {
   development: {
-    username: DB_USERNAME,
-    password: DB_PASSWORD,
-    database: DB_NAME,
-    host: DB_HOST,
+    username: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    host: process.env.DB_HOST,
     dialect: 'postgres',
   },
   test: {
-    username: DB_USERNAME,
-    password: DB_PASSWORD,
-    database: DB_NAME,
-    host: DB_HOST,
-    dialect: 'postgres',
+    storage: DB_TEST_FILE_PATH,
+    logging: false,
+    dialect: 'sqlite',
   },
   production: {
-    username: DB_USERNAME,
-    password: DB_PASSWORD,
-    database: `${DB_NAME}_production`,
-    host: DB_HOST,
+    username: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    host: process.env.DB_HOST,
     dialect: 'postgres',
   },
 }
