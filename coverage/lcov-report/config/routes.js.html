@@ -112,7 +112,11 @@
 <a name='L47'></a><a href='#L47'>47</a>
 <a name='L48'></a><a href='#L48'>48</a>
 <a name='L49'></a><a href='#L49'>49</a>
-<a name='L50'></a><a href='#L50'>50</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L50'></a><a href='#L50'>50</a>
+<a name='L51'></a><a href='#L51'>51</a>
+<a name='L52'></a><a href='#L52'>52</a>
+<a name='L53'></a><a href='#L53'>53</a>
+<a name='L54'></a><a href='#L54'>54</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -126,20 +130,18 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -151,6 +153,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -161,40 +169,44 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const express = require("express");
-const controllers = require("../app/controllers");
-const apiRouter = express.Router();
-const uploadOnMemory = require("../app/services/uploadOnMemory")
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const express = require('express')
+const controllers = require('../app/controllers')
+const apiRouter = express.Router()
+const uploadOnMemory = require('../app/services/uploadOnMemory')
 &nbsp;
 apiRouter.post(
-  "/api/v1/auth/register",
-  controllers.api.v1.userController.register
-);
+  '/api/v1/auth/register',
+  controllers.api.v1.userController.register,
+)
 &nbsp;
 // UPDATE USER PROFILE
-apiRouter.put("/api/v1/users/:id", uploadOnMemory.single("gambar"), controllers.api.v1.userController.update);
+apiRouter.put(
+  '/api/v1/users/:id',
+  uploadOnMemory.single('gambar'),
+  controllers.api.v1.userController.update,
+)
 &nbsp;
 //login
-apiRouter.post("/api/v1/auth/login", controllers.api.v1.userController.login);
-apiRouter.post("/api/v1/auth/google", controllers.api.v1.userController.login);
+apiRouter.post('/api/v1/auth/login', controllers.api.v1.userController.login)
+apiRouter.post('/api/v1/auth/google', controllers.api.v1.userController.Google)
 &nbsp;
 // barang
-apiRouter.get("/api/v1/products", controllers.api.v1.productController.listAll);
+apiRouter.get('/api/v1/products', controllers.api.v1.productController.listAll)
 // tambah barang
 apiRouter.post(
-  "/api/v1/products",
-  uploadOnMemory.array("image", 4),
+  '/api/v1/products',
+  uploadOnMemory.array('image', 4),
   controllers.api.v1.userController.authorize,
-  controllers.api.v1.productController.addProduct
-);
+  controllers.api.v1.productController.addProduct,
+)
 // add new products category
 apiRouter.post(
-  "/api/v1/category",
-  controllers.api.v1.productController.addCategory
-);
+  '/api/v1/category',
+  controllers.api.v1.productController.addCategory,
+)
 &nbsp;
 // list all city
-apiRouter.get("/api/v1/cities", controllers.api.v1.cityController.listAllCity);
+apiRouter.get('/api/v1/cities', controllers.api.v1.cityController.listAllCity)
 &nbsp;
 /**
  * TODO: Delete this, this is just a demonstration of
@@ -206,10 +218,10 @@ apiRouter.get("/api/v1/cities", controllers.api.v1.cityController.listAllCity);
 //   );
 // });
 &nbsp;
-apiRouter.use(controllers.api.main.onLost);
-apiRouter.use(controllers.api.main.onError);
+apiRouter.use(controllers.api.main.onLost)
+apiRouter.use(controllers.api.main.onError)
 &nbsp;
-module.exports = apiRouter;
+module.exports = apiRouter
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -217,7 +229,7 @@ module.exports = apiRouter;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Tue Jun 21 2022 19:36:43 GMT+0700 (Western Indonesia Time)
+                at Wed Jun 22 2022 13:03:18 GMT+0700 (Western Indonesia Time)
             </div>
         <script src="../prettify.js"></script>
         <script>
