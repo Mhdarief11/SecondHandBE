@@ -177,83 +177,43 @@ class userController {
   }
 
   static async update(req, res) {
-    // const { nama, idkota, alamat, nohp } = req.body;
-    // let statuss, status_code, message;
-    const { id } = req.params
-    const { nama, alamat, nohp, idkota } = req.body
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9)
-    const picBase64 = req.file.buffer.toString('base64')
-    const gambarName =
-      'profileimgDan' +
-      uniqueSuffix +
-      'Dan' +
-      id +
-      'Dan' +
-      req.file.originalname
-    // var gambarId;
+    const { id } = req.params;
+    const { nama, alamat, nohp, idkota } = req.body;
+    let profilePic;
+    // Convert Image File To Base64
+    const picBase64 = req.file.buffer.toString("base64");
+    // Custom Profile Image File Name
+    var fileExtension = req.file.originalname.split(".").pop();
+    const gambarName = "profileimgDan" + Date.now() + "Dan" + id + `Dan.${fileExtension}`;
 
-    // console.log("NAMA GAMBAR: " + gambarName);
-    // console.log("GAMBAR 64: " + picBase64);
+    // console.log("NAMA GAMBAR " + gambarName);
 
-    // For uploading profile picture, based64
+    // Process to check if user has Profile Image
+    const User = await userService.findPKUser(id);
+    if (User == null) {
+      res.status(404).json({ message: "User Tidak Ditemukan !" });
+      return;
+    }
 
-    // imageKitConfig
-    //   .upload({
-    //     file: picBase64, //required
-    //     fileName: gambarName,
-    //     folder: "/userProfile",
-    //   })
-    //   .then((result) => {
-    //     gambarId = result.fileId;
-    //     console.log("STATUS PROFILE PIC: " + gambarId);
-    //   })
-    //   .catch((error) => {
-    //     res.status(422).json({
-    //       status: error.name,
-    //       message: error.message,
-    //     });
-    //   });
+    // Process to delete old profile img or add new profile img
+    if (User.gambar == null) {
+      // uploading profile image to ImageKit CLoud
+      const uploadImg_base64 = await imageKitConfig.upload({ file: picBase64, fileName: gambarName, folder: "/userProfile" });
 
-    // const User = await userService.findPKUser(id);
+      profilePic = uploadImg_base64.fileId;
+    } else {
+      // Deleting old profile image
+      imageKitConfig.deleteFile(User.gambar);
 
-    // if (User == null) {
-    //   res.status(404).json({ message: "User Tidak Ditemukan !" });
-    //   return;
-    // }
+      // uploading profile image to ImageKit CLoud
+      const uploadImg_base64 = await imageKitConfig.upload({ file: picBase64, fileName: gambarName, folder: "/userProfile" });
 
-    // console.log(User.email);
-
-    // Uploading images with base64
-    /*
-    const uploadResponse_base64 = await uploadFileBase64(imagekit, picBase64, gambarName);
-    console.log(`Base64 upload response:`, JSON.stringify(uploadResponse_base64, undefined, 2), "\n");
-    */
-
-    imageKitConfig.upload(
-      {
-        file: picBase64, //required
-        fileName: gambarName,
-        folder: '/userProfile',
-      },
-      function (error, result) {
-        if (error) {
-          res.status(422).json({
-            status: error.name,
-            message: error.message,
-          })
-          return
-        } else {
-          console.log('STATUS PROFILE PIC: ' + result.fileId)
-          // gambarId = result.fileId;
-          // return gambarId;
-        }
-      },
-    )
-
-    // console.log("GAMBARID = " + gambarId)
+      profilePic = uploadImg_base64.fileId;
+    }
 
     userService
-      .update(id, idkota, nama, alamat, nohp, gambarName)
+      .update(id, idkota, nama, alamat, nohp, profilePic)
+      // .update(id, idkota, nama, alamat, nohp, profileImg)
       .then(() => {
         res.status(200).json({
           status: 'OK',
@@ -267,40 +227,6 @@ class userController {
       })
   }
 
-  /*
-  static async listKota(req, res) {
-    userService
-      .cities()
-      .then(({ data, count }) => {
-        res.status(200).json({
-          status: "OK",
-          data: { DaftarKota: data },
-          meta: { TotalKota: count },
-        });
-      })
-      .catch((err) => {
-        res.status(400).json({
-          status: "FAIL",
-          message: err.message,
-        });
-      });
-  }
-
-  // Uploading images with base64
-  async uploadFileBase64(imagekitInstance, file64, fileName) {
-    //Uncomment to send extensions parameter
-    // var extensions =  [
-    //   {
-    //       name: "google-auto-tagging",
-    //       maxTags: 5,
-    //       minConfidence: 95
-    //   }
-    // ];
-    //const response = await imagekitInstance.upload({ file: file64, fileName, extensions });
-    const response = await imagekitInstance.upload({ file: file64, fileName });
-    return response;
-  }
-  */
 }
 
 module.exports = userController
