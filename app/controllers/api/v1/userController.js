@@ -176,38 +176,47 @@ class userController {
   }
 
   static async update(req, res) {
-    const { id } = req.params;
-    const { nama, alamat, nohp, idkota } = req.body;
-    let profilePic;
+    const { id } = req.params
+    const { nama, alamat, nohp, idkota } = req.body
+    let profilePic
     // Convert Image File To Base64
-    const picBase64 = req.file.buffer.toString("base64");
+    const picBase64 = req.file.buffer.toString('base64')
     // Custom Profile Image File Name
-    var fileExtension = req.file.originalname.split(".").pop();
-    const gambarName = "profileimgDan" + Date.now() + "Dan" + id + `Dan.${fileExtension}`;
+    var fileExtension = req.file.originalname.split('.').pop()
+    const gambarName =
+      'profileimgDan' + Date.now() + 'Dan' + id + `Dan.${fileExtension}`
 
     // console.log("NAMA GAMBAR " + gambarName);
 
     // Process to check if user has Profile Image
-    const User = await userService.findPKUser(id);
+    const User = await userService.findPKUser(id)
     if (User == null) {
-      res.status(404).json({ message: "User Tidak Ditemukan !" });
-      return;
+      res.status(404).json({ message: 'User Tidak Ditemukan !' })
+      return
     }
 
     // Process to delete old profile img or add new profile img
     if (User.gambar == null) {
       // uploading profile image to ImageKit CLoud
-      const uploadImg_base64 = await imageKitConfig.upload({ file: picBase64, fileName: gambarName, folder: "/userProfile" });
+      const uploadImg_base64 = await imageKitConfig.upload({
+        file: picBase64,
+        fileName: gambarName,
+        folder: '/userProfile',
+      })
 
-      profilePic = uploadImg_base64.fileId;
+      profilePic = uploadImg_base64.fileId
     } else {
       // Deleting old profile image
-      imageKitConfig.deleteFile(User.gambar);
+      imageKitConfig.deleteFile(User.gambar)
 
       // uploading profile image to ImageKit CLoud
-      const uploadImg_base64 = await imageKitConfig.upload({ file: picBase64, fileName: gambarName, folder: "/userProfile" });
+      const uploadImg_base64 = await imageKitConfig.upload({
+        file: picBase64,
+        fileName: gambarName,
+        folder: '/userProfile',
+      })
 
-      profilePic = uploadImg_base64.fileId;
+      profilePic = uploadImg_base64.fileId
     }
 
     userService
@@ -225,7 +234,6 @@ class userController {
         })
       })
   }
-
 }
 
 module.exports = userController
