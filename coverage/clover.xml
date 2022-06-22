@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1655877798914" clover="3.2.0">
-  <project timestamp="1655877798914" name="All files">
-    <metrics statements="266" coveredstatements="131" conditionals="31" coveredconditionals="6" methods="64" coveredmethods="18" elements="361" coveredelements="155" complexity="0" loc="266" ncloc="266" packages="8" files="26" classes="26"/>
+<coverage generated="1655879094395" clover="3.2.0">
+  <project timestamp="1655879094395" name="All files">
+    <metrics statements="271" coveredstatements="131" conditionals="33" coveredconditionals="6" methods="63" coveredmethods="18" elements="367" coveredelements="155" complexity="0" loc="271" ncloc="271" packages="8" files="26" classes="26"/>
     <package name="app">
       <metrics statements="10" coveredstatements="10" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <file name="index.js" path="D:\Binar\SecondHandFinalProject\SecondHandBE\app\index.js">
@@ -42,7 +42,7 @@
       </file>
     </package>
     <package name="app.controllers.api.v1">
-      <metrics statements="121" coveredstatements="21" conditionals="22" coveredconditionals="0" methods="23" coveredmethods="1"/>
+      <metrics statements="126" coveredstatements="21" conditionals="24" coveredconditionals="0" methods="22" coveredmethods="1"/>
       <file name="cityController.js" path="D:\Binar\SecondHandFinalProject\SecondHandBE\app\controllers\api\v1\cityController.js">
         <metrics statements="6" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
         <line num="1" count="1" type="stmt"/>
@@ -95,7 +95,7 @@
         <line num="88" count="0" type="stmt"/>
       </file>
       <file name="userController.js" path="D:\Binar\SecondHandFinalProject\SecondHandBE\app\controllers\api\v1\userController.js">
-        <metrics statements="79" coveredstatements="8" conditionals="18" coveredconditionals="0" methods="18" coveredmethods="0"/>
+        <metrics statements="84" coveredstatements="8" conditionals="20" coveredconditionals="0" methods="17" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
@@ -161,20 +161,25 @@
         <line num="170" count="0" type="stmt"/>
         <line num="172" count="0" type="stmt"/>
         <line num="174" count="0" type="stmt"/>
-        <line num="181" count="0" type="stmt"/>
-        <line num="182" count="0" type="stmt"/>
+        <line num="179" count="0" type="stmt"/>
+        <line num="180" count="0" type="stmt"/>
         <line num="183" count="0" type="stmt"/>
-        <line num="184" count="0" type="stmt"/>
+        <line num="185" count="0" type="stmt"/>
         <line num="186" count="0" type="stmt"/>
-        <line num="231" count="0" type="stmt"/>
-        <line num="238" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="239" count="0" type="stmt"/>
-        <line num="243" count="0" type="stmt"/>
-        <line num="245" count="0" type="stmt"/>
-        <line num="254" count="0" type="stmt"/>
-        <line num="257" count="0" type="stmt"/>
-        <line num="262" count="0" type="stmt"/>
-        <line num="305" count="1" type="stmt"/>
+        <line num="191" count="0" type="stmt"/>
+        <line num="192" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="193" count="0" type="stmt"/>
+        <line num="194" count="0" type="stmt"/>
+        <line num="198" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="200" count="0" type="stmt"/>
+        <line num="202" count="0" type="stmt"/>
+        <line num="205" count="0" type="stmt"/>
+        <line num="208" count="0" type="stmt"/>
+        <line num="210" count="0" type="stmt"/>
+        <line num="213" count="0" type="stmt"/>
+        <line num="217" count="0" type="stmt"/>
+        <line num="222" count="0" type="stmt"/>
+        <line num="231" count="1" type="stmt"/>
       </file>
     </package>
     <package name="app.models">
