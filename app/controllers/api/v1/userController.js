@@ -43,27 +43,24 @@ class userController {
     const { nama, email } = req.body
     const password = await encryptPassword(req.body.password)
     const registeredVia = 'website'
-    // const notavail = await userService.findByEmail(req.body.email)
-    // // if (notavail) {
-    //   return res.status(400).send({
-    //     message: 'Email digunakan',
-    //   })
-    // }
 
+    // check email is used before or not
+    const notavail = await userService.find(req.body.email)
+    if (notavail) {
+      res.status(400).send({
+        message: 'Email already exists',
+      })
+      return
+    }
+
+    // add email if not exists
     userService
       .create({ nama, email, password, registeredVia })
       .then(async ({ id, nama, email }) => {
         const User = await user.findOne({
           where: { email },
         })
-        const token = createToken({
-          id: User.id,
-          email: User.email,
-          createdAt: User.createdAt,
-          updatedAt: User.updatedAt,
-        })
         res.status(201).json({
-          token: token,
           data: { id, nama, email, registeredVia },
         })
       })
