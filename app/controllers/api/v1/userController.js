@@ -73,39 +73,44 @@ class userController {
   }
 
   static async login(req, res) {
-    const email = req.body.email.toLowerCase()
-    const password = req.body.password
+    try {
+      const email = req.body.email.toLowerCase()
+      const password = req.body.password
 
-    const User = await userService.find(email)
+      const User = await userService.find(email)
+      if (!User) {
+        res.status(404).json({ message: 'Email not found' })
+        return
+      }
 
-    if (!User) {
-      res.status(404).json({ message: 'Email not found' })
-      return
+      const isPasswordCorrect = await checkPassword(User.password, password)
+
+      if (!isPasswordCorrect) {
+        res.status(401).json({ message: 'Password incorrect' })
+        return
+      }
+
+      // buat token
+      const token = createToken({
+        id: User.id,
+        email: User.email,
+        createdAt: User.createdAt,
+        updatedAt: User.updatedAt,
+      })
+
+      //return
+      res.status(201).json({
+        id: User.id,
+        email: User.email,
+        token,
+        createdAt: User.createdAt,
+        updatedAt: User.updatedAt,
+      })
+    } catch (error) {
+      res.status(400).json({
+        message: error.message,
+      })
     }
-
-    const isPasswordCorrect = await checkPassword(User.password, password)
-
-    if (!isPasswordCorrect) {
-      res.status(401).json({ message: 'Password incorrect' })
-      return
-    }
-
-    // buat token
-    const token = createToken({
-      id: User.id,
-      email: User.email,
-      createdAt: User.createdAt,
-      updatedAt: User.updatedAt,
-    })
-
-    //return
-    res.status(201).json({
-      id: User.id,
-      email: User.email,
-      token,
-      createdAt: User.createdAt,
-      updatedAt: User.updatedAt,
-    })
   }
 
   static async authorize(req, res, next) {
