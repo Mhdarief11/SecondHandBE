@@ -2,6 +2,9 @@ const express = require('express')
 const controllers = require('../app/controllers')
 const apiRouter = express.Router()
 const uploadOnMemory = require('../app/services/uploadOnMemory')
+const yaml = require('yamljs')
+const swaggerUi = require('swagger-ui-express')
+const swaggerDocument = yaml.load('./openApi.yaml')
 
 apiRouter.post(
   '/api/v1/auth/register',
@@ -39,6 +42,12 @@ apiRouter.post(
 
 // list all city
 apiRouter.get('/api/v1/cities', controllers.api.v1.cityController.listAllCity)
+
+// docs
+apiRouter.get('/api/v1/docs/swagger.json', (req, res) => {
+  res.status(200).json(swaggerDocument)
+})
+apiRouter.use('/api/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 /**
  * TODO: Delete this, this is just a demonstration of

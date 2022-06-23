@@ -1,24 +1,23 @@
 const request = require('supertest')
 const app = require('../../../app')
 
-describe('POST /api/v1/auth/login', () => {
+describe('POST /api/v1/auth/register', () => {
   it('should response with 201 as status code', async () => {
-    const email = 'yehezkiel@mail.com'
+    const nama = 'yehezkiel'
+    const email = 'yehezkielve@mail.com'
     const password = 'coba123'
+    const registeredVia = 'website'
 
     return request(app)
-      .post('/api/v1/auth/login')
+      .post('/api/v1/auth/register')
       .set('Content-Type', 'application/json')
-      .send({ email, password })
+      .send({ nama, email, password, registeredVia })
       .then((res) => {
         expect(res.statusCode).toBe(201)
         expect(res.body).toEqual(
           expect.objectContaining({
-            id: expect.any(String),
-            email: expect.any(String),
             token: expect.any(String),
-            createdAt: expect.any(String),
-            updatedAt: expect.any(String),
+            data: expect.any(Object),
           }),
         )
       })
