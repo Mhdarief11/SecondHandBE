@@ -1,0 +1,62 @@
+openapi: 3.0.1
+info:
+  title: SecondHand WebApp
+  description: 'Team 4 Final Project in Binar Academy'
+  version: 1.0.0
+servers:
+  - url: https://secondhand-be-tim4-staging.herokuapp.com
+  - url: http://localhost:8000
+tags:
+  - name: List City
+    description: list all city
+paths:
+  /api/v1/cities:
+    get:
+      tags:
+        - List City
+      summary: list city
+      responses:
+        200:
+          description: Data fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/city'
+        400:
+          descripstion:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: FAIL
+                  message:
+                    type: string
+                    example: city is empty
+
+#==============================================================
+components:
+  schemas:
+    city:
+      type: object
+      properties:
+        status:
+          type: string
+          example: OK
+        city:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+            nama_kota:
+              type: string
+              example: Banda Aceh
+            createdAt:
+              type: string
+              format: date-time
+            updatedAt:
+              type: string
+              format: date-time
