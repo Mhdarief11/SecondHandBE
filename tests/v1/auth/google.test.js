@@ -2,23 +2,23 @@ const request = require('supertest')
 const app = require('../../../app')
 
 describe('POST /api/v1/auth/google', () => {
-  it('should response with 201 as status code', async () => {
-    const access_token =
-      'ya29.A0ARrdaM-dMUlu6amFifRm8q-3_mww04wRgzVJkU3N1IAPIX-4Cr78u9IIUldtLpz6oV2skjwPl9yyOgCwlTJPBC5waoZGOYVegd4igqUd5CXcBpbkQfX84txlsNlJDfrhVvD0aNjZz5IwK16HP3DrE9J5TduqXwYUNnWUtBVEFTQVRBU0ZRRl91NjFWS1pBbkE0bUdGWGdiWU90R0twSEN0Zw0165'
+  // it('should response with 201 as status code', async () => {
+  //   const access_token =
+  //     'ya29.A0ARrdaM8kHAZag2LPaI2SoeRU5IoBR-n0F2mPs2qsMFXWqfVA1n9PH1ZN8UHwPv2i_zYm1MtYBX8xCEgF7KOgTTuVpxhGSEb0WW4KTF7pX0-2PkFujm7XFRw3-pYA_38HxoXc8OLnK9H5ql_8wV42J9kq6bG0XwYUNnWUtBVEFTQVRBU0ZRRl91NjFWdG5lT1RzQkpDdFdLODVTR1dmUTNRdw0165'
 
-    return request(app)
-      .post('/api/v1/auth/google')
-      .set('Content-Type', 'application/json')
-      .send({ access_token })
-      .then((res) => {
-        expect(res.statusCode).toBe(201)
-        expect(res.body).toEqual(
-          expect.objectContaining({
-            token: expect.any(String),
-          }),
-        )
-      })
-  })
+  //   return request(app)
+  //     .post('/api/v1/auth/google')
+  //     .set('Content-Type', 'application/json')
+  //     .send({ access_token })
+  //     .then((res) => {
+  //       expect(res.statusCode).toBe(201)
+  //       expect(res.body).toEqual(
+  //         expect.objectContaining({
+  //           token: expect.any(String),
+  //         }),
+  //       )
+  //     })
+  // })
 
   it('should response with 401 as status code', async () => {
     const email = 'test123@mail.com'

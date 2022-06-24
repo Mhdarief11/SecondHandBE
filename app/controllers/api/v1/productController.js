@@ -1,6 +1,7 @@
 const productService = require('../../../services/productService')
-const uploadOnMemory = require('../../../services/uploadOnMemory')
 const cloudinary = require('../../../services/cloudinaryService')
+const ImageKit = require('imagekit')
+const configImageKit = require('../../../services/ImageKit')
 
 module.exports = {
   // tampilkan semua barang
@@ -27,6 +28,7 @@ module.exports = {
   // tambah barang baru
   async addProduct(req, res) {
     try {
+      const imageKitConfig = new ImageKit(configImageKit)
       const product = {
         iduser: req.user.id,
         idkategori: req.body.kategori,
@@ -37,37 +39,26 @@ module.exports = {
       const addProduct = await productService.addProduct(product)
       // console.log(req.body)
 
-      // console.log(req.files)
-      // const filebase64 = req.files.buffer.toString('base64')
-      // const file = `data:${req.files.mimetype};base64,${filebase64}`
-      const upload = await cloudinary.uploader.upload(localUrl, function (
-        err,
-        result,
-      ) {
-        if (err) {
-          console.log(err)
-          res.status(400).json({
-            message: err.message,
-          })
-          return
-        }
-        productService.addImageProduct({
-          idbarang: addProduct.id,
-          gambar: result.secure_url,
+      for (var i = 0; i < req.files.length; i++) {
+        const picBase64 = req.files[i].buffer.toString('base64')
+        var fileExtension = req.files[i].originalname.split('.').pop()
+        const gambarName =
+          'products' + Date.now() + req.user.id + `${fileExtension}`
+        const uploadImg_base64 = await imageKitConfig.upload({
+          filr: picBase64,
+          fileName: gambarName,
+          folder: '/userProducts',
         })
-      })
+        console.log('file', uploadImg_base64)
+        // productService.addImageProduct({
+        //   idbarang: addProduct.id,
+        //   gambar: uploadImg_base64,
+        // })
+      }
       res.status(201).json({
         message: 'New Product Added',
         product: addProduct,
       })
-
-      var urls = []
-      for (var i = 0; i < req.files.length; i++) {
-        var localUrl = req.files[i].buffer.toString('base64')
-        console.log(localUrl)
-        var result = await upload(localUrl)
-        urls.push(result.url)
-      }
     } catch (error) {
       res.status(400).json({
         message: error.message,
