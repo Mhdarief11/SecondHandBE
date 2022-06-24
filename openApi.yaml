@@ -9,6 +9,8 @@ servers:
 tags:
   - name: List City
     description: list all city
+  - name: Authentication User
+    descripstion: Register and login User
 paths:
   /api/v1/cities:
     get:
@@ -29,12 +31,116 @@ paths:
               schema:
                 type: object
                 properties:
-                  status:
-                    type: string
-                    example: FAIL
                   message:
                     type: string
                     example: city is empty
+
+  # register user
+  /api/v1/auth/register:
+    post:
+      tags:
+        - Authentication User
+      summary: register user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nama:
+                  type: string
+                  example: user
+                email:
+                  type: string
+                  example: user@mail.com
+                password:
+                  type: string
+                  example: userPassword123
+        required: true
+      responses:
+        201:
+          descripstion: Register successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/register'
+        400:
+          descripstion: email exists
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Email already exists
+        422:
+          descripstion: Register failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Register Failed
+
+  #login user
+  /api/v1/auth/login:
+    post:
+      tags:
+        - Authentication User
+      summary: login user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: user@mail.com
+                password:
+                  type: string
+                  example: userPassword123
+        required: true
+      responses:
+        201:
+          descripstion: Login successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/login'
+        400:
+          descripstion: Login failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: login failed
+        401:
+          descripstion: Password incorrect
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Password incorrect
+        404:
+          descripstion: Email not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Email not found
 
 #==============================================================
 components:
@@ -42,21 +148,59 @@ components:
     city:
       type: object
       properties:
-        status:
-          type: string
-          example: OK
-        city:
+        allCity:
+          type: object
+          properties:
+            city:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  nama_kota:
+                    type: string
+                    example: Banda Aceh
+                  createdAt:
+                    type: string
+                    format: date-time
+                  updatedAt:
+                    type: string
+                    format: date-time
+    register:
+      type: object
+      properties:
+        data:
           type: object
           properties:
             id:
               type: integer
               example: 1
-            nama_kota:
+            nama:
               type: string
-              example: Banda Aceh
-            createdAt:
+              example: user
+            email:
               type: string
-              format: date-time
-            updatedAt:
+              example: user@mail.com
+            registeredVia:
               type: string
-              format: date-time
+              example: website
+    login:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 27
+        email:
+          type: string
+          example: user@mail.com
+        token:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjcsImVtYWlsIjoidXNlckBtYWlsLmNvbSIsImNyZWF0ZWRBdCI6IjIwMjItMDYtMjRUMDY6MTk6MTkuMTY0WiIsInVwZGF0ZWRBdCI6IjIwMjItMDYtMjRUMDY6MTk6MTkuMTY0WiIsImlhdCI6MTY1NjA1MjkzMywiZXhwIjoxNjU2MDU0NzMzfQ.6hIS5PNONh2gj164TUnjkrD0spIkon77oQEg6qFQjKc
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
