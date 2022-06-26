@@ -19,11 +19,9 @@ apiRouter.post('/api/v1/auth/google', controllers.api.v1.userController.Google)
 apiRouter.get(process.env.GETME, controllers.api.v1.userController.authorize, controllers.api.v1.userController.whoAmI)
 
 // UPDATE USER PROFILE
-apiRouter.put(
-  process.env.PROFILE,
-  uploadOnMemory.single('gambar'),
-  controllers.api.v1.userController.update,
-)
+apiRouter.put(process.env.PROFILE, controllers.api.v1.userController.authorize, uploadOnMemory.single("gambar"), controllers.api.v1.userController.update);
+
+apiRouter.put(process.env.PROFILEWITHOUTPIC, controllers.api.v1.userController.authorize, controllers.api.v1.userController.updateNP);
 
 // barang
 apiRouter.get('/api/v1/products', controllers.api.v1.productController.listAll)
