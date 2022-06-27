@@ -181,7 +181,7 @@ class userController {
 
        console.log(req.body);
 
-       if (req.body.gambar === "" || req.body.gambar.includes("undefined")) {
+       if (req.body.gambar === "" || req.body.gambar == "undefined") {
          profilePic = "";
 
          console.log("profilepic, " + profilePic);
@@ -288,6 +288,7 @@ class userController {
 
   }
 
+  /*
   static async updateNP(req, res) {
     console.log("UPDATE NP RUNNINGGGGGGGGGG");
     console.log(req.params);
@@ -319,6 +320,8 @@ class userController {
     //   });
     // }
   }
+  */
+
 }
 
 module.exports = userController;
