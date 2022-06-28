@@ -10,11 +10,18 @@ module.exports = {
     })
   },
   update(id, data) {
-    return user.update(data, {
+    console.log("UPDATE REPO");
+    
+      return user.update(data, {
       where: {
         id,
       },
+    }).then(() => {
+      console.log("UPDATE REPO SUCCESSFULL")
+    }).catch(err => {
+      console.log(err.message)
     });
+    
   },
   listCities() {
     return kota.findAll();

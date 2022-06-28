@@ -17,6 +17,11 @@ module.exports = {
     const data = { idkota, nama, alamat, nohp, gambar };
     return userRepository.update(id, data);
   },
+  updateNP(id, idkota, nama, alamat, nohp) {
+    console.log("UPDATE NP SERVICE");
+    const data = { idkota, nama, alamat, nohp };
+    return userRepository.update(id, data);
+  },
   async cities() {
     try {
       const kota = await userRepository.listCities();
