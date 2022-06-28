@@ -16,7 +16,7 @@ module.exports = {
         return
       }
       res.status(200).json({
-        data: barang,
+        data: product,
       })
     } catch (error) {
       res.status(400).json({
