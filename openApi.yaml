@@ -84,7 +84,6 @@ paths:
                   message:
                     type: string
                     example: Register Failed
-
   #login user
   /api/v1/auth/login:
     post:
@@ -141,9 +140,119 @@ paths:
                   message:
                     type: string
                     example: Email not found
+  #Get user data
+  /api/v1/users/siapaSaya:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Authentication User
+      summary: Get User Data
+      responses:
+        200:
+          description: Data fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/whoami'
+        400:
+          descripstion:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: error
+  
+  # update user
+  /api/v1/users/update/{id}:
+    put:
+      security:
+        - bearerAuth: []
+      tags:
+        - Update User Profile
+      summary: update user data
+      parameters:
+        - in: path
+          name: id
+          schema:
+              type: integer
+          required: true
+          description: Numeric ID of the id user to be updated
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                nama:
+                  type: string
+                  example: user
+                idkota:
+                  type: integer
+                  example: 5
+                alamat:
+                  type: string
+                  example: user address
+                nohp:
+                  type: integer
+                  example: 546
+                gambar:
+                  type: string
+                  format: binary
+        required: true
+      responses:
+        201:
+          descripstion: Update successfully
+          content:
+            multipart/form-data:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: OK
+        404:
+          descripstion: user email not found
+          content:
+            multipart/form-data:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: User Tidak Ditemukan !
+        422:
+          descripstion: Update failed
+          content:
+            multipart/form-data:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Update Failed
+        401:
+          descripstion: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Unauthorized
 
 #==============================================================
 components:
+  securitySchemes:
+    bearerAuth: # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      in: header
   schemas:
     city:
       type: object
@@ -204,3 +313,42 @@ components:
         updatedAt:
           type: string
           format: date-time
+    city:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 36
+            idkota:
+              type: integer
+              example: 6
+            nama:
+              type: string
+              example: user-name
+            email:
+              type: string
+              example: user-email
+            alamat:
+              type: string
+              example: user-address
+            nohp:
+              type: integer
+              example: 555
+            gambar:
+              type: string
+              example: image-id(ImageKit)
+            googleId:
+              type: string
+              example: google-id
+            registeredVia:
+              type: string
+              example: Website
+            createdAt:
+              type: string
+              format: date-time
+            updatedAt:
+              type: string
+              format: date-time
