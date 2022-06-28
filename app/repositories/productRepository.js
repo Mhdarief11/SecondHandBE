@@ -26,4 +26,7 @@ module.exports = {
   addCategory(createArgs) {
     return kategori.create(createArgs)
   },
+  listCategory() {
+    return kategori.findAll()
+  },
 }
