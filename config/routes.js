@@ -37,6 +37,12 @@ apiRouter.post(
   controllers.api.v1.productController.addCategory,
 )
 
+// list all category
+apiRouter.get(
+  '/api/v1/category',
+  controllers.api.v1.productController.listCategory,
+)
+
 // list all city
 apiRouter.get('/api/v1/cities', controllers.api.v1.cityController.listAllCity)
 

@@ -25,7 +25,7 @@ module.exports = {
     }
   },
 
-  // tambah barang baru
+  // ------------------------------------------------tambah barang baru
   async addProduct(req, res) {
     try {
       const imageKitConfig = new ImageKit(configImageKit)
@@ -39,21 +39,23 @@ module.exports = {
       const addProduct = await productService.addProduct(product)
       // console.log(req.body)
 
+      // array to
       for (var i = 0; i < req.files.length; i++) {
         const picBase64 = req.files[i].buffer.toString('base64')
         var fileExtension = req.files[i].originalname.split('.').pop()
         const gambarName =
           'products' + Date.now() + req.user.id + `${fileExtension}`
         const uploadImg_base64 = await imageKitConfig.upload({
-          filr: picBase64,
+          file: picBase64,
           fileName: gambarName,
           folder: '/userProducts',
         })
-        console.log('file', uploadImg_base64)
-        // productService.addImageProduct({
-        //   idbarang: addProduct.id,
-        //   gambar: uploadImg_base64,
-        // })
+        //console.log('file', uploadImg_base64.fileId)
+        await productService.addImageProduct({
+          idbarang: addProduct.id,
+          // ambil fileid dari imagekit
+          gambar: uploadImg_base64.fileId,
+        })
       }
       res.status(201).json({
         message: 'New Product Added',
@@ -66,7 +68,7 @@ module.exports = {
     }
   },
 
-  // tambah kategori baru
+  // ---------------------------------------------tambah kategori baru
   async addCategory(req, res) {
     try {
       const kategori = await productService.addCategory({
@@ -77,6 +79,20 @@ module.exports = {
       })
     } catch (error) {
       res.status(400).json({
+        message: error.message,
+      })
+    }
+  },
+
+  // ------------------------list all category
+  async listCategory(req, res) {
+    try {
+      const list = await productService.listCategory()
+      res.status(200).json({
+        category: list,
+      })
+    } catch (error) {
+      res.status(404).json({
         message: error.message,
       })
     }
