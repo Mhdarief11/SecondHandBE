@@ -318,6 +318,7 @@ class userController {
 
   static async getImg(req, res) {
     try {
+      let result;
       const { id } = req.params;
       /* Process to check if user has Profile Image */
       const User = await userService.findPKUser(id);
@@ -329,6 +330,8 @@ class userController {
 
       const getDetails = new ImageKitActions("", "", "");
 
+      result = await getDetails.getImgDetails(User.gambar)
+
       if (getDetails == "" || getDetails == "error") {
         res.status(422).json({
           status: "FAILED",
@@ -339,7 +342,7 @@ class userController {
 
       res.status(201).json({
         status: "OK",
-        dataImg: getDetails
+        dataImg: result,
       })
 
     } catch(error) {
