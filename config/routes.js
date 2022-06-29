@@ -20,7 +20,6 @@ apiRouter.get('/api/v1/users/siapaSaya', controllers.api.v1.userController.autho
 
 apiRouter.get("/api/v1/users/profileImg/details/:id", controllers.api.v1.userController.getImg);
 
-
 // UPDATE USER PROFILE
 apiRouter.put('/api/v1/users/update/:id', controllers.api.v1.userController.authorize, uploadOnMemory.single("gambar"), controllers.api.v1.userController.update);
 
@@ -37,6 +36,12 @@ apiRouter.post(
 apiRouter.post(
   '/api/v1/category',
   controllers.api.v1.productController.addCategory,
+)
+
+// list all category
+apiRouter.get(
+  '/api/v1/category',
+  controllers.api.v1.productController.listCategory,
 )
 
 // list all city
