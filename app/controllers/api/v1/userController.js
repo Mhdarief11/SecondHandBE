@@ -2,8 +2,9 @@ const userService = require("../../../services/userService");
 const bcrypt = require("bcryptjs");
 const axios = require("axios");
 const jwt = require("jsonwebtoken");
-const ImageKit = require("imagekit");
-const configImageKit = require("../../../services/ImageKit");
+const ImageKitActions = require("../../../imageKit/ImageKitActions");
+/* const ImageKit = require("imagekit");
+const configImageKit = require("../../../imageKit/ImageKitConfig"); */
 const { user } = require("../../../models");
 const { response } = require("express");
 const Salt = 10;
@@ -38,6 +39,32 @@ function checkPassword(encryptedPassword, password) {
     });
   });
 }
+
+/* 
+async function deleteImg(fileId) {
+  let data = "";
+
+  const config = {
+    method: "delete",
+    url: `https://api.imagekit.io/v1/files/${fileId}`,
+    headers: {
+      Authorization: "Basic cHJpdmF0ZV9wQlRCNUZyQzVOY0pQQWNCZ1hzeVJoSnVYbzA9OiNDMDBsaW1hZ2VraXRtM24=",
+      Cookie: "_csrf=KZAEYsgpMNbtLozyfc3768uM",
+    },
+    data: data,
+  };
+
+  axios(config)
+    .then(function (response) {
+      console.log('Old Image Deleted Successfully');
+      console.log(JSON.stringify(response.data));
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+
+}
+ */
 
 class userController {
   static async register(req, res) {
@@ -137,6 +164,9 @@ class userController {
   }
 
   static async whoAmI(req, res) {
+    const ngetes = req.user;
+    console.log(ngetes);
+
     res.status(200).json({
       data: req.user,
     });
@@ -173,155 +203,154 @@ class userController {
   }
 
   static async update(req, res) {
-     try {
-       const imageKitConfig = new ImageKit(configImageKit);
-       const { id } = req.params;
-       const { nama, alamat, nohp, idkota } = req.body;
-       let profilePic;
+    try {
+      const { id } = req.params;
+      const { nama, alamat, nohp, idkota } = req.body;
 
-       console.log(req.body);
+      console.log("GAMBAR BODY, -" + req.body.gambar);
 
-       if (req.body.gambar === "" || req.body.gambar == "undefined") {
-         profilePic = "";
+      let profilePic, picToSend;
 
-         console.log("profilepic, " + profilePic);
-       } else {
-         // Convert Image File To Base64
-         const picBase64 = req.file.buffer.toString("base64");
-         // Custom Profile Image File Name
-         var fileExtension = req.file.originalname.split(".").pop();
+      console.log(req.body);
 
-         const gambarName = "profileimgDan" + Date.now() + "Dan" + id + `Dan.${fileExtension}`;
-         // console.log("NAMA GAMBAR " + gambarName);
+      if (req.body.gambar === "" || req.body.gambar === null || req.body.gambar == "undefined") {
+        profilePic = "";
+      } else {
+        /* Convert Image File To Base64 */
+        const picBase64 = req.file.buffer.toString("base64");
+        /* Custom Profile Image File Name */
+        const gambarName = "profileimgDan" + Date.now() + "Dan" + id;
 
-         // Process to check if user has Profile Image
-         const User = await userService.findPKUser(id);
-         if (User == null) {
-           res.status(404).json({ message: "User Tidak Ditemukan !" });
-           return;
-         }
+        let imgUpdateUser = new ImageKitActions(picBase64, gambarName, "/userProfile");
 
-         // console.log("USER ID, "+User.id)
+        /* Process to check if user has Profile Image */
+        const User = await userService.findPKUser(id);
 
-         // Process to delete old profile img or add new profile img
-         if (User.gambar == null) {
-           // console.log("UNTUK KOSONG");
+        if (User == null) {
 
-           // uploading profile image to ImageKit CLoud
-           await imageKitConfig
-             .upload({
-               file: picBase64,
-               fileName: gambarName,
-               folder: "/userProfile",
-             })
-             .then((response) => {
-               profilePic = response.fileId;
-             })
-             .catch((error) => {
-               console.log("ERROR IMG, " + error);
-             });
+          res.status(404).json({ status: "failed", message: "User Tidak Ditemukan Saat Proses Update!" });
+          return;
 
-           // profilePic = uploadImg_base64.fileId;
+        }
 
-           console.log("FILE ID, " + profilePic);
+        /* Process to delete old profile img or add new profile img */
+        if (User.gambar == null || User.gambar == "" || User.gambar == "undefined") {
+          console.log("\nEmpty Old Img\n");
 
-           //
-         } else {
-           //
-           // console.log("UNTUK YG ADA");
-           // console.log("IMG ID, -" + User.gambar + "-");
-           //
-           // Deleting old profile image
-           await imageKitConfig.deleteFile(User.gambar, function (error, result) {
-             if (error) {
-               console.log("Old img delete unsuccessful");
-               // console.log(error)
-             } else {
-               console.log("Old img deleted successful");
-               console.log(result);
-             }
-           });
+          /* uploading profile image to ImageKit CLoud */
+          profilePic = await imgUpdateUser.createImg();
 
-           // uploading profile image to ImageKit CLoud
-           await imageKitConfig
-             .upload({
-               file: picBase64,
-               fileName: gambarName,
-               folder: "/userProfile",
-             })
-             .then((response) => {
-               console.log("Img upload successful");
-               profilePic = response.fileId;
-             })
-             .catch((error) => {
-               console.log("Img Upload Failed,");
-               console.log(error);
-             });
+          if (profilePic == "error") {
 
-           // console.log("FILE ID, " + profilePic);
-         }
-       }
+            res.status(422).json({
+              status: "FAILED",
+              message: "See Console Log For Details",
+            });
+            return;
 
-       console.log("udh smpe service");
+          } else {
 
-       userService
-         .update(id, idkota, nama, alamat, nohp, profilePic)
-         .then(() => {
-           res.status(200).json({
-             status: "OK",
-           });
-         })
-         .catch((err) => {
-           res.status(422).json({
-             status: "FAIL",
-             message: err.message,
-           });
-         });
-     } catch (err) {
-       console.log(err);
-       res.status(422).json({
-         status: "FAIL",
-         message: err.message,
-       });
-       return;
-     }
+            picToSend = profilePic.fileId
 
-  }
+          }
 
-  /*
-  static async updateNP(req, res) {
-    console.log("UPDATE NP RUNNINGGGGGGGGGG");
-    console.log(req.params);
-    const { id } = req.params;
-    const { nama, alamat, nohp, idkota } = req.body;
-    const gambar = "";
-    console.log("BE id , " + id);
-    console.log(req.body);
+        } else {
+          /* Deleting old profile image */
+          let deleteImgResponse = await imgUpdateUser.deleteImg(User.gambar);
 
-    // try {
-    userService
-      .update(id, idkota, nama, alamat, nohp, gambar)
-      .then(() => {
-        res.status(200).json({
-          status: "OK",
+          if (deleteImgResponse == "error") {
+
+            res.status(422).json({
+              status: "FAILED",
+              message: "See Console Log For Details",
+            });
+            return;
+
+          }
+
+          /* uploading profile image to ImageKit CLoud */
+          profilePic = await imgUpdateUser.createImg();
+          console.log("AFTER UPLOAD");
+          console.log(profilePic);
+
+          if (profilePic == "error") {
+
+            res.status(422).json({
+              status: "FAILED",
+              message: "See Console Log For Details",
+            });
+            return;
+
+          } else {
+
+            picToSend = profilePic.fileId;
+
+          }    
+
+          // console.log("FILE ID, " + profilePic);
+        }
+      }
+
+      console.log("udh smpe service");
+
+      userService
+        .update(id, idkota, nama, alamat, nohp, picToSend)
+        .then(() => {
+          res.status(200).json({
+            status: "OK",
+          });
+        })
+        .catch((err) => {
+          res.status(422).json({
+            status: "FAIL",
+            message: err.message,
+          });
         });
-      })
-      .catch((err) => {
-        res.status(422).json({
-          status: "FAIL",
-          message: err.message,
-        });
+    } catch (err) {
+      console.log(err);
+      res.status(422).json({
+        status: "FAIL",
+        message: err.message,
       });
-    // } catch (error) {
-    //   // console.log(error.message);
-    //   res.status(422).json({
-    //     status: "FAIL",
-    //     message: error.message,
-    //   });
-    // }
+      return;
+    }
   }
-  */
 
+  static async getImg(req, res) {
+    try {
+      const { id } = req.params;
+      /* Process to check if user has Profile Image */
+      const User = await userService.findPKUser(id);
+
+      if (User == null) {
+        res.status(404).json({ status: "failed", message: "User Tidak Ditemukan Saat Proses Detail Gambar!" });
+        return;
+      }
+
+      const getDetails = new ImageKitActions("", "", "");
+
+      if (getDetails == "" || getDetails == "error") {
+        res.status(422).json({
+          status: "FAILED",
+          message: "See Console Log For Details",
+        });
+        return;
+      }
+
+      res.status(201).json({
+        status: "OK",
+        dataImg: getDetails
+      })
+
+    } catch(error) {
+      console.log(err);
+      res.status(422).json({
+        status: "FAIL",
+        message: err.message,
+      });
+      return;
+    }
+  }
 }
 
 module.exports = userController;
