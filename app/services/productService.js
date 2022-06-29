@@ -13,7 +13,7 @@ module.exports = {
       throw error;
     }
   },
-  delete(id) {
+  async delete(id) {
     return productsRepository.delete(id);
   },
 
