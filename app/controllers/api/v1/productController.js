@@ -1,7 +1,7 @@
 const productService = require('../../../services/productService')
 const cloudinary = require('../../../services/cloudinaryService')
 const ImageKit = require('imagekit')
-const configImageKit = require('../../../services/ImageKit')
+const configImageKit = require('../../../imageKit/ImageKitConfig')
 
 module.exports = {
   // tampilkan semua barang
