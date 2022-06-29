@@ -89,7 +89,7 @@ module.exports = {
     try {
       const list = await productService.listCategory()
       res.status(200).json({
-        category: list,
+        list,
       })
     } catch (error) {
       res.status(404).json({
