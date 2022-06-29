@@ -25,4 +25,13 @@ module.exports = {
   async addImageProduct(requestBody) {
     return productRepository.addImageProduct(requestBody)
   },
+
+  async listCategory() {
+    try {
+      const listcategory = await productRepository.listCategory()
+      return listcategory
+    } catch (error) {
+      throw error
+    }
+  },
 }

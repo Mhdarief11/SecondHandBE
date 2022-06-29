@@ -16,12 +16,21 @@ apiRouter.post('/api/v1/auth/login', controllers.api.v1.userController.login)
 apiRouter.post('/api/v1/auth/google', controllers.api.v1.userController.Google)
 
 // GET USER DATA
-apiRouter.get(process.env.GETME, controllers.api.v1.userController.authorize, controllers.api.v1.userController.whoAmI)
+apiRouter.get(
+  '/api/v1/users/siapaSaya',
+  controllers.api.v1.userController.authorize,
+  controllers.api.v1.userController.whoAmI,
+)
 
 // UPDATE USER PROFILE
-apiRouter.put(process.env.PROFILE, controllers.api.v1.userController.authorize, uploadOnMemory.single("gambar"), controllers.api.v1.userController.update);
+apiRouter.put(
+  '/api/v1/users/update/:id',
+  controllers.api.v1.userController.authorize,
+  uploadOnMemory.single('gambar'),
+  controllers.api.v1.userController.update,
+)
 
-apiRouter.put(process.env.PROFILEWITHOUTPIC, controllers.api.v1.userController.authorize, controllers.api.v1.userController.updateNP);
+// apiRouter.put(process.env.PROFILEWITHOUTPIC, controllers.api.v1.userController.authorize, controllers.api.v1.userController.updateNP);
 
 // barang
 apiRouter.get('/api/v1/products', controllers.api.v1.productController.listAll)
@@ -36,6 +45,12 @@ apiRouter.post(
 apiRouter.post(
   '/api/v1/category',
   controllers.api.v1.productController.addCategory,
+)
+
+// list all category
+apiRouter.get(
+  '/api/v1/category',
+  controllers.api.v1.productController.listCategory,
 )
 
 // list all city
