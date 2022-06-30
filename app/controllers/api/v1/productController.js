@@ -1,7 +1,5 @@
 const productService = require('../../../services/productService')
-const cloudinary = require('../../../services/cloudinaryService')
-const ImageKit = require('imagekit')
-const configImageKit = require('../../../imageKit/ImageKitConfig')
+const ImageKitActions = require('../../../imageKit/ImageKitActions')
 
 module.exports = {
   // tampilkan semua barang
@@ -28,7 +26,6 @@ module.exports = {
   // ------------------------------------------------tambah barang baru
   async addProduct(req, res) {
     try {
-      const imageKitConfig = new ImageKit(configImageKit)
       const product = {
         iduser: req.user.id,
         idkategori: req.body.kategori,
@@ -45,11 +42,13 @@ module.exports = {
         var fileExtension = req.files[i].originalname.split('.').pop()
         const gambarName =
           'products' + Date.now() + req.user.id + `${fileExtension}`
-        const uploadImg_base64 = await imageKitConfig.upload({
-          file: picBase64,
-          fileName: gambarName,
-          folder: '/userProducts',
-        })
+        // initialization imagekit
+        const imgAddProduct = new ImageKitActions(
+          picBase64,
+          gambarName,
+          '/userProducts',
+        )
+        const uploadImg_base64 = await imgAddProduct.createImg()
         //console.log('file', uploadImg_base64.fileId)
         await productService.addImageProduct({
           idbarang: addProduct.id,
