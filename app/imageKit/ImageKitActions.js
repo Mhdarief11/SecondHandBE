@@ -23,7 +23,7 @@ class ImageKitActions {
   }
 
   async createImg() {
-    let result;
+    let result
 
     await this.imageKitConfig
       .upload({
@@ -32,23 +32,23 @@ class ImageKitActions {
         folder: this.folder,
       })
       .then((response) => {
-        result = response;
-        console.log("Image Uploaded Successfully======");
-        console.log("=======================\n");
+        result = response
+        console.log('Image Uploaded Successfully======')
+        console.log('=======================\n')
         /*  console.log(response);
         console.log("=======================");
         console.log("======================="); */
       })
       .catch((error) => {
-        console.log("Image Upload Error======");
-        console.log("=======================\n");
-        console.log(error);
-        console.log("=======================");
-        console.log("=======================");
-        result = "error";
-      });
+        console.log('Image Upload Error======')
+        console.log('=======================\n')
+        console.log(error)
+        console.log('=======================')
+        console.log('=======================')
+        result = 'error'
+      })
 
-    return result;
+    return result
 
     /* // let file6="dummy";
 
@@ -91,67 +91,67 @@ class ImageKitActions {
   }
 
   async deleteImg(fileId) {
-    let data = "";
-    let result;
+    let data = ''
+    let result
 
     const config = {
-      method: "delete",
+      method: 'delete',
       url: `https://api.imagekit.io/v1/files/${fileId}`,
       headers: {
         // Authorization: "Basic cHJpdmF0ZV9wQlRCNUZyQzVOY0pQQWNCZ1hzeVJoSnVYbzA9OiNDMDBsaW1hZ2VraXRtM24=",
         Authorization: `Basic ${process.env.IMAGEKITAUTH}`,
-        Cookie: "_csrf=KZAEYsgpMNbtLozyfc3768uM",
+        Cookie: '_csrf=KZAEYsgpMNbtLozyfc3768uM',
       },
       data: data,
-    };
+    }
 
     axios(config)
       .then((response) => {
-        result = response;
-        console.log("Old Image Deleted Successfully======");
+        result = response
+        console.log('Old Image Deleted Successfully======')
         /* console.log("=======================");
         console.log(response);
         console.log("======================="); */
-        console.log("=======================\n");
+        console.log('=======================\n')
       })
       .catch((error) => {
-        console.log("Old Image Error Delete======");
-        console.log("=======================");
-        console.log(error.data);
+        console.log('Old Image Error Delete======')
+        console.log('=======================')
+        console.log(error.data)
         // console.log(error.data.error);
-        console.log("=======================");
-        console.log("=======================\n");
-        result = "error";
-      });
+        console.log('=======================')
+        console.log('=======================\n')
+        result = 'error'
+      })
 
-    return result;
+    return result
   }
 
   async getImgDetails(fileId) {
-    let result;
+    let result
 
     await this.imageKitConfig
       .getFileDetails(fileId)
       .then((response) => {
-        result = response;
-        console.log("Image Details Fetched Successfully ======");
-        console.log("=======================\n");
+        result = response
+        console.log('Image Details Fetched Successfully ======')
+        console.log('=======================\n')
         /* console.log(response);
         console.log("=======================");
         console.log("=======================\n"); */
       })
       .catch((error) => {
-        console.log("Image Detail Fetch Error ======");
-        console.log("=======================");
-        console.log(error.data);
+        console.log('Image Detail Fetch Error ======')
+        console.log('=======================')
+        console.log(error.data)
         // console.log(error.data.error);
-        console.log("=======================");
-        console.log("=======================\n");
-        result = "error";
-      });
+        console.log('=======================')
+        console.log('=======================\n')
+        result = 'error'
+      })
 
-    return result;
+    return result
   }
 }
 
-module.exports = ImageKitActions;
+module.exports = ImageKitActions

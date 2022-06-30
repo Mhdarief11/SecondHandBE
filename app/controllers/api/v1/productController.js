@@ -1,7 +1,6 @@
 const productService = require('../../../services/productService')
-const cloudinary = require('../../../services/cloudinaryService')
-const ImageKit = require('imagekit')
-const configImageKit = require('../../../imageKit/ImageKitConfig')
+const ImageKitActions = require('../../../imageKit/ImageKitActions')
+const { promisify } = require('util')
 
 module.exports = {
   // tampilkan semua barang
@@ -28,7 +27,6 @@ module.exports = {
   // ------------------------------------------------tambah barang baru
   async addProduct(req, res) {
     try {
-      const imageKitConfig = new ImageKit(configImageKit)
       const product = {
         iduser: req.user.id,
         idkategori: req.body.kategori,
@@ -45,11 +43,13 @@ module.exports = {
         var fileExtension = req.files[i].originalname.split('.').pop()
         const gambarName =
           'products' + Date.now() + req.user.id + `${fileExtension}`
-        const uploadImg_base64 = await imageKitConfig.upload({
-          file: picBase64,
-          fileName: gambarName,
-          folder: '/userProducts',
-        })
+        // initialization imagekit
+        const imgAddProduct = new ImageKitActions(
+          picBase64,
+          gambarName,
+          '/userProducts',
+        )
+        const uploadImg_base64 = await imgAddProduct.createImg()
         //console.log('file', uploadImg_base64.fileId)
         await productService.addImageProduct({
           idbarang: addProduct.id,
@@ -64,6 +64,36 @@ module.exports = {
     } catch (error) {
       res.status(400).json({
         message: error.message,
+      })
+    }
+  },
+  // ------------------------------------------------
+  async deleteProduct(req, res) {
+    try {
+      const { id, oldImage } = req.query
+
+      // Delete Image from Cloudinary
+      if (oldImage !== undefined) {
+        if (Array.isArray(oldImage)) {
+          // Kalo bentuknya array
+          for (var x = 0; x < oldImage.length; x++) {
+            cloudinaryDestroy(oldImage[x])
+          }
+        } else {
+          // Kalo bentuknya string cuma 1 image
+          cloudinaryDestroy(oldImage)
+        }
+      }
+
+      productsService.delete(id).then(() => {
+        res.status(200).json({
+          status: 'OK',
+          message: 'Product deleted',
+        })
+      })
+    } catch (error) {
+      res.status(500).json({
+        error: error.message,
       })
     }
   },
@@ -89,7 +119,7 @@ module.exports = {
     try {
       const list = await productService.listCategory()
       res.status(200).json({
-        category: list,
+        list,
       })
     } catch (error) {
       res.status(404).json({
