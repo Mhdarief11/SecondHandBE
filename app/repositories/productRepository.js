@@ -19,7 +19,7 @@ module.exports = {
     return gambarbarang.create(createArgs);
   },
   delete(id) {
-    return Products.destroy({ where: { id } });
+    return barang.destroy({ where: { id } });
   },
   updateProduct(id, updateArgs) {
     return barang.update(updateArgs, { where: { id } });

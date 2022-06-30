@@ -14,7 +14,7 @@ module.exports = {
     }
   },
   async delete(id) {
-    return productsRepository.delete(id);
+    return productRepository.delete(id);
   },
 
   async addCategory(requestBody) {
