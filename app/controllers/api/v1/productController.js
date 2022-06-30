@@ -1,5 +1,6 @@
 const productService = require('../../../services/productService')
 const ImageKitActions = require('../../../imageKit/ImageKitActions')
+const { promisify } = require('util')
 
 module.exports = {
   // tampilkan semua barang
@@ -63,6 +64,36 @@ module.exports = {
     } catch (error) {
       res.status(400).json({
         message: error.message,
+      })
+    }
+  },
+  // ------------------------------------------------
+  async deleteProduct(req, res) {
+    try {
+      const { id, oldImage } = req.query
+
+      // Delete Image from Cloudinary
+      if (oldImage !== undefined) {
+        if (Array.isArray(oldImage)) {
+          // Kalo bentuknya array
+          for (var x = 0; x < oldImage.length; x++) {
+            cloudinaryDestroy(oldImage[x])
+          }
+        } else {
+          // Kalo bentuknya string cuma 1 image
+          cloudinaryDestroy(oldImage)
+        }
+      }
+
+      productsService.delete(id).then(() => {
+        res.status(200).json({
+          status: 'OK',
+          message: 'Product deleted',
+        })
+      })
+    } catch (error) {
+      res.status(500).json({
+        error: error.message,
       })
     }
   },
