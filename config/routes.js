@@ -25,6 +25,9 @@ apiRouter.put('/api/v1/users/update/:id', controllers.api.v1.userController.auth
 
 // barang
 apiRouter.get('/api/v1/products', controllers.api.v1.productController.listAll)
+apiRouter.delete("/api/v1/products",
+  controllers.api.v1.productController.deleteProduct
+);
 // tambah barang
 apiRouter.post(
   '/api/v1/products',
