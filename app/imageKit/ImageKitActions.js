@@ -1,29 +1,31 @@
 /* 
     For further examples, https://app.getpostman.com/run-collection/384637cdb2d49095b113
 */
-require('dotenv').config()
-const ImageKit = require('imagekit')
 // const configImageKit = require("./ImageKitConfig");
+// let imageKitConfig = new ImageKit(configImageKit);
+const ImageKit = require("imagekit");
+const axios = require("axios");
+const FormData = require("form-data");
+require("dotenv").config();
+
 const configImageKit = {
   publicKey: process.env.IMAGEKITPUBLIC,
   privateKey: process.env.IMAGEKITPRIVATE,
   urlEndpoint: process.env.IMAGEKITURL,
-}
-let imageKitConfig = new ImageKit(configImageKit)
-const axios = require('axios')
-const FormData = require('form-data')
+};
 
 class ImageKitActions {
   constructor(file64, fileName, folder) {
-    this.file64 = file64
-    this.fileName = fileName
-    this.folder = folder
+    this.file64 = file64;
+    this.fileName = fileName;
+    this.folder = folder;
+    this.imageKitConfig = new ImageKit(configImageKit);
   }
 
   async createImg() {
     let result
 
-    await imageKitConfig
+    await this.imageKitConfig
       .upload({
         file: this.file64,
         fileName: this.fileName,
@@ -128,7 +130,7 @@ class ImageKitActions {
   async getImgDetails(fileId) {
     let result
 
-    await imageKitConfig
+    await this.imageKitConfig
       .getFileDetails(fileId)
       .then((response) => {
         result = response
