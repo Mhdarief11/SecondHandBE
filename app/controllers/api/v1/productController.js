@@ -69,7 +69,76 @@ module.exports = {
       });
     }
   },
-  // ------------------------------------------------
+
+  // ------------------------update//
+
+  updateProduct: async (req, res) => {
+    const {
+      id,
+      iduser,
+      nama,
+      harga,
+      idkategori,
+      deskripsi,
+
+      oldImage,
+    } = req.body;
+    const fotoProduk = [];
+    const picBase64 = [];
+    const file = [];
+
+    try {
+      // Delete Image from Cloudinary
+      if (oldImage !== undefined) {
+        if (Array.isArray(oldImage)) {
+          // Kalo bentuknya array
+          for (var x = 0; x < oldImage.length; x++) {
+            cloudinaryDestroy(oldImage[x]);
+          }
+        } else {
+          // Kalo bentuknya string cuma 1 image
+          cloudinaryDestroy(oldImage);
+        }
+      }
+
+      // Upload New Image to Cloudinary
+      if (req.files.length > 0) {
+        for (var i = 0; i < req.files.length; i++) {
+          picBase64.push(req.files[i].buffer.toString("base64"));
+          file.push(`data:${req.files[i].mimetype};base64,${picBase64[i]}`);
+          const result = await cloudinaryUpload(file[i]);
+          fotoProduk.push(result.secure_url);
+        }
+      }
+
+      let updateArgs = {
+        iduser,
+        nama,
+        harga,
+        idkategori,
+        deskripsi,
+      };
+
+      if (fotoProduk.length > 0) {
+        updateArgs = {
+          ...updateArgs,
+          fotoProduk,
+        };
+      }
+
+      productsService.update(id, updateArgs).then(() => {
+        res.status(200).json({
+          status: "OK",
+          message: "Product updated",
+        });
+      });
+    } catch (error) {
+      res.status(500).json({
+        error: error.message,
+      });
+    }
+  },
+  // -----------------delete-------------------------------
   async deleteProduct(req, res) {
     try {
       const { id, oldImage } = req.query;

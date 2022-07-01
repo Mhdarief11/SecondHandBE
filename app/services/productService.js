@@ -13,6 +13,9 @@ module.exports = {
       throw error;
     }
   },
+  update(id, requestBody) {
+    return productsRepository.update(id, requestBody);
+  },
   async delete(id) {
     return productRepository.delete(id);
   },

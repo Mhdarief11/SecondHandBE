@@ -21,6 +21,7 @@ module.exports = {
   delete(id) {
     return barang.destroy({ where: { id } });
   },
+
   updateProduct(id, updateArgs) {
     return barang.update(updateArgs, { where: { id } });
   },
