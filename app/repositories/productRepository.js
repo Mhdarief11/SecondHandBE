@@ -1,8 +1,20 @@
-const { barang, kategori, gambarbarang } = require("../models");
+const { barang, kategori, gambarbarang, user } = require("../models");
+const { Op } = require("sequelize");
 
 module.exports = {
   findAll() {
-    return barang.findAll();
+    return barang.findAll({
+      where: {
+        [Op.and]: [
+          {
+            iduser: {
+              [Op.ne]: Args.id,
+            },
+          },
+        ],
+      },
+      include: user,
+    });
   },
   getTotalProducts() {
     return barang.count();
@@ -20,6 +32,23 @@ module.exports = {
   },
   delete(id) {
     return barang.destroy({ where: { id } });
+  },
+  findById(id) {
+    return Products.findByPk(id, { include: Users });
+  },
+  findByKategori(Args) {
+    return barang.findAll({
+      where: {
+        [Op.and]: [
+          {
+            iduser: {
+              [Op.ne]: Args.id,
+            },
+          },
+          { nama_kategori: Args.nama_kategori },
+        ],
+      },
+    });
   },
 
   updateProduct(id, updateArgs) {

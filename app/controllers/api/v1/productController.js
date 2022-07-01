@@ -1,9 +1,18 @@
 const productService = require("../../../services/productService");
-const cloudinary = require("../../../services/cloudinaryService");
+const cloudinary = require("../../../../config/cloudinary");
 const ImageKit = require("imagekit");
 const configImageKit = require("../../../imageKit/ImageKitConfig");
 const { promisify } = require("util");
 const cloudinaryDestroy = promisify(cloudinary.uploader.destroy);
+const jwt = require("jsonwebtoken");
+
+function verifyToken(token) {
+  try {
+    return jwt.verify(token, "Rahasia");
+  } catch (error) {
+    throw new Error(error);
+  }
+}
 
 module.exports = {
   // tampilkan semua barang
@@ -138,6 +147,37 @@ module.exports = {
   // //     });
   // //   }
   // // },
+  // -----------------id-------------------------------
+  getProductById: async (req, res) => {
+    try {
+      const product = await productService.getById(req.query.id);
+      res.status(200).json(product);
+    } catch (error) {
+      res.status(500).json({
+        error: error.message,
+      });
+    }
+  },
+  getProductByKategori: async (req, res) => {
+    try {
+      let tokenPayload = { id: null };
+      if (req.headers.authorization !== "") {
+        const bearerToken = req.headers.authorization;
+        const token = bearerToken.split("Bearer ")[1];
+        tokenPayload = await verifyToken(token);
+      }
+
+      const product = await productService.getByKategori({
+        id: tokenPayload.id,
+        kategori: req.query.nama_kategori,
+      });
+      res.status(200).json(product);
+    } catch (error) {
+      res.status(500).json({
+        error: error.message,
+      });
+    }
+  },
   // -----------------delete-------------------------------
   async deleteProduct(req, res) {
     try {
@@ -156,7 +196,7 @@ module.exports = {
         }
       }
 
-      productsService.delete(id).then(() => {
+      productService.delete(id).then(() => {
         res.status(200).json({
           status: "OK",
           message: "Product deleted",
