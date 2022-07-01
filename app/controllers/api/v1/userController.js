@@ -3,8 +3,6 @@ const bcrypt = require("bcryptjs");
 const axios = require("axios");
 const jwt = require("jsonwebtoken");
 const ImageKitActions = require("../../../imageKit/ImageKitActions");
-/* const ImageKit = require("imagekit");
-const configImageKit = require("../../../imageKit/ImageKitConfig"); */
 const { user } = require("../../../models");
 const { response } = require("express");
 const Salt = 10;
@@ -39,32 +37,6 @@ function checkPassword(encryptedPassword, password) {
     });
   });
 }
-
-/* 
-async function deleteImg(fileId) {
-  let data = "";
-
-  const config = {
-    method: "delete",
-    url: `https://api.imagekit.io/v1/files/${fileId}`,
-    headers: {
-      Authorization: "Basic cHJpdmF0ZV9wQlRCNUZyQzVOY0pQQWNCZ1hzeVJoSnVYbzA9OiNDMDBsaW1hZ2VraXRtM24=",
-      Cookie: "_csrf=KZAEYsgpMNbtLozyfc3768uM",
-    },
-    data: data,
-  };
-
-  axios(config)
-    .then(function (response) {
-      console.log('Old Image Deleted Successfully');
-      console.log(JSON.stringify(response.data));
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-
-}
- */
 
 class userController {
   static async register(req, res) {
