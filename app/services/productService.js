@@ -24,11 +24,11 @@ module.exports = {
     return productRepository.addCategory(requestBody);
   },
   getById(id) {
-    return productsRepository.findById(id);
+    return productRepository.findById(id);
   },
 
   getByKategori(Args) {
-    return productsRepository.findByKategori(Args);
+    return productRepository.findByKategori(Args);
   },
 
   async addProduct(requestBody) {
