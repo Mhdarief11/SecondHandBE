@@ -23,6 +23,13 @@ module.exports = {
   async addCategory(requestBody) {
     return productRepository.addCategory(requestBody);
   },
+  getById(id) {
+    return productRepository.findById(id);
+  },
+
+  getByKategori(Args) {
+    return productRepository.findByKategori(Args);
+  },
 
   async addProduct(requestBody) {
     return productRepository.addProduct(requestBody);
