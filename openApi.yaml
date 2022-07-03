@@ -165,7 +165,7 @@ paths:
                   message:
                     type: string
                     example: error
-  
+
   # update user
   /api/v1/users/update/{id}:
     put:
@@ -178,7 +178,7 @@ paths:
         - in: path
           name: id
           schema:
-              type: integer
+            type: integer
           required: true
           description: Numeric ID of the id user to be updated
       requestBody:
@@ -313,7 +313,7 @@ components:
         updatedAt:
           type: string
           format: date-time
-    city:
+    whoami:
       type: object
       properties:
         data:

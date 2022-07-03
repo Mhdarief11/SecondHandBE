@@ -1,6 +1,5 @@
 const productService = require('../../../services/productService')
 const ImageKitActions = require('../../../imageKit/ImageKitActions')
-const { promisify } = require('util')
 
 module.exports = {
   // tampilkan semua barang
@@ -35,7 +34,7 @@ module.exports = {
         deskripsi: req.body.deskripsi,
       }
       const addProduct = await productService.addProduct(product)
-      // console.log(req.body)
+      console.log(req.body.image)
 
       // array to
       for (var i = 0; i < req.files.length; i++) {
@@ -50,7 +49,7 @@ module.exports = {
           '/userProducts',
         )
         const uploadImg_base64 = await imgAddProduct.createImg()
-        //console.log('file', uploadImg_base64.fileId)
+        console.log(uploadImg_base64.fileId)
         await productService.addImageProduct({
           idbarang: addProduct.id,
           // ambil fileid dari imagekit
@@ -62,6 +61,7 @@ module.exports = {
         product: addProduct,
       })
     } catch (error) {
+      console.log(error.message)
       res.status(400).json({
         message: error.message,
       })
