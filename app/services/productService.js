@@ -13,12 +13,22 @@ module.exports = {
       throw error;
     }
   },
+  update(id, requestBody) {
+    return productsRepository.update(id, requestBody);
+  },
   async delete(id) {
     return productRepository.delete(id);
   },
 
   async addCategory(requestBody) {
     return productRepository.addCategory(requestBody);
+  },
+  getById(id) {
+    return productsRepository.findById(id);
+  },
+
+  getByKategori(Args) {
+    return productsRepository.findByKategori(Args);
   },
 
   async addProduct(requestBody) {
