@@ -137,8 +137,8 @@ class userController {
 
   static async whoAmI(req, res) {
     try {
-      const ngetes = req.user;
-      console.log(ngetes);
+      /* const ngetes = req.user;
+      console.log(ngetes); */
 
       res.status(200).json({
         status: "OK",
