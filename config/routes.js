@@ -2,6 +2,7 @@ const express = require("express");
 const controllers = require("../app/controllers");
 const apiRouter = express.Router();
 const uploadOnMemory = require("../app/services/uploadOnMemory");
+const cors = require("cors");
 
 apiRouter.use(cors());
 apiRouter.use(express.json());
