@@ -136,12 +136,20 @@ class userController {
   }
 
   static async whoAmI(req, res) {
-    const ngetes = req.user;
-    console.log(ngetes);
+    try {
+      const ngetes = req.user;
+      console.log(ngetes);
 
-    res.status(200).json({
-      data: req.user,
-    });
+      res.status(200).json({
+        status: "OK",
+        data: req.user,
+      });
+    } catch (err) {
+      res.status(200).json({
+        status: "FAILED",
+        message: err,
+      });
+    }
   }
 
   static async Google(req, res) {
@@ -178,15 +186,26 @@ class userController {
     try {
       const { id } = req.params;
       const { nama, alamat, nohp, idkota } = req.body;
+      /* Process to check if user has Profile Image */
+      const User = await userService.findPKUser(id);
 
-      console.log("GAMBAR BODY, -" + req.body.gambar);
+      if (User == null) {
+        res.status(404).json({ status: "failed", message: "User Tidak Ditemukan Saat Proses Update!" });
+        return;
+      }
+
+      // console.log("GAMBAR BODY, -" + req.body.gambar);
 
       let profilePic, picToSend;
 
       console.log(req.body);
 
       if (req.body.gambar === "" || req.body.gambar === null || req.body.gambar == "undefined") {
-        profilePic = "";
+        if (User.gambar === "" || User.gambar === null) {
+          profilePic = "";
+        } else {
+          profilePic = User.gambar;
+        }
       } else {
         /* Convert Image File To Base64 */
         const picBase64 = req.file.buffer.toString("base64");
@@ -194,16 +213,6 @@ class userController {
         const gambarName = "profileimgDan" + Date.now() + "Dan" + id;
 
         let imgUpdateUser = new ImageKitActions(picBase64, gambarName, "/userProfile");
-
-        /* Process to check if user has Profile Image */
-        const User = await userService.findPKUser(id);
-
-        if (User == null) {
-
-          res.status(404).json({ status: "failed", message: "User Tidak Ditemukan Saat Proses Update!" });
-          return;
-
-        }
 
         /* Process to delete old profile img or add new profile img */
         if (User.gambar == null || User.gambar == "" || User.gambar == "undefined") {
@@ -213,31 +222,24 @@ class userController {
           profilePic = await imgUpdateUser.createImg();
 
           if (profilePic == "error") {
-
             res.status(422).json({
               status: "FAILED",
               message: "See Console Log For Details",
             });
             return;
-
           } else {
-
-            picToSend = profilePic.fileId
-
+            picToSend = profilePic.fileId;
           }
-
         } else {
           /* Deleting old profile image */
           let deleteImgResponse = await imgUpdateUser.deleteImg(User.gambar);
 
           if (deleteImgResponse == "error") {
-
             res.status(422).json({
               status: "FAILED",
               message: "See Console Log For Details",
             });
             return;
-
           }
 
           /* uploading profile image to ImageKit CLoud */
@@ -246,18 +248,14 @@ class userController {
           console.log(profilePic);
 
           if (profilePic == "error") {
-
             res.status(422).json({
               status: "FAILED",
               message: "See Console Log For Details",
             });
             return;
-
           } else {
-
             picToSend = profilePic.fileId;
-
-          }    
+          }
 
           // console.log("FILE ID, " + profilePic);
         }
@@ -302,7 +300,7 @@ class userController {
 
       const getDetails = new ImageKitActions("", "", "");
 
-      result = await getDetails.getImgDetails(User.gambar)
+      result = await getDetails.getImgDetails(User.gambar);
 
       if (getDetails == "" || getDetails == "error") {
         res.status(422).json({
@@ -315,12 +313,11 @@ class userController {
       res.status(201).json({
         status: "OK",
         dataImg: result,
-      })
-
-    } catch(error) {
+      });
+    } catch (error) {
       console.log(err);
       res.status(422).json({
-        status: "FAIL",
+        status: "FAILED",
         message: err.message,
       });
       return;
