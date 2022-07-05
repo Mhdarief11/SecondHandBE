@@ -20,6 +20,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "express": "^4.17.3",
+    "filereader": "^0.10.3",
     "imagekit": "^3.2.5",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",

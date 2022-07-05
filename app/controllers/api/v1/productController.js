@@ -1,7 +1,6 @@
 const productService = require('../../../services/productService')
 const ImageKitActions = require('../../../imageKit/ImageKitActions')
 const { Blob } = require('buffer')
-const fs = require('fs')
 
 module.exports = {
   // tampilkan semua barang
@@ -38,15 +37,15 @@ module.exports = {
       }
       const addProduct = await productService.addProduct(product)
       console.log('ini request body image')
-      console.log(req.body.image)
 
       // array to
-      for (var i = 0; i < req.body.image.length; i++) {
-        var blob = new Blob([req.body.image], { type: 'text/plain' })
-        // var file = fs.readFileSync([blob])
-        // console.log('ini file')
-        console.log(blob)
-        picBase64 = blob.toString('base64')
+      for (let i = 0; i < req.body.image.length; i++) {
+        console.log(req.body.image)
+        let blob = new Blob([req.body.image], { type: 'text/plain' })
+        let arraybuffer = blob.arrayBuffer()
+        console.log(arraybuffer)
+        const picBase64 = blob.arrayBuffer().toString('base64')
+        console.log(picBase64)
         const gambarName = 'products' + Date.now() + req.user.id
         // initialization imagekit
         const imgAddProduct = new ImageKitActions(
@@ -61,7 +60,6 @@ module.exports = {
           // ambil fileid dari imagekit
           gambar: uploadImg_base64.fileId,
         })
-        return
       }
       res.status(201).json({
         message: 'New Product Added',
