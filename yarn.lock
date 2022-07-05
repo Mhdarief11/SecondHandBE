@@ -3941,6 +3941,11 @@ react-is@^18.0.0:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-18.2.0.tgz#199431eeaaa2e09f86427efbb4f1473edb47609b"
   integrity sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==
 
+read-blob@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/read-blob/-/read-blob-1.1.2.tgz#0fb5b296ab34af0bb7eb0f6245e40cf732125dd3"
+  integrity sha512-SJfWxH4kIGKQJ36xfBmjcMnHKed1RG6gI6n+bqW8Dm8zF6uGd3D9dFb+bFgMAM9i4BehNI9M8fwABcI0mvIJWQ==
+
 readable-stream@1.1.x:
   version "1.1.14"
   resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-1.1.14.tgz#7cf4c54ef648e3813084c636dd2079e166c081d9"

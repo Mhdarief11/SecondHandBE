@@ -11,4 +11,8 @@ module.exports = {
       throw error
     }
   },
+
+  find(data) {
+    return cityRepository.findCity(data)
+  },
 }

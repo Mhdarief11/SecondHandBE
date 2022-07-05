@@ -1,5 +1,7 @@
 const productService = require('../../../services/productService')
 const ImageKitActions = require('../../../imageKit/ImageKitActions')
+const { Blob } = require('buffer')
+const fs = require('fs')
 
 module.exports = {
   // tampilkan semua barang
@@ -26,7 +28,7 @@ module.exports = {
   // ------------------------------------------------tambah barang baru
   async addProduct(req, res) {
     try {
-      const imageKitConfig = new ImageKit(configImageKit)
+      // const imageKitConfig = new ImageKit(configImageKit)
       const product = {
         iduser: req.user.id,
         idkategori: req.body.kategori,
@@ -35,14 +37,17 @@ module.exports = {
         deskripsi: req.body.deskripsi,
       }
       const addProduct = await productService.addProduct(product)
+      console.log('ini request body image')
       console.log(req.body.image)
 
       // array to
-      for (var i = 0; i < req.files.length; i++) {
-        const picBase64 = req.files[i].buffer.toString('base64')
-        var fileExtension = req.files[i].originalname.split('.').pop()
-        const gambarName =
-          'products' + Date.now() + req.user.id + `${fileExtension}`
+      for (var i = 0; i < req.body.image.length; i++) {
+        var blob = new Blob([req.body.image], { type: 'text/plain' })
+        // var file = fs.readFileSync([blob])
+        // console.log('ini file')
+        console.log(blob)
+        picBase64 = blob.toString('base64')
+        const gambarName = 'products' + Date.now() + req.user.id
         // initialization imagekit
         const imgAddProduct = new ImageKitActions(
           picBase64,
@@ -56,6 +61,7 @@ module.exports = {
           // ambil fileid dari imagekit
           gambar: uploadImg_base64.fileId,
         })
+        return
       }
       res.status(201).json({
         message: 'New Product Added',
@@ -222,9 +228,23 @@ module.exports = {
       res.status(200).json({
         category: list,
       })
+      return
     } catch (error) {
       res.status(404).json({
         message: error.message,
+      })
+    }
+  },
+  // ------------------------search category
+  async findCategory(req, res) {
+    try {
+      const category = await productService.findCateg(req.params.id)
+      res.status(200).json({
+        category,
+      })
+    } catch (error) {
+      res.status(400).json({
+        message: 'Category Not Found',
       })
     }
   },
