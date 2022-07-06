@@ -35,8 +35,29 @@ apiRouter.put(
   controllers.api.v1.userController.update,
 )
 
+// GET USER DATA
+apiRouter.get(
+  '/api/v1/users/siapaSaya',
+  controllers.api.v1.userController.authorize,
+  controllers.api.v1.userController.whoAmI,
+)
+
+apiRouter.get(
+  '/api/v1/users/profileImg/details/:id',
+  controllers.api.v1.userController.getImg,
+)
+
+// UPDATE USER PROFILE
+apiRouter.put(
+  '/api/v1/users/update/:id',
+  controllers.api.v1.userController.authorize,
+  uploadOnMemory.single('gambar'),
+  controllers.api.v1.userController.update,
+)
+
 // barang list all
 apiRouter.get('/api/v1/products', controllers.api.v1.productController.listAll)
+
 // get kategori
 apiRouter.get(
   '/api/v1/products',
@@ -92,6 +113,12 @@ apiRouter.get('/api/v1/docs/swagger.json', (req, res) => {
 })
 apiRouter.use('/api/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 apiRouter.get('/api/v1/cities', controllers.api.v1.cityController.listAllCity)
+
+// docs
+apiRouter.get('/api/v1/docs/swagger.json', (req, res) => {
+  res.status(200).json(swaggerDocument)
+})
+apiRouter.use('/api/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 /**
  * TODO: Delete this, this is just a demonstration of

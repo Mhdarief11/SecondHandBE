@@ -139,8 +139,8 @@ class userController {
 
   static async whoAmI(req, res) {
     try {
-      const ngetes = req.user
-      console.log(ngetes)
+      /* const ngetes = req.user;
+      console.log(ngetes); */
 
       res.status(200).json({
         status: 'OK',
@@ -194,12 +194,10 @@ class userController {
       const User = await userService.findPKUser(id)
 
       if (User == null) {
-        res
-          .status(404)
-          .json({
-            status: 'failed',
-            message: 'User Tidak Ditemukan Saat Proses Update!',
-          })
+        res.status(404).json({
+          status: 'failed',
+          message: 'User Tidak Ditemukan Saat Proses Update!',
+        })
         return
       }
 
