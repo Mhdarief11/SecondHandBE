@@ -4,18 +4,76 @@ info:
   description: 'Team 4 Final Project in Binar Academy'
   version: 1.0.0
 servers:
-  - url: https://secondhand-be-tim4-staging.herokuapp.com
   - url: http://localhost:8000
+  - url: https://secondhand-be-tim4-staging.herokuapp.com
+  - url: https://secondhand-be-tim4-prod.herokuapp.com/
 tags:
-  - name: List City
-    description: list all city
+  - name: City
+    description: list all city and search users city
+  - name: Category
+    descripstion: list all category and search products category
   - name: Authentication User
     descripstion: Register and login User
+  - Prodcuts: CRUD user products
+    descripstion: products
 paths:
+  /api/v1/category:
+    get:
+      tags:
+        - Category
+      summary: list all category
+      responses:
+        200:
+          descripstion: category fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/category'
+        400:
+          descripstion: category not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Category Not Found
+
+  /api/v1/category/{id}:
+    get:
+      tags:
+        - Category
+      summary: list all category
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        200:
+          descripstion: category fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/findCategory'
+        400:
+          descripstion: category not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Category Not Found
+
   /api/v1/cities:
     get:
       tags:
-        - List City
+        - City
       summary: list city
       responses:
         200:
@@ -34,6 +92,36 @@ paths:
                   message:
                     type: string
                     example: city is empty
+
+  /api/v1/cities/{id}:
+    get:
+      tags:
+        - City
+      summary: search city by id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        200:
+          descripstion: city found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/findCity'
+        400:
+          descripstion: city not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: City Not Found
 
   # register user
   /api/v1/auth/register:
@@ -245,6 +333,56 @@ paths:
                     type: string
                     example: Unauthorized
 
+  # add new products
+  /api/v1/products:
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - CRUD user products
+      summary: add products
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                nama:
+                  type: string
+                  example: Bola Basket
+                harga:
+                  type: integer
+                  example: 20000
+                kategori:
+                  type: integer
+                  example: 1
+                deskripsi:
+                  type: string
+                  example: Ini bola saya
+                image:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+
+      responses:
+        201:
+          descripstion: new product added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/addProduct'
+        400:
+          descripstion:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Failed add new product
+
 #==============================================================
 components:
   securitySchemes:
@@ -277,6 +415,25 @@ components:
                   updatedAt:
                     type: string
                     format: date-time
+    findCity:
+      type: object
+      properties:
+        city:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+            nama_kota:
+              type: string
+              example: Banda Aceh
+            createdAt:
+              type: string
+              format: date-time
+            updatedAt:
+              type: string
+              example: date-time
+
     register:
       type: object
       properties:
@@ -352,3 +509,79 @@ components:
             updatedAt:
               type: string
               format: date-time
+
+    category:
+      type: object
+      properties:
+        category:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 1
+              nama_kategori:
+                type: string
+                example: Hobi
+              createdAt:
+                type: string
+                example: date-time
+              updatedAt:
+                type: string
+                example: date-time
+    findCategory:
+      type: object
+      properties:
+        category:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+            nama_kategori:
+              type: string
+              example: Hobi
+            createdAt:
+              type: string
+              example: date-time
+            updatedAt:
+              type: string
+              example: date-time
+
+    addProduct:
+      type: object
+      properties:
+        message:
+          type: string
+          example: New Product added
+        product:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+            iduser:
+              type: integer
+              example: 1
+            idkategori:
+              type: integer
+              example: 1
+            nama:
+              type: string
+              example: Bola Basket
+            harga:
+              type: integer
+              example: 200000
+            deskripsi:
+              type: string
+              example: ini bola Basket
+            updatedAt:
+              type: string
+              example: date-time
+            createdAt:
+              type: string
+              example: date-time
+            minat:
+              type: integer
+              example: null

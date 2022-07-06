@@ -80,10 +80,10 @@ apiRouter.get(
   controllers.api.v1.productController.findCategory,
 )
 
-// list all city
+// ----------------------------------------list all city
 apiRouter.get('/api/v1/cities', controllers.api.v1.cityController.listAllCity)
 
-// search city by id
+// --------------------------------------search city by id
 apiRouter.get('/api/v1/cities/:id', controllers.api.v1.cityController.findCity)
 
 // docs
