@@ -60,7 +60,7 @@ apiRouter.get('/api/v1/products', controllers.api.v1.productController.listAll)
 
 // get kategori
 apiRouter.get(
-  '/api/v1/products',
+  '/api/v1/products/id',
   controllers.api.v1.productController.getProductById,
 )
 apiRouter.get(
