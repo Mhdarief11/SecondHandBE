@@ -14,7 +14,7 @@ module.exports = {
     }
   },
   update(id, requestBody) {
-    return productsRepository.update(id, requestBody);
+    return productRepository.update(id, requestBody);
   },
   async delete(id) {
     return productRepository.delete(id);

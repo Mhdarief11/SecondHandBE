@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const controllers = require("../app/controllers");
 const apiRouter = express.Router();
 const uploadOnMemory = require("../app/services/uploadOnMemory");
@@ -20,7 +21,7 @@ apiRouter.post("/api/v1/auth/google", controllers.api.v1.userController.Google);
 apiRouter.get("/api/v1/products", controllers.api.v1.productController.listAll);
 // get kategori
 apiRouter.get(
-  "/api/v1/products",
+  "/api/v1/products/id",
   controllers.api.v1.productController.getProductById
 );
 apiRouter.get(

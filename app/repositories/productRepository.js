@@ -3,18 +3,7 @@ const { Op } = require("sequelize");
 
 module.exports = {
   findAll() {
-    return barang.findAll({
-      where: {
-        [Op.and]: [
-          {
-            iduser: {
-              [Op.ne]: Args.id,
-            },
-          },
-        ],
-      },
-      include: user,
-    });
+    return barang.findAll();
   },
   getTotalProducts() {
     return barang.count();
@@ -34,19 +23,12 @@ module.exports = {
     return barang.destroy({ where: { id } });
   },
   findById(id) {
-    return Products.findByPk(id, { include: Users });
+    return barang.findByPk(id, { include: user });
   },
   findByKategori(Args) {
     return barang.findAll({
       where: {
-        [Op.and]: [
-          {
-            iduser: {
-              [Op.ne]: Args.id,
-            },
-          },
-          { nama_kategori: Args.nama_kategori },
-        ],
+        idkategori: Args.idkategori,
       },
     });
   },

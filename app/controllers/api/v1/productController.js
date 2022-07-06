@@ -6,13 +6,13 @@ const { promisify } = require("util");
 const cloudinaryDestroy = promisify(cloudinary.uploader.destroy);
 const jwt = require("jsonwebtoken");
 
-function verifyToken(token) {
-  try {
-    return jwt.verify(token, "Rahasia");
-  } catch (error) {
-    throw new Error(error);
-  }
-}
+// function verifyToken(token) {
+//   try {
+//     return jwt.verify(token, "Rahasia");
+//   } catch (error) {
+//     throw new Error(error);
+//   }
+// }
 
 module.exports = {
   // tampilkan semua barang
@@ -160,16 +160,16 @@ module.exports = {
   },
   getProductByKategori: async (req, res) => {
     try {
-      let tokenPayload = { id: null };
-      if (req.headers.authorization !== "") {
-        const bearerToken = req.headers.authorization;
-        const token = bearerToken.split("Bearer ")[1];
-        tokenPayload = await verifyToken(token);
-      }
+      // let tokenPayload = { id: null };
+      // if (req.headers.authorization !== "") {
+      //   const bearerToken = req.headers.authorization;
+      //   const token = bearerToken.split("Bearer ")[1];
+      //   tokenPayload = await verifyToken(token);
+      // }
 
       const product = await productService.getByKategori({
-        id: tokenPayload.id,
-        kategori: req.query.nama_kategori,
+        // id: tokenPayload.id,
+        idkategori: req.query.idkategori,
       });
       res.status(200).json(product);
     } catch (error) {
@@ -213,7 +213,7 @@ module.exports = {
   async addCategory(req, res) {
     try {
       const kategori = await productService.addCategory({
-        nama_kategori: req.body.kategori,
+        idkategori: req.body.kategori,
       });
       res.status(201).json({
         data: kategori,
