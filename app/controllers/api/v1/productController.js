@@ -39,13 +39,9 @@ module.exports = {
       console.log('ini request body image')
 
       // array to
-      for (let i = 0; i < req.body.image.length; i++) {
-        console.log(req.body.image)
-        let blob = new Blob([req.body.image], { type: 'text/plain' })
-        let arraybuffer = blob.arrayBuffer()
-        console.log(arraybuffer)
-        const picBase64 = blob.arrayBuffer().toString('base64')
-        console.log(picBase64)
+      for (let i = 0; i < req.files.length; i++) {
+        const picBase64 = req.files[i].buffer.toString('base64')
+
         const gambarName = 'products' + Date.now() + req.user.id
         // initialization imagekit
         const imgAddProduct = new ImageKitActions(

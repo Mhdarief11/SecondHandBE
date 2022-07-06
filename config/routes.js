@@ -35,12 +35,25 @@ apiRouter.put(
   controllers.api.v1.userController.update,
 )
 
-// barang
+// barang list all
 apiRouter.get('/api/v1/products', controllers.api.v1.productController.listAll)
+// get kategori
+apiRouter.get(
+  '/api/v1/products',
+  controllers.api.v1.productController.getProductById,
+)
+apiRouter.get(
+  '/api/v1/product/kategori',
+  controllers.api.v1.productController.getProductByKategori,
+)
+
+//delete router
 apiRouter.delete(
   '/api/v1/products',
+  controllers.api.v1.userController.authorize,
   controllers.api.v1.productController.deleteProduct,
 )
+
 // tambah barang
 apiRouter.post(
   '/api/v1/products',
@@ -48,6 +61,7 @@ apiRouter.post(
   controllers.api.v1.userController.authorize,
   controllers.api.v1.productController.addProduct,
 )
+
 // add new products category
 apiRouter.post(
   '/api/v1/category',
@@ -77,6 +91,7 @@ apiRouter.get('/api/v1/docs/swagger.json', (req, res) => {
   res.status(200).json(swaggerDocument)
 })
 apiRouter.use('/api/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+apiRouter.get('/api/v1/cities', controllers.api.v1.cityController.listAllCity)
 
 /**
  * TODO: Delete this, this is just a demonstration of

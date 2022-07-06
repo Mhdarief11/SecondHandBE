@@ -3,8 +3,6 @@ const bcrypt = require('bcryptjs')
 const axios = require('axios')
 const jwt = require('jsonwebtoken')
 const ImageKitActions = require('../../../imageKit/ImageKitActions')
-/* const ImageKit = require("imagekit");
-const configImageKit = require("../../../imageKit/ImageKitConfig"); */
 const { user } = require('../../../models')
 const { response } = require('express')
 const Salt = 10
@@ -39,32 +37,6 @@ function checkPassword(encryptedPassword, password) {
     })
   })
 }
-
-/* 
-async function deleteImg(fileId) {
-  let data = "";
-
-  const config = {
-    method: "delete",
-    url: `https://api.imagekit.io/v1/files/${fileId}`,
-    headers: {
-      Authorization: "Basic cHJpdmF0ZV9wQlRCNUZyQzVOY0pQQWNCZ1hzeVJoSnVYbzA9OiNDMDBsaW1hZ2VraXRtM24=",
-      Cookie: "_csrf=KZAEYsgpMNbtLozyfc3768uM",
-    },
-    data: data,
-  };
-
-  axios(config)
-    .then(function (response) {
-      console.log('Old Image Deleted Successfully');
-      console.log(JSON.stringify(response.data));
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-
-}
- */
 
 class userController {
   static async register(req, res) {
@@ -166,12 +138,20 @@ class userController {
   }
 
   static async whoAmI(req, res) {
-    const ngetes = req.user
-    console.log(ngetes)
+    try {
+      const ngetes = req.user
+      console.log(ngetes)
 
-    res.status(200).json({
-      data: req.user,
-    })
+      res.status(200).json({
+        status: 'OK',
+        data: req.user,
+      })
+    } catch (err) {
+      res.status(200).json({
+        status: 'FAILED',
+        message: err,
+      })
+    }
   }
 
   static async Google(req, res) {
@@ -210,8 +190,20 @@ class userController {
     try {
       const { id } = req.params
       const { nama, alamat, nohp, idkota } = req.body
+      /* Process to check if user has Profile Image */
+      const User = await userService.findPKUser(id)
 
-      console.log('GAMBAR BODY, -' + req.body.gambar)
+      if (User == null) {
+        res
+          .status(404)
+          .json({
+            status: 'failed',
+            message: 'User Tidak Ditemukan Saat Proses Update!',
+          })
+        return
+      }
+
+      // console.log("GAMBAR BODY, -" + req.body.gambar);
 
       let profilePic, picToSend
 
@@ -222,7 +214,11 @@ class userController {
         req.body.gambar === null ||
         req.body.gambar == 'undefined'
       ) {
-        profilePic = ''
+        if (User.gambar === '' || User.gambar === null) {
+          profilePic = ''
+        } else {
+          profilePic = User.gambar
+        }
       } else {
         /* Convert Image File To Base64 */
         const picBase64 = req.file.buffer.toString('base64')
@@ -234,17 +230,6 @@ class userController {
           gambarName,
           '/userProfile',
         )
-
-        /* Process to check if user has Profile Image */
-        const User = await userService.findPKUser(id)
-
-        if (User == null) {
-          res.status(404).json({
-            status: 'failed',
-            message: 'User Tidak Ditemukan Saat Proses Update!',
-          })
-          return
-        }
 
         /* Process to delete old profile img or add new profile img */
         if (
@@ -356,7 +341,7 @@ class userController {
     } catch (error) {
       console.log(err)
       res.status(422).json({
-        status: 'FAIL',
+        status: 'FAILED',
         message: err.message,
       })
       return
