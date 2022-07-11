@@ -160,7 +160,7 @@ module.exports = {
         // id: tokenPayload.id,
         idkategori: req.query.idkategori,
       })
-      res.status(200).json(product)
+      res.status(200).json({ barang: product })
     } catch (error) {
       res.status(500).json({
         error: error.message,
@@ -238,6 +238,39 @@ module.exports = {
     } catch (error) {
       res.status(400).json({
         message: 'Category Not Found',
+      })
+    }
+  },
+  // ----------------------------get image details
+  async findProductPic(req, res) {
+    try {
+      let result
+      const { id } = req.params
+      // const productPic = await productService.findProductPic(id)
+      // console.log(productPic)
+      if (id == null) {
+        res.status(400).json({
+          message: 'gambar produk tidak tersedia',
+        })
+        return
+      }
+      const getDetails = new ImageKitActions('', '', '')
+      result = await getDetails.getImgDetails(id)
+      console.log(result)
+      if (getDetails == '' || getDetails == 'error') {
+        res.status(422).json({
+          message: 'detail gambar gagal diambil',
+        })
+        return
+      }
+
+      res.status(201).json({
+        gambar: result,
+      })
+    } catch (error) {
+      console.log(error)
+      res.status(422).json({
+        message: error.message,
       })
     }
   },

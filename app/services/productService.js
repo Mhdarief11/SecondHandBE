@@ -13,6 +13,10 @@ module.exports = {
       throw error
     }
   },
+
+  async findProductPic(id) {
+    return productRepository.findProductPic(id)
+  },
   update(id, requestBody) {
     return productRepository.update(id, requestBody)
   },

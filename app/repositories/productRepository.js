@@ -3,7 +3,10 @@ const { Op } = require('sequelize')
 
 module.exports = {
   findAll() {
-    return barang.findAll()
+    return barang.findAll({ include: { model: gambarbarang, model: kategori } })
+  },
+  findProductPic(id) {
+    return gambarbarang.findByPk(id)
   },
   getTotalProducts() {
     return barang.count()
@@ -30,6 +33,7 @@ module.exports = {
       where: {
         idkategori: Args.idkategori,
       },
+      include: { model: gambarbarang },
     })
   },
 
