@@ -55,6 +55,12 @@ apiRouter.put(
   controllers.api.v1.userController.update,
 )
 
+// get product picture
+apiRouter.get(
+  '/api/v1/products/picture/:id',
+  controllers.api.v1.productController.findProductPic,
+)
+
 // barang list all
 apiRouter.get('/api/v1/products', controllers.api.v1.productController.listAll)
 
