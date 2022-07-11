@@ -9,7 +9,6 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      kategori.hasOne(models.barang, { foreignKey: 'idkategori' })
     }
   }
   kategori.init(
