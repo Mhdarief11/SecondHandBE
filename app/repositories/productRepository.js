@@ -28,7 +28,13 @@ module.exports = {
     return barang.destroy({ where: { id } })
   },
   findById(id) {
-    return barang.findByPk(id, { include: user })
+    return barang.findByPk(id, {
+      include: [
+        { model: user, attributes: { exclude: ['password'] } },
+        { model: kategori },
+        { model: gambarbarang },
+      ],
+    })
   },
   findByKategori(Args) {
     return barang.findAll({
