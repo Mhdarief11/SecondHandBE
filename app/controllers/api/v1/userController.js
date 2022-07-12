@@ -132,7 +132,7 @@ class userController {
       }
 
       res.status(401).json({
-        message: error.message,
+        message: 'Login terlebih dahulu',
       })
     }
   }

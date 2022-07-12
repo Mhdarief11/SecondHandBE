@@ -45,11 +45,12 @@ apiRouter.get(
   '/api/v1/products/picture/:id',
   controllers.api.v1.productController.findProductPic,
 )
-// get kategori
 apiRouter.get(
   '/api/v1/products/:id',
   controllers.api.v1.productController.getProductById,
 )
+
+// get kategori
 apiRouter.get(
   '/api/v1/product/kategori',
   controllers.api.v1.productController.getProductByKategori,
@@ -68,6 +69,13 @@ apiRouter.post(
   uploadOnMemory.array('image', 4),
   controllers.api.v1.userController.authorize,
   controllers.api.v1.productController.addProduct,
+)
+
+// filter products by user id
+apiRouter.get(
+  '/api/v1/filterProducts',
+  controllers.api.v1.userController.authorize,
+  controllers.api.v1.productController.filterProductsUser,
 )
 
 // ---------------------------------CATEGORY-------------------------

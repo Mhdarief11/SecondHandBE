@@ -60,4 +60,13 @@ module.exports = {
       throw error
     }
   },
+
+  async filterProductsByUser(id) {
+    try {
+      const barang = await productRepository.filterByUser(id)
+      return { barang: barang }
+    } catch (error) {
+      throw error
+    }
+  },
 }
