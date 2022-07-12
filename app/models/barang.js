@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       barang.hasMany(models.gambarbarang, { foreignKey: 'idbarang' })
       barang.hasOne(models.transaksi, { foreignKey: 'idbarang' })
       barang.belongsTo(models.kategori, { foreignKey: 'idkategori' })
+      barang.belongsTo(models.user, { foreignKey: 'iduser' })
     }
   }
   barang.init(

@@ -139,7 +139,7 @@ module.exports = {
   // -----------------id-------------------------------
   getProductById: async (req, res) => {
     try {
-      const product = await productService.getById(req.query.id)
+      const product = await productService.getById(req.params.id)
       res.status(200).json(product)
     } catch (error) {
       res.status(500).json({
