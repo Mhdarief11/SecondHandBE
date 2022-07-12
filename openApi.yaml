@@ -367,6 +367,26 @@ paths:
 
   # add new products
   /api/v1/products:
+    get:
+      tags:
+        - CRUD user products
+      summary: list all products
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/listProduct'
+        400:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: failed fetch products
+    #------------------------------------- tambah barang baru
     post:
       security:
         - bearerAuth: []
@@ -414,6 +434,8 @@ paths:
                   message:
                     type: string
                     example: Failed add new product
+
+  # list all products
 
 #==============================================================
 components:
@@ -464,7 +486,7 @@ components:
               format: date-time
             updatedAt:
               type: string
-              example: date-time
+              format: date-time
 
     register:
       type: object
@@ -658,10 +680,10 @@ components:
                 example: Hobi
               createdAt:
                 type: string
-                example: date-time
+                format: date-time
               updatedAt:
                 type: string
-                example: date-time
+                format: date-time
     findCategory:
       type: object
       properties:
@@ -676,10 +698,10 @@ components:
               example: Hobi
             createdAt:
               type: string
-              example: date-time
+              format: date-time
             updatedAt:
               type: string
-              example: date-time
+              format: date-time
 
     addProduct:
       type: object
@@ -710,10 +732,81 @@ components:
               example: ini bola Basket
             updatedAt:
               type: string
-              example: date-time
+              format: date-time
             createdAt:
               type: string
-              example: date-time
+              format: date-time
             minat:
               type: integer
-              example: null
+              format: null
+
+    listProduct:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            barang:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 152
+                  iduser:
+                    type: integer
+                    example: 1
+                  idkategori:
+                    type: integer
+                    example: 1
+                  nama:
+                    type: string
+                    example: Mobil Baru
+                  harga:
+                    type: integer
+                    example: 20000
+                  deskripsi:
+                    type: string
+                    example: ini mobil Baru
+                  minat:
+                    type: boolean
+                    example: false
+                  createdAt:
+                    type: string
+                    format: date-time
+                  updatedAt:
+                    type: string
+                    format: date-time
+                  gambarbarangs:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 136
+                        idbarang:
+                          type: integer
+                          example: 153
+                        createdAt:
+                          type: string
+                          format: date-time
+                        updatedAt:
+                          type: string
+                          format: date-time
+                  kategori:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      nama_kategori:
+                        type: string
+                        example: Hobi
+                      createdAt:
+                        type: string
+                        format: date-time
+                      updatedAt:
+                        type: string
+                        format: date-time
