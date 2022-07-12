@@ -41,7 +41,7 @@ module.exports = {
       where: {
         idkategori: Args.idkategori,
       },
-      include: { model: gambarbarang },
+      include: [{ model: gambarbarang }, { model: kategori }],
     })
   },
 
@@ -57,5 +57,11 @@ module.exports = {
   },
   findCategory(data) {
     return kategori.findByPk(data)
+  },
+  filterByUser(id) {
+    return barang.findAll({
+      where: { iduser: { [Op.ne]: id } },
+      include: [{ model: gambarbarang }, { model: kategori }],
+    })
   },
 }

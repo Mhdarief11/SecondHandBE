@@ -274,4 +274,14 @@ module.exports = {
       })
     }
   },
+  // --------------filter products by user id not shown
+  async filterProductsUser(req, res) {
+    try {
+      const userId = req.user.id
+      const result = await productService.filterProductsByUser(userId)
+      res.status(200).json({ data: result })
+    } catch (error) {
+      res.status(400).json({ message: error.message })
+    }
+  },
 }
