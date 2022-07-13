@@ -61,7 +61,7 @@ module.exports = {
   },
 
   deleteProductPic(id) {
-    return gambarbarang.destroy({ where: { id } });
+    return gambarbarang.destroy({ where: { idProduct: id } });
   },
 
   addCategory(createArgs) {
