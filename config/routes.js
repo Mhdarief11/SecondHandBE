@@ -70,6 +70,13 @@ apiRouter.post(
   controllers.api.v1.userController.authorize,
   controllers.api.v1.productController.addProduct,
 )
+//edit barang
+apiRouter.put(
+  "/api/v1/products/:id",
+  controllers.api.v1.userController.authorize,
+  uploadOnMemory.array("image", 4),
+  controllers.api.v1.productController.updateProduct,
+);
 
 // filter products by user id
 apiRouter.get(
