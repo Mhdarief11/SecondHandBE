@@ -45,6 +45,13 @@ module.exports = {
     })
   },
 
+  filterByCategoryAuth(id, args) {
+    return barang.findAll({
+      where: { iduser: { [Op.ne]: id }, idkategori: { [Op.eq]: args } },
+      include: [{ model: gambarbarang }, { model: kategori }],
+    })
+  },
+
   updateProduct(id, updateArgs) {
     return barang.update(updateArgs, { where: { id } })
   },

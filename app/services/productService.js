@@ -69,4 +69,13 @@ module.exports = {
       throw error
     }
   },
+
+  async filterCategoryAuth(id, args) {
+    try {
+      const barang = await productRepository.filterByCategoryAuth(id, args)
+      return { barang: barang }
+    } catch (error) {
+      throw error
+    }
+  },
 }
