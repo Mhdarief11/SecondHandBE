@@ -3,7 +3,12 @@ const { Op } = require('sequelize')
 
 module.exports = {
   findAll() {
-    return barang.findAll()
+    return barang.findAll({
+      include: [{ model: gambarbarang }, { model: kategori }],
+    })
+  },
+  findProductPic(id) {
+    return gambarbarang.findByPk(id)
   },
   getTotalProducts() {
     return barang.count()
@@ -23,13 +28,27 @@ module.exports = {
     return barang.destroy({ where: { id } })
   },
   findById(id) {
-    return barang.findByPk(id, { include: user })
+    return barang.findByPk(id, {
+      include: [
+        { model: user, attributes: { exclude: ['password'] } },
+        { model: kategori },
+        { model: gambarbarang },
+      ],
+    })
   },
   findByKategori(Args) {
     return barang.findAll({
       where: {
         idkategori: Args.idkategori,
       },
+      include: [{ model: gambarbarang }, { model: kategori }],
+    })
+  },
+
+  filterByCategoryAuth(id, args) {
+    return barang.findAll({
+      where: { iduser: { [Op.ne]: id }, idkategori: { [Op.eq]: args } },
+      include: [{ model: gambarbarang }, { model: kategori }],
     })
   },
 
@@ -45,5 +64,11 @@ module.exports = {
   },
   findCategory(data) {
     return kategori.findByPk(data)
+  },
+  filterByUser(id) {
+    return barang.findAll({
+      where: { iduser: { [Op.ne]: id } },
+      include: [{ model: gambarbarang }, { model: kategori }],
+    })
   },
 }

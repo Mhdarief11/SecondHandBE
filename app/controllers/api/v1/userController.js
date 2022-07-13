@@ -132,7 +132,7 @@ class userController {
       }
 
       res.status(401).json({
-        message: error.message,
+        message: 'Login terlebih dahulu',
       })
     }
   }
@@ -337,10 +337,10 @@ class userController {
         dataImg: result,
       })
     } catch (error) {
-      console.log(err)
+      console.log(error)
       res.status(422).json({
         status: 'FAILED',
-        message: err.message,
+        message: error.message,
       })
       return
     }

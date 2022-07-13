@@ -13,6 +13,10 @@ module.exports = {
       throw error
     }
   },
+
+  async findProductPic(id) {
+    return productRepository.findProductPic(id)
+  },
   update(id, requestBody) {
     return productRepository.update(id, requestBody)
   },
@@ -52,6 +56,24 @@ module.exports = {
     try {
       const nameCateg = await productRepository.findCategory(data)
       return nameCateg
+    } catch (error) {
+      throw error
+    }
+  },
+
+  async filterProductsByUser(id) {
+    try {
+      const barang = await productRepository.filterByUser(id)
+      return { barang: barang }
+    } catch (error) {
+      throw error
+    }
+  },
+
+  async filterCategoryAuth(id, args) {
+    try {
+      const barang = await productRepository.filterByCategoryAuth(id, args)
+      return { barang: barang }
     } catch (error) {
       throw error
     }

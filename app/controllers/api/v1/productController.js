@@ -139,7 +139,7 @@ module.exports = {
   // -----------------id-------------------------------
   getProductById: async (req, res) => {
     try {
-      const product = await productService.getById(req.query.id)
+      const product = await productService.getById(req.params.id)
       res.status(200).json(product)
     } catch (error) {
       res.status(500).json({
@@ -160,7 +160,7 @@ module.exports = {
         // id: tokenPayload.id,
         idkategori: req.query.idkategori,
       })
-      res.status(200).json(product)
+      res.status(200).json({ barang: product })
     } catch (error) {
       res.status(500).json({
         error: error.message,
@@ -238,6 +238,64 @@ module.exports = {
     } catch (error) {
       res.status(400).json({
         message: 'Category Not Found',
+      })
+    }
+  },
+  // ----------------------------get image details
+  async findProductPic(req, res) {
+    try {
+      let result
+      const { id } = req.params
+      // const productPic = await productService.findProductPic(id)
+      // console.log(productPic)
+      if (id == null) {
+        res.status(400).json({
+          message: 'gambar produk tidak tersedia',
+        })
+        return
+      }
+      const getDetails = new ImageKitActions('', '', '')
+      result = await getDetails.getImgDetails(id)
+      console.log(result)
+      if (getDetails == '' || getDetails == 'error') {
+        res.status(422).json({
+          message: 'detail gambar gagal diambil',
+        })
+        return
+      }
+
+      res.status(201).json({
+        gambar: result,
+      })
+    } catch (error) {
+      console.log(error)
+      res.status(422).json({
+        message: error.message,
+      })
+    }
+  },
+  // --------------filter products by user id not shown
+  async filterProductsUser(req, res) {
+    try {
+      const userId = req.user.id
+      const result = await productService.filterProductsByUser(userId)
+      res.status(200).json({ data: result })
+    } catch (error) {
+      res.status(400).json({ message: error.message })
+    }
+  },
+
+  // filter products by category user auth
+  async filterCategorybyUserId(req, res) {
+    try {
+      const product = await productService.filterCategoryAuth(
+        req.user.id,
+        req.query.idkategori,
+      )
+      res.status(200).json({ data: product })
+    } catch (error) {
+      res.status(400).json({
+        messa: error.message,
       })
     }
   },
