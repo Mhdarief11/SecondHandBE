@@ -78,6 +78,12 @@ apiRouter.get(
   controllers.api.v1.productController.filterProductsUser,
 )
 
+apiRouter.get(
+  '/api/v1/filterProductsCateg',
+  controllers.api.v1.userController.authorize,
+  controllers.api.v1.productController.filterCategorybyUserId,
+)
+
 // ---------------------------------CATEGORY-------------------------
 // add new products category
 apiRouter.post(

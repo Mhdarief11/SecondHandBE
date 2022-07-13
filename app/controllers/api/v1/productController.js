@@ -284,4 +284,19 @@ module.exports = {
       res.status(400).json({ message: error.message })
     }
   },
+
+  // filter products by category user auth
+  async filterCategorybyUserId(req, res) {
+    try {
+      const product = await productService.filterCategoryAuth(
+        req.user.id,
+        req.query.idkategori,
+      )
+      res.status(200).json({ data: product })
+    } catch (error) {
+      res.status(400).json({
+        messa: error.message,
+      })
+    }
+  },
 }
