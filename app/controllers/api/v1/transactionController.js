@@ -7,8 +7,8 @@ module.exports = {
   // list all transaction based on user id
   async listAll(req, res) {
     try {
-      const listTransaction = await transactionService.list(req.user.id)
-      res.status(200).json({ listTransaction })
+      const listTransaction = await transactionService.list()
+      res.status(200).json(listTransaction)
     } catch (error) {
       res.status(400).json({
         message: error.message,
@@ -19,11 +19,12 @@ module.exports = {
   // create bid user seller and buyer
   async createBid(req, res) {
     try {
-      let price = req.body.price
+      let { price } = req.body
       let sellerid = req.query.sellerid
       let userid = req.user.id
       let productid = req.query.productid
-
+      console.log('harga', price)
+      // check product and seller
       const getProduct = await productService.getById(productid)
       const getUser = await userService.findPKUser(sellerid)
       if (getProduct == '' || getUser == '') {

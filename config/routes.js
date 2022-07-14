@@ -120,8 +120,7 @@ apiRouter.get('/api/v1/cities', controllers.api.v1.cityController.listAllCity)
 // ------------------------TRANSACTION--------------------------------------
 // list all transaction
 apiRouter.get(
-  '/api/v1/transactions',
-  controllers.api.v1.userController.authorize,
+  '/api/v1/transaction',
   controllers.api.v1.transactionController.listAll,
 )
 

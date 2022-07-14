@@ -3,7 +3,7 @@ const transactionRepository = require('../repositories/transactionRepository')
 module.exports = {
   async list(id) {
     try {
-      const transaction = await transactionRepository.listAll(id)
+      const transaction = await transactionRepository.listAll()
       return { transaction }
     } catch (error) {
       throw error
