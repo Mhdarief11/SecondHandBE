@@ -117,6 +117,21 @@ apiRouter.get('/api/v1/docs/swagger.json', (req, res) => {
 apiRouter.use('/api/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 apiRouter.get('/api/v1/cities', controllers.api.v1.cityController.listAllCity)
 
+// ------------------------TRANSACTION--------------------------------------
+// list all transaction
+apiRouter.get(
+  '/api/v1/transactions',
+  controllers.api.v1.userController.authorize,
+  controllers.api.v1.transactionController.listAll,
+)
+
+// bid products
+apiRouter.post(
+  '/api/v1/transaction',
+  controllers.api.v1.userController.authorize,
+  controllers.api.v1.transactionController.createBid,
+)
+
 // -----------------------------------------DOCS
 apiRouter.get('/api/v1/docs/swagger.json', (req, res) => {
   res.status(200).json(swaggerDocument)
