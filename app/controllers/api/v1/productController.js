@@ -147,7 +147,7 @@ module.exports = {
       })
     }
   },
-  getProductByKategori: async (req, res) => {
+  cgetProductByKategori: async (req, res) => {
     try {
       // let tokenPayload = { id: null };
       // if (req.headers.authorization !== "") {
@@ -202,7 +202,7 @@ module.exports = {
   async addCategory(req, res) {
     try {
       const kategori = await productService.addCategory({
-        idkategori: req.body.kategori,
+        nama_kategori: req.body.kategori,
       })
       res.status(201).json({
         data: kategori,
