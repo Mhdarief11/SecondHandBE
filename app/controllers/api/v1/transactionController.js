@@ -33,7 +33,7 @@ module.exports = {
       } else {
         // insert bid transaction to table
         try {
-          const bidProduct = await transactionService.bidProduct({
+          const bidProduct = await transactionService.createBidProduct({
             iduser: userid,
             iduser_seller: sellerid,
             idbarang: productid,

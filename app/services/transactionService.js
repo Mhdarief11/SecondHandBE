@@ -12,7 +12,10 @@ module.exports = {
 
   async createBidProduct(requestBody) {
     try {
-      return transactionRepository.createBidProduct(requestBody)
+      const bidProduct = await transactionRepository.createBidProduct(
+        requestBody,
+      )
+      return { bidProduct }
     } catch (error) {
       throw error
     }
