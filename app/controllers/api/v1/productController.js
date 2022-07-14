@@ -147,7 +147,7 @@ module.exports = {
       })
     }
   },
-  cgetProductByKategori: async (req, res) => {
+  getProductByKategori: async (req, res) => {
     try {
       // let tokenPayload = { id: null };
       // if (req.headers.authorization !== "") {
