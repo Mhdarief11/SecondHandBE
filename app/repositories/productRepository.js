@@ -55,13 +55,11 @@ module.exports = {
   updateProduct(id, updateArgs) {
     return barang.update(updateArgs, { where: { id } });
   },
-
   findProductPicByIdProduct(id) {
     return barang.findByPk(id,{ include: { model: gambarbarang} });
   },
-
   deleteProductPic(id) {
-    return gambarbarang.destroy({ where: { idProduct: id } });
+    return gambarbarang.destroy({ where: { id } });
   },
 
   addCategory(createArgs) {

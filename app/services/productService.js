@@ -33,11 +33,7 @@ module.exports = {
     }
   },
   async deleteProductPic(id) {
-    try {
-      return productRepository.deleteProductPic(id);
-    } catch (error) {
-      throw error;
-    }
+    return productRepository.deleteProductPic(id);
   },
   
   async delete(id) {

@@ -85,30 +85,48 @@ module.exports = {
       await productService.updateProduct(idProduct, product);
       
       console.log('ini request body image 1');
-      console.log(req.body.image)
       console.log(Product.gambarbarangs)
       console.log(Product.gambarbarangs.length)
       console.log(req.files.length)
 
       // array to
-      // for (let i = 0; i < req.files.length; i++) {
-      //   var picBase64 = req.files[i].buffer.toString('base64')
-      //   var gambarName = 'products' + Date.now() + req.user.id
-      //   // initialization imagekit
-      //   var imgUpdateProduct = new ImageKitActions(
-      //     picBase64,
-      //     gambarName,
-      //     '/userProducts',
-      //   )
-      //   //delete old image di imageKit
-      //   const deleteImg_base64 = await imgUpdateProduct.deleteImg(Product.gambarbarangs[i].gambar)
-      //   console.log(deleteImg_base64)
-      //   console.log(Product.gambarbarangs[i].gambar)
-      //   //delete old image di tabel
-      //   // await productService.deleteProductPic({
-      //   //   id: Product.gambarbarangs[i].id,
-      //   // })
-      // }
+      if(isiGambar<req.length){
+        for (let i = 0; i < isiGambar; i++) {
+          console.log("isi perulangan");
+          var picBase64 = req.files[i].buffer.toString('base64')
+          var gambarName = 'products' + Date.now() + req.user.id
+          // initialization imagekit
+          var imgUpdateProduct = new ImageKitActions(
+            picBase64,
+            gambarName,
+            '/userProducts',
+          )
+          //delete old image di imageKit
+          const deleteImg_base64 = await imgUpdateProduct.deleteImg(Product.gambarbarangs[i].gambar)
+          console.log(deleteImg_base64)
+          console.log(Product.gambarbarangs[i].gambar)
+          //delete old image di tabel
+          await productService.deleteProductPic(Product.gambarbarangs[i].id)
+        }
+      }else{
+      for (let i = 0; i < req.files.length; i++) {
+        console.log("isi perulangan");
+        var picBase64 = req.files[i].buffer.toString('base64')
+        var gambarName = 'products' + Date.now() + req.user.id
+        // initialization imagekit
+        var imgUpdateProduct = new ImageKitActions(
+          picBase64,
+          gambarName,
+          '/userProducts',
+        )
+        //delete old image di imageKit
+        const deleteImg_base64 = await imgUpdateProduct.deleteImg(Product.gambarbarangs[i].gambar)
+        console.log(deleteImg_base64)
+        console.log(Product.gambarbarangs[i].gambar)
+        //delete old image di tabel
+        await productService.deleteProductPic(Product.gambarbarangs[i].id)
+      }
+    }
 
 console.log('udah di delete')
 
@@ -123,17 +141,19 @@ console.log('udah di delete')
           '/userProducts',
         )
 
+        //add to imageKit
         const uploadImg_base64 = await imgUpdateProduct.createImg()
         console.log(uploadImg_base64)
-        // await productService.addImageProduct({
-        //   idbarang: Product.id,
-        //   // ambil fileid dari imagekit
-        //   gambar: uploadImg_base64.fileId,
-        // })
+        //add to tabel gambarbarang
+        await productService.addImageProduct({
+          idbarang: Product.id,
+          // ambil fileid dari imagekit
+          gambar: uploadImg_base64.fileId,
+        })
       }
 
       res.status(201).json({
-        message: 'Upp',
+        message: 'Uppdate Succes',
         product: Product.gambarbarangs,
       })
 
