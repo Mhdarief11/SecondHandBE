@@ -6,9 +6,11 @@
 const userController = require('./userController')
 const productController = require('./productController')
 const cityController = require('./cityController')
+const transactionController = require('./transactionController')
 
 module.exports = {
   userController,
   productController,
   cityController,
+  transactionController,
 }
