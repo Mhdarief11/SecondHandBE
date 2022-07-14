@@ -33,10 +33,6 @@ module.exports = {
       deskripsi: {
         type: Sequelize.STRING,
       },
-      minat: {
-        type: Sequelize.BOOLEAN,
-        allowNull: true,
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
