@@ -69,73 +69,101 @@ module.exports = {
   },
 
   // ------------------------update//
+  async updateProduct(req, res) {
+    try {
+      const idProduct = req.params.id;
+      const product = {
+        idkategori: req.body.kategori,
+        nama: req.body.nama,
+        harga: req.body.harga,
+        deskripsi: req.body.deskripsi,
+      }
 
-  // updateProduct: async (req, res) => {
-  //   const {
-  //     id,
-  //     iduser,
-  //     nama,
-  //     harga,
-  //     idkategori,
-  //     deskripsi,
+      const Product=await productService.findProductPicByIdProduct(idProduct);
+      const isiGambar=Product.gambarbarangs;
+      await productService.updateProduct(idProduct, product);
+      
+      console.log('ini request body image 1');
+      console.log(Product.gambarbarangs)
+      console.log(Product.gambarbarangs.length)
+      console.log(req.files.length)
 
-  //     oldImage,
-  //   } = req.body;
-  //   const gambarName = [];
-  //   const picBase64 = [];
-  //   const file = [];
+      // array to
+      if(isiGambar<req.length){
+        for (let i = 0; i < isiGambar; i++) {
+          console.log("isi perulangan");
+          var picBase64 = req.files[i].buffer.toString('base64')
+          var gambarName = 'products' + Date.now() + req.user.id
+          // initialization imagekit
+          var imgUpdateProduct = new ImageKitActions(
+            picBase64,
+            gambarName,
+            '/userProducts',
+          )
+          //delete old image di imageKit
+          const deleteImg_base64 = await imgUpdateProduct.deleteImg(Product.gambarbarangs[i].gambar)
+          console.log(deleteImg_base64)
+          console.log(Product.gambarbarangs[i].gambar)
+          //delete old image di tabel
+          await productService.deleteProductPic(Product.gambarbarangs[i].id)
+        }
+      }else{
+      for (let i = 0; i < req.files.length; i++) {
+        console.log("isi perulangan");
+        var picBase64 = req.files[i].buffer.toString('base64')
+        var gambarName = 'products' + Date.now() + req.user.id
+        // initialization imagekit
+        var imgUpdateProduct = new ImageKitActions(
+          picBase64,
+          gambarName,
+          '/userProducts',
+        )
+        //delete old image di imageKit
+        const deleteImg_base64 = await imgUpdateProduct.deleteImg(Product.gambarbarangs[i].gambar)
+        console.log(deleteImg_base64)
+        console.log(Product.gambarbarangs[i].gambar)
+        //delete old image di tabel
+        await productService.deleteProductPic(Product.gambarbarangs[i].id)
+      }
+    }
 
-  //   try {
-  //     // Delete Image from Cloudinary
-  //     if (oldImage !== undefined) {
-  //       if (Array.isArray(oldImage)) {
-  //         // Kalo bentuknya array
-  //         for (var x = 0; x < oldImage.length; x++) {
-  //           cloudinaryDestroy(oldImage[x]);
-  //         }
-  //       } else {
-  //         // Kalo bentuknya string cuma 1 image
-  //         cloudinaryDestroy(oldImage);
-  //       }
-  //     }
+console.log('udah di delete')
 
-  //     // Upload New Image to Cloudinary
-  // //     if (req.files.length > 0) {
-  // //       for (var i = 0; i < req.files.length; i++) {
-  // //         picBase64.push(req.files[i].buffer.toString("base64"));
-  // //         file.push(`data:${req.files[i].mimetype};base64,${picBase64[i]}`);
-  // //         const result = await cloudinaryUpload(file[i]);
-  // //         fotoProduk.push(result.secure_url);
-  // //       }
-  // //     }
+      // array to
+      for (let j = 0; j < req.files.length; j++) {
+        var picBase64 = req.files[j].buffer.toString('base64')
+        var gambarName = 'products' + Date.now() + req.user.id
+        // initialization imagekit
+        var imgUpdateProduct = new ImageKitActions(
+          picBase64,
+          gambarName,
+          '/userProducts',
+        )
 
-  // //     let updateArgs = {
-  // //       iduser,
-  // //       nama,
-  // //       harga,
-  // //       idkategori,
-  // //       deskripsi,
-  // //     };
+        //add to imageKit
+        const uploadImg_base64 = await imgUpdateProduct.createImg()
+        console.log(uploadImg_base64)
+        //add to tabel gambarbarang
+        await productService.addImageProduct({
+          idbarang: Product.id,
+          // ambil fileid dari imagekit
+          gambar: uploadImg_base64.fileId,
+        })
+      }
 
-  // //     if (fotoProduk.length > 0) {
-  // //       updateArgs = {
-  // //         ...updateArgs,
-  // //         fotoProduk,
-  // //       };
-  // //     }
+      res.status(201).json({
+        message: 'Uppdate Succes',
+        product: Product.gambarbarangs,
+      })
 
-  // //     productsService.update(id, updateArgs).then(() => {
-  // //       res.status(200).json({
-  // //         status: "OK",
-  // //         message: "Product updated",
-  // //       });
-  // //     });
-  // //   } catch (error) {
-  // //     res.status(500).json({
-  // //       error: error.message,
-  // //     });
-  // //   }
-  // // },
+    } catch (error) {
+      console.log(error.message)
+      res.status(400).json({
+        message: error.message,
+      })
+    }
+  },
+  
   // -----------------id-------------------------------
   getProductById: async (req, res) => {
     try {
