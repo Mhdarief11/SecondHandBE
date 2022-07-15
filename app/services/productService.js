@@ -17,25 +17,9 @@ module.exports = {
   async findProductPic(id) {
     return productRepository.findProductPic(id)
   },
-
-  async updateProduct(idProduct, requestBody) {
-    try {
-      return productRepository.updateProduct(idProduct, requestBody);
-    } catch (error) {
-      throw error;
-    }
+  update(id, requestBody) {
+    return productRepository.update(id, requestBody)
   },
-  async findProductPicByIdProduct(id) {
-    try {
-      return productRepository.findProductPicByIdProduct(id);
-    } catch (error) {
-      throw error;
-    }
-  },
-  async deleteProductPic(id) {
-    return productRepository.deleteProductPic(id);
-  },
-  
   async delete(id) {
     return productRepository.delete(id)
   },
