@@ -33,9 +33,9 @@ module.exports = {
       deskripsi: {
         type: Sequelize.STRING,
       },
-      minat: {
+      available: {
         type: Sequelize.BOOLEAN,
-        allowNull: true,
+        defaultValue: true,
       },
       createdAt: {
         allowNull: false,

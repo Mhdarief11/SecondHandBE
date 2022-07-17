@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       nama: DataTypes.STRING,
       harga: DataTypes.FLOAT,
       deskripsi: DataTypes.STRING,
-      minat: DataTypes.BOOLEAN,
+      available: DataTypes.BOOLEAN,
     },
     {
       sequelize,

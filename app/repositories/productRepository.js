@@ -41,12 +41,25 @@ module.exports = {
       where: {
         idkategori: Args.idkategori,
       },
-      include: { model: gambarbarang },
+      include: [{ model: gambarbarang }, { model: kategori }],
+    })
+  },
+
+  filterByCategoryAuth(id, args) {
+    return barang.findAll({
+      where: { iduser: { [Op.ne]: id }, idkategori: { [Op.eq]: args } },
+      include: [{ model: gambarbarang }, { model: kategori }],
     })
   },
 
   updateProduct(id, updateArgs) {
-    return barang.update(updateArgs, { where: { id } })
+    return barang.update(updateArgs, { where: { id } });
+  },
+  findProductPicByIdProduct(id) {
+    return barang.findByPk(id,{ include: { model: gambarbarang} });
+  },
+  deleteProductPic(id) {
+    return gambarbarang.destroy({ where: { id } });
   },
 
   addCategory(createArgs) {
@@ -57,5 +70,11 @@ module.exports = {
   },
   findCategory(data) {
     return kategori.findByPk(data)
+  },
+  filterByUser(id) {
+    return barang.findAll({
+      where: { iduser: { [Op.ne]: id } },
+      include: [{ model: gambarbarang }, { model: kategori }],
+    })
   },
 }

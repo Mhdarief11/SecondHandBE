@@ -45,11 +45,12 @@ apiRouter.get(
   '/api/v1/products/picture/:id',
   controllers.api.v1.productController.findProductPic,
 )
-// get kategori
 apiRouter.get(
   '/api/v1/products/:id',
   controllers.api.v1.productController.getProductById,
 )
+
+// get kategori
 apiRouter.get(
   '/api/v1/product/kategori',
   controllers.api.v1.productController.getProductByKategori,
@@ -68,6 +69,26 @@ apiRouter.post(
   uploadOnMemory.array('image', 4),
   controllers.api.v1.userController.authorize,
   controllers.api.v1.productController.addProduct,
+)
+//update barang
+apiRouter.put(
+  "/api/v1/product/:id",
+  controllers.api.v1.userController.authorize,
+  uploadOnMemory.array("image", 4),
+  controllers.api.v1.productController.updateProduct,
+)
+
+// filter products by user id
+apiRouter.get(
+  '/api/v1/filterProducts',
+  controllers.api.v1.userController.authorize,
+  controllers.api.v1.productController.filterProductsUser,
+)
+
+apiRouter.get(
+  '/api/v1/filterProductsCateg',
+  controllers.api.v1.userController.authorize,
+  controllers.api.v1.productController.filterCategorybyUserId,
 )
 
 // ---------------------------------CATEGORY-------------------------
@@ -102,6 +123,21 @@ apiRouter.get('/api/v1/docs/swagger.json', (req, res) => {
 })
 apiRouter.use('/api/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 apiRouter.get('/api/v1/cities', controllers.api.v1.cityController.listAllCity)
+
+// ------------------------TRANSACTION--------------------------------------
+// list all transaction
+apiRouter.get(
+  '/api/v1/transactions',
+  controllers.api.v1.userController.authorize,
+  controllers.api.v1.transactionController.listAll,
+)
+
+// bid products
+apiRouter.post(
+  '/api/v1/transaction',
+  controllers.api.v1.userController.authorize,
+  controllers.api.v1.transactionController.createBid,
+)
 
 // -----------------------------------------DOCS
 apiRouter.get('/api/v1/docs/swagger.json', (req, res) => {
