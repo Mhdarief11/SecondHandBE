@@ -9,6 +9,13 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      transaksi.belongsTo(models.user, { foreignKey: 'iduser' })
+      // transaksi.belongsTo(models.user, {
+      //   foreignKey: 'iduser_seller',
+      // })
+      transaksi.belongsTo(models.barang, {
+        foreignKey: 'idbarang',
+      })
     }
   }
   transaksi.init(
