@@ -39,8 +39,8 @@ module.exports = {
             iduser_seller: sellerid,
             idbarang: productid,
             harga_tawar: price,
-            status_pembelian: 0,
-            status_terima: 0,
+            status_pembelian: null,
+            status_terima: null,
           })
           res.status(201).json({ bidProduct })
         } catch (error) {
@@ -51,6 +51,74 @@ module.exports = {
       res.status(400).json({
         message: error.message,
       })
+    }
+  },
+
+  async findBid(req, res) {
+    try {
+      let idBid = req.params.id
+      const bid = await transactionService.findBid(idBid)
+      res.status(200).json({ bid })
+    } catch (error) {
+      res.status(400).json({ message: error.message })
+    }
+  },
+
+  // denied Bid
+  async deniedBid(req, res) {
+    try {
+      let idBid = req.params.id
+      const bid = await transactionService.deniedBid(idBid, req.user.id)
+      res.status(201).json({ bid })
+    } catch (error) {
+      res.status(400).json({ message: error.message })
+    }
+  },
+
+  // accept Bid
+  async acceptBid(req, res) {
+    try {
+      let idBarang = req.params.id
+      const bid = await transactionService.acceptBid(idBarang, req.user.id)
+      res.status(201).json({ bid })
+    } catch (error) {
+      res.status(400).json({ message: error.message })
+    }
+  },
+
+  // product sold transaction
+  async productSold(req, res) {
+    try {
+      let idbarang = req.params.idbarang
+      let idseller = req.user.id
+      let id = req.params.idtrans
+      console.log(idbarang, idseller, id)
+      if (idbarang !== '' && idseller !== '' && id !== '') {
+        const sold = await transactionService.productSold(
+          id,
+          idbarang,
+          idseller,
+        )
+        res.status(201).json({ sold })
+      }
+    } catch (error) {
+      console.log(error.message)
+      res.status(400).json({ message: error.message })
+    }
+  },
+
+  // decline transaction
+  async declineTrans(req, res) {
+    try {
+      let idseller = req.user.id
+      let id = req.params.idtrans
+      console.log(id)
+      if (idseller !== '' && id != '') {
+        const decline = await transactionService.declineTrans(id, idseller)
+        res.status(201).json({ decline })
+      }
+    } catch (error) {
+      res.status(400).json({ message: error.message })
     }
   },
 }

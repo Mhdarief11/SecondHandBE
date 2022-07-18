@@ -20,4 +20,28 @@ module.exports = {
       throw error
     }
   },
+  async findBid(id) {
+    try {
+      const bid = await transactionRepository.findBid(id)
+      return { bid }
+    } catch (error) {
+      throw error
+    }
+  },
+
+  deniedBid(id, idseller) {
+    return transactionRepository.deniedBid(id, idseller)
+  },
+  acceptBid(id, idseller) {
+    return transactionRepository.acceptBid(id, idseller)
+  },
+  // update status produk terjual
+  productSold(id, idbarang, idseller) {
+    return transactionRepository.productSold(id, idbarang, idseller)
+  },
+
+  // update status pembatalan transaksi
+  declineTrans(id, idseller) {
+    return transactionRepository.declineTrans(id, idseller)
+  },
 }
