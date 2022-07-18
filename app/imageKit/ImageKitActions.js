@@ -88,7 +88,7 @@ class ImageKitActions {
   }
 
   async getImgDetails(fileId) {
-    let result
+    let result;
 
     await this.imageKitConfig
       .getFileDetails(fileId)

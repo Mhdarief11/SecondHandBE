@@ -4,8 +4,8 @@ const axios = require('axios')
 const jwt = require('jsonwebtoken')
 const ImageKitActions = require('../../../imageKit/ImageKitActions')
 const { user } = require('../../../models')
-const { response } = require('express')
-const Salt = 10
+// const { response } = require('express')
+const Salt = 10;
 
 /* Create token function */
 function createToken(data) {
@@ -14,8 +14,9 @@ function createToken(data) {
   })
 }
 
-function encryptPassword(password) {
+const encryptPassword = (async (password) => {
   return new Promise((resolve, reject) => {
+    console.log("encrypt runs");
     bcrypt.hash(password, Salt, (err, encryptedPassword) => {
       if (!!err) {
         reject(err)
@@ -24,7 +25,7 @@ function encryptPassword(password) {
       resolve(encryptedPassword)
     })
   })
-}
+})
 
 function checkPassword(encryptedPassword, password) {
   return new Promise((resolve, reject) => {
@@ -114,17 +115,23 @@ class userController {
 
   static async authorize(req, res, next) {
     try {
+      console.log("\nAuthorization\n")
       const bearerToken = req.headers.authorization
+      // console.log(bearerToken)
       const token = bearerToken.split('Bearer ')[1]
 
       const tokenPayLoad = jwt.verify(token, process.env.JWT_SECRET || 'secret')
 
+      // console.log(tokenPayLoad)
+
       req.user = JSON.parse(
-        JSON.stringify(await userService.findPKUser(tokenPayLoad.id)),
-      )
+        // JSON.stringify(await userService.findPKUser(tokenPayLoad.id)),
+        JSON.stringify(await userService.find(tokenPayLoad.email))
+      );
       // delete encrypted password
       delete req.user.password
       next()
+
     } catch (error) {
       if (error.message.includes('jwt expired')) {
         res.status(401).json({ message: 'Token Expired' })
@@ -147,10 +154,10 @@ class userController {
         data: req.user,
       })
     } catch (err) {
-      res.status(200).json({
-        status: 'FAILED',
-        message: err,
-      })
+      res.status(404).json({
+        status: "FAILED",
+        message: err.message,
+      });
     }
   }
 
@@ -307,10 +314,13 @@ class userController {
 
   static async getImg(req, res) {
     try {
-      let result
-      const { id } = req.params
+      let result;
+      const { id } = req.params;
+
       /* Process to check if user has Profile Image */
-      const User = await userService.findPKUser(id)
+      const User = await userService.findPKUser(id);
+
+      // console.log(User);
 
       if (User == null) {
         res.status(404).json({
@@ -332,7 +342,7 @@ class userController {
         return
       }
 
-      res.status(201).json({
+      res.status(200).json({
         status: 'OK',
         dataImg: result,
       })

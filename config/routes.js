@@ -23,6 +23,7 @@ apiRouter.get(
   controllers.api.v1.userController.whoAmI,
 )
 
+// GET PROFILE IMG DETAILS
 apiRouter.get(
   '/api/v1/users/profileImg/details/:id',
   controllers.api.v1.userController.getImg,
