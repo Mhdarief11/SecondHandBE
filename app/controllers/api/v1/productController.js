@@ -303,7 +303,7 @@ module.exports = {
       }
       const getDetails = new ImageKitActions('', '', '')
       result = await getDetails.getImgDetails(id)
-      console.log(result)
+      // console.log(result)
       if (getDetails == '' || getDetails == 'error') {
         res.status(422).json({
           message: 'detail gambar gagal diambil',

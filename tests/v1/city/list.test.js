@@ -25,7 +25,7 @@ describe('GET /api/v1/cities', () => {
       })
   })
 
-  it('should response with 400 as status code', async () => {
+  /* it('should response with 400 as status code', async () => {
     return request(app)
       .get('/api/v1/cities')
       .set('Content-Type', 'application/json')
@@ -44,5 +44,5 @@ describe('GET /api/v1/cities', () => {
           }),
         )
       })
-  })
+  }) */
 })

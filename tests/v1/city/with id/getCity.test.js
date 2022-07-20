@@ -16,15 +16,16 @@ describe('GET /api/v1/cities/:id', () => {
       })
   })
 
-  it('should response with 400 as status code', async () => {
+  it('should response with 404 as status code', async () => {
     return request(app)
       .get('/api/v1/cities/666')
       .set('Content-Type', 'application/json')
       .then((res) => {
-        expect(res.statusCode).toBe(400)
+        expect(res.statusCode).toBe(404)
         expect(res.body).toEqual(
           expect.objectContaining({
-            message: "City Not Found",
+            status: "FAILED",
+            message: expect.any(String),
           }),
         )
       })
