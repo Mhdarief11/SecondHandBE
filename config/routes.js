@@ -73,9 +73,9 @@ apiRouter.post(
 )
 //update barang
 apiRouter.put(
-  "/api/v1/product/:id",
+  '/api/v1/product/:id',
   controllers.api.v1.userController.authorize,
-  uploadOnMemory.array("image", 4),
+  uploadOnMemory.array('image', 4),
   controllers.api.v1.productController.updateProduct,
 )
 
@@ -128,8 +128,7 @@ apiRouter.get('/api/v1/cities', controllers.api.v1.cityController.listAllCity)
 // ------------------------TRANSACTION--------------------------------------
 // list all transaction
 apiRouter.get(
-  '/api/v1/transactions',
-  controllers.api.v1.userController.authorize,
+  '/api/v1/transaction',
   controllers.api.v1.transactionController.listAll,
 )
 
@@ -138,6 +137,40 @@ apiRouter.post(
   '/api/v1/transaction',
   controllers.api.v1.userController.authorize,
   controllers.api.v1.transactionController.createBid,
+)
+
+// find spesific bid
+apiRouter.get(
+  '/api/v1/transaction/:id',
+  controllers.api.v1.transactionController.findBid,
+)
+
+// deniedBid from seller
+apiRouter.put(
+  '/api/v1/transaction/:id',
+  controllers.api.v1.userController.authorize,
+  controllers.api.v1.transactionController.deniedBid,
+)
+
+// acceptBid from seller
+apiRouter.put(
+  '/api/v1/transaction/product/:id',
+  controllers.api.v1.userController.authorize,
+  controllers.api.v1.transactionController.acceptBid,
+)
+
+// sold product
+apiRouter.put(
+  '/api/v1/transaction/doneTrans/:idtrans/:idbarang',
+  controllers.api.v1.userController.authorize,
+  controllers.api.v1.transactionController.productSold,
+)
+
+// decline transaction
+apiRouter.put(
+  '/api/v1/transaction/declineTrans/:idtrans',
+  controllers.api.v1.userController.authorize,
+  controllers.api.v1.transactionController.declineTrans,
 )
 
 // -----------------------------------------DOCS
