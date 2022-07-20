@@ -8,8 +8,8 @@ describe("GET /api/v1/users/siapaSaya", () => {
 
   beforeEach(async () => {
     accessToken = await request(app).post("/api/v1/auth/login").send({
-      email: "yehezkielve@mail.com",
-      password: "coba123",
+      email: "jensen@sarif.com",
+      password: "megan",
     });
 
     wrongToken = await request(app).post("/api/v1/auth/login").send({

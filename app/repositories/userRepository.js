@@ -2,10 +2,11 @@ const { user, kota } = require("../models");
 
 module.exports = {
   create(createArgs) {
+    console.log("user crate repo");
     return user.create(createArgs);
   },
   find(email) {
-    console.log("\n find email repo \n");
+    // console.log("\n find email repo \n");
 
     /* return user
       .findOne({
@@ -27,7 +28,7 @@ module.exports = {
     }
   },
   update(id, data) {
-    console.log("\nUPDATE REPO\n");
+    // console.log("\nUPDATE REPO\n");
 
     /* return user
       .update(data, {
