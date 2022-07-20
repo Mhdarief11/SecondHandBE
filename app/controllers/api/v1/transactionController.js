@@ -121,4 +121,19 @@ module.exports = {
       res.status(400).json({ message: error.message })
     }
   },
+
+  // make status_pembelian = false
+  async makeFalse(req, res) {
+    try {
+      let iduser = req.params.iduser
+      let idbarang = req.params.idbarang
+      const falseStatusPembelian = await transactionService.makeFalse(
+        iduser,
+        idbarang,
+      )
+      res.status(201).json({ falseStatusPembelian })
+    } catch (error) {
+      res.status(400).json({ message: error.message })
+    }
+  },
 }
