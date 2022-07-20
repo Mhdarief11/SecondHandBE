@@ -1,5 +1,7 @@
 const productService = require('../../../services/productService')
 const ImageKitActions = require('../../../imageKit/ImageKitActions')
+const ImageKit = require('imagekit')
+require('dotenv').config()
 
 module.exports = {
   // tampilkan semua barang
@@ -71,7 +73,7 @@ module.exports = {
   // ------------------------update//
   async updateProduct(req, res) {
     try {
-      const idProduct = req.params.id;
+      const idProduct = req.params.id
       const product = {
         idkategori: req.body.kategori,
         nama: req.body.nama,
@@ -79,19 +81,19 @@ module.exports = {
         deskripsi: req.body.deskripsi,
       }
 
-      const Product=await productService.findProductPicByIdProduct(idProduct);
-      const isiGambar=Product.gambarbarangs;
-      await productService.updateProduct(idProduct, product);
-      
-      console.log('ini request body image 1');
+      const Product = await productService.findProductPicByIdProduct(idProduct)
+      const isiGambar = Product.gambarbarangs
+      await productService.updateProduct(idProduct, product)
+
+      console.log('ini request body image 1')
       console.log(Product.gambarbarangs)
       console.log(Product.gambarbarangs.length)
       console.log(req.files.length)
 
       // array to
-      if(isiGambar<req.length){
+      if (isiGambar < req.length) {
         for (let i = 0; i < isiGambar; i++) {
-          console.log("isi perulangan");
+          console.log('isi perulangan')
           var picBase64 = req.files[i].buffer.toString('base64')
           var gambarName = 'products' + Date.now() + req.user.id
           // initialization imagekit
@@ -101,33 +103,37 @@ module.exports = {
             '/userProducts',
           )
           //delete old image di imageKit
-          const deleteImg_base64 = await imgUpdateProduct.deleteImg(Product.gambarbarangs[i].gambar)
+          const deleteImg_base64 = await imgUpdateProduct.deleteImg(
+            Product.gambarbarangs[i].gambar,
+          )
           console.log(deleteImg_base64)
           console.log(Product.gambarbarangs[i].gambar)
           //delete old image di tabel
           await productService.deleteProductPic(Product.gambarbarangs[i].id)
         }
-      }else{
-      for (let i = 0; i < req.files.length; i++) {
-        console.log("isi perulangan");
-        var picBase64 = req.files[i].buffer.toString('base64')
-        var gambarName = 'products' + Date.now() + req.user.id
-        // initialization imagekit
-        var imgUpdateProduct = new ImageKitActions(
-          picBase64,
-          gambarName,
-          '/userProducts',
-        )
-        //delete old image di imageKit
-        const deleteImg_base64 = await imgUpdateProduct.deleteImg(Product.gambarbarangs[i].gambar)
-        console.log(deleteImg_base64)
-        console.log(Product.gambarbarangs[i].gambar)
-        //delete old image di tabel
-        await productService.deleteProductPic(Product.gambarbarangs[i].id)
+      } else {
+        for (let i = 0; i < req.files.length; i++) {
+          console.log('isi perulangan')
+          var picBase64 = req.files[i].buffer.toString('base64')
+          var gambarName = 'products' + Date.now() + req.user.id
+          // initialization imagekit
+          var imgUpdateProduct = new ImageKitActions(
+            picBase64,
+            gambarName,
+            '/userProducts',
+          )
+          //delete old image di imageKit
+          const deleteImg_base64 = await imgUpdateProduct.deleteImg(
+            Product.gambarbarangs[i].gambar,
+          )
+          console.log(deleteImg_base64)
+          console.log(Product.gambarbarangs[i].gambar)
+          //delete old image di tabel
+          await productService.deleteProductPic(Product.gambarbarangs[i].id)
+        }
       }
-    }
 
-console.log('udah di delete')
+      console.log('udah di delete')
 
       // array to
       for (let j = 0; j < req.files.length; j++) {
@@ -155,7 +161,6 @@ console.log('udah di delete')
         message: 'Uppdate Succes',
         product: Product.gambarbarangs,
       })
-
     } catch (error) {
       console.log(error.message)
       res.status(400).json({
@@ -163,7 +168,7 @@ console.log('udah di delete')
       })
     }
   },
-  
+
   // -----------------id-------------------------------
   getProductById: async (req, res) => {
     try {
@@ -195,29 +200,43 @@ console.log('udah di delete')
       })
     }
   },
-  // -----------------delete-------------------------------
+  // -----------------delete----------------------------------------------
   async deleteProduct(req, res) {
     try {
-      const { id, oldImage } = req.query
+      var imagekit = new ImageKit({
+        publicKey: process.env.IMAGEKITPUBLIC,
+        privateKey: process.env.IMAGEKITPRIVATE,
+        urlEndpoint: process.env.IMAGEKITPRIVATE,
+      })
+      const id = req.params.id
 
-      // Delete Image from Cloudinary
-      if (oldImage !== undefined) {
-        if (Array.isArray(oldImage)) {
-          // Kalo bentuknya array
-          for (var x = 0; x < oldImage.length; x++) {
-            cloudinaryDestroy(oldImage[x])
-          }
-        } else {
-          // Kalo bentuknya string cuma 1 image
-          cloudinaryDestroy(oldImage)
-        }
+      // Delete Image from imagekit
+      const Product = await productService.findProductPicByIdProduct(id)
+      const isiGambar = Product.gambarbarangs
+
+      // array to
+      for (let i = 0; i < isiGambar.length; i++) {
+        console.log('isi perulangan')
+
+        console.log(Product.gambarbarangs[i].gambar)
+
+        imagekit.deleteFile(Product.gambarbarangs[i].gambar, function (
+          error,
+          result,
+        ) {
+          if (error) console.log(error)
+          else console.log(result)
+        })
+
+        //delete old image di tabel
+        await productService.deleteProductPic(Product.gambarbarangs[i].id)
       }
 
-      productService.delete(id).then(() => {
-        res.status(200).json({
-          status: 'OK',
-          message: 'Product deleted',
-        })
+      await productService.delete(id, req.user.id)
+
+      res.status(200).json({
+        status: 'OK',
+        message: 'Product deleted',
       })
     } catch (error) {
       res.status(500).json({
