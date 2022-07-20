@@ -24,9 +24,10 @@ module.exports = {
   addImageProduct(createArgs) {
     return gambarbarang.create(createArgs)
   },
-  delete(id) {
-    return barang.destroy({ where: { id } })
+  delete(id, iduser) {
+    return barang.destroy({ where: { id }, iduser: { [Op.eq]: iduser } })
   },
+
   findById(id) {
     return barang.findByPk(id, {
       include: [
@@ -45,8 +46,21 @@ module.exports = {
     })
   },
 
+  filterByCategoryAuth(id, args) {
+    return barang.findAll({
+      where: { iduser: { [Op.ne]: id }, idkategori: { [Op.eq]: args } },
+      include: [{ model: gambarbarang }, { model: kategori }],
+    })
+  },
+
   updateProduct(id, updateArgs) {
     return barang.update(updateArgs, { where: { id } })
+  },
+  findProductPicByIdProduct(id) {
+    return barang.findByPk(id, { include: { model: gambarbarang } })
+  },
+  deleteProductPic(id) {
+    return gambarbarang.destroy({ where: { id } })
   },
 
   addCategory(createArgs) {
