@@ -58,7 +58,7 @@ apiRouter.get(
 
 //delete router
 apiRouter.delete(
-  '/api/v1/products',
+  '/api/v1/product/:id',
   controllers.api.v1.userController.authorize,
   controllers.api.v1.productController.deleteProduct,
 )
@@ -69,6 +69,13 @@ apiRouter.post(
   uploadOnMemory.array('image', 4),
   controllers.api.v1.userController.authorize,
   controllers.api.v1.productController.addProduct,
+)
+//update barang
+apiRouter.put(
+  '/api/v1/product/:id',
+  controllers.api.v1.userController.authorize,
+  uploadOnMemory.array('image', 4),
+  controllers.api.v1.productController.updateProduct,
 )
 
 // filter products by user id
@@ -116,6 +123,54 @@ apiRouter.get('/api/v1/docs/swagger.json', (req, res) => {
 })
 apiRouter.use('/api/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 apiRouter.get('/api/v1/cities', controllers.api.v1.cityController.listAllCity)
+
+// ------------------------TRANSACTION--------------------------------------
+// list all transaction
+apiRouter.get(
+  '/api/v1/transaction',
+  controllers.api.v1.transactionController.listAll,
+)
+
+// bid products
+apiRouter.post(
+  '/api/v1/transaction',
+  controllers.api.v1.userController.authorize,
+  controllers.api.v1.transactionController.createBid,
+)
+
+// find spesific bid
+apiRouter.get(
+  '/api/v1/transaction/:id',
+  controllers.api.v1.transactionController.findBid,
+)
+
+// deniedBid from seller
+apiRouter.put(
+  '/api/v1/transaction/:id',
+  controllers.api.v1.userController.authorize,
+  controllers.api.v1.transactionController.deniedBid,
+)
+
+// acceptBid from seller
+apiRouter.put(
+  '/api/v1/transaction/product/:id',
+  controllers.api.v1.userController.authorize,
+  controllers.api.v1.transactionController.acceptBid,
+)
+
+// sold product
+apiRouter.put(
+  '/api/v1/transaction/doneTrans/:idtrans/:idbarang',
+  controllers.api.v1.userController.authorize,
+  controllers.api.v1.transactionController.productSold,
+)
+
+// decline transaction
+apiRouter.put(
+  '/api/v1/transaction/declineTrans/:idtrans',
+  controllers.api.v1.userController.authorize,
+  controllers.api.v1.transactionController.declineTrans,
+)
 
 // -----------------------------------------DOCS
 apiRouter.get('/api/v1/docs/swagger.json', (req, res) => {

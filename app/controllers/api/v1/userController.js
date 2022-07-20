@@ -10,7 +10,7 @@ const Salt = 10
 /* Create token function */
 function createToken(data) {
   return jwt.sign(data, process.env.JWT_SECRET || 'secret', {
-    expiresIn: 30 * 60,
+    expiresIn: 2440 * 60,
   })
 }
 
