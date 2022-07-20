@@ -229,12 +229,8 @@ class userController {
 
       let profilePic, picToSend;
 
-      console.log(req.body);
-
       /* Process to check if user has Profile Image */
       if (req.body.gambar === "" || req.body.gambar === null || req.body.gambar == "undefined" || req.body.gambar == undefined) {
-
-        console.log("GAMBAR KOSONG")
 
         if (User.gambar === "" || User.gambar === null) {
           profilePic = "";
@@ -253,7 +249,6 @@ class userController {
 
         /* Process to delete old profile img or add new profile img */
         if (User.gambar == null || User.gambar == "" || User.gambar == "undefined") {
-          console.log("\nEmpty Old Img\n");
 
           /* uploading profile image to ImageKit CLoud */
           profilePic = await imgUpdateUser.createImg();
@@ -335,7 +330,7 @@ class userController {
 
       if (User == null) {
         res.status(404).json({
-          status: 'failed',
+          status: 'FAILED',
           message: 'User Tidak Ditemukan Saat Proses Detail Gambar!',
         })
         return

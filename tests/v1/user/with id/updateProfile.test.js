@@ -82,7 +82,7 @@ describe("PUT /api/v1/users/update/:id", () => {
 
     } else {
       userId = accessToken.body.id; 
-      console.log(userId);
+      // console.log(userId);
     }
 
     // console.log(accessToken.body)
