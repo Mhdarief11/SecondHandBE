@@ -58,7 +58,7 @@ apiRouter.get(
 
 //delete router
 apiRouter.delete(
-  '/api/v1/products',
+  '/api/v1/product/:id',
   controllers.api.v1.userController.authorize,
   controllers.api.v1.productController.deleteProduct,
 )
