@@ -568,7 +568,7 @@ paths:
                 properties:
                   message:
                     type: string
-  # find products by kategori
+  # find products by iduser
   /api/v1/filterProducts:
     get:
       tags:
@@ -597,8 +597,68 @@ paths:
                   message:
                     type: string
                     example: failed fetch products by iduser
-
-
+  # find products kategori by iduser
+  /api/v1/filterProductsCateg:
+    get:
+      tags:
+        - CRUD user products
+      summary: list products by iduser
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: iduser
+          schema:
+            type: integer
+            example: 38
+        - in: query
+          name: idkategori
+          schema:
+            type: integer
+            example: 1
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/listProduct'
+        400:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: failed fetch products by iduser
+  # get gambar product by id gambar
+  /api/v1/products/picture/{id}:
+    get:
+      tags:
+        - CRUD user products
+      summary: get gambar product by id gambar
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID GAMBAR
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/listProduct'
+        400:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: failed fetch gambar product by id gambar
 components:
   securitySchemes:
     bearerAuth: # arbitrary name for the security scheme
