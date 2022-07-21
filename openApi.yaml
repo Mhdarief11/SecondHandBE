@@ -253,7 +253,6 @@ paths:
                   message:
                     type: string
                     example: error
-
   # update user
   /api/v1/users/update/{id}:
     put:
@@ -333,7 +332,7 @@ paths:
                     type: string
                     example: Unauthorized
 
-  # add new products
+  # list all product
   /api/v1/products:
     get:
       tags:
@@ -402,10 +401,204 @@ paths:
                   message:
                     type: string
                     example: Failed add new product
+  # get products by id 
+  /api/v1/products/{id}:
+    get:
+      tags:
+        - CRUD user products
+      summary: get product by id
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID PRODUCT
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/listProduct'
+        400:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: failed fetch product by id
+  # find products by kategori
+  /api/v1/product/kategori:
+    get:
+      tags:
+        - CRUD user products
+      summary: list products by kategori
+      parameters:
+        - in: query
+          name: idkategori
+          schema:
+            type: integer
+            example: 1
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/listProduct'
+        400:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: failed fetch products by category
+  # Update Product
+  /api/v1/product/{id}:
+    put:
+      tags:
+        - CRUD user products
+      summary: Update Product
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+            example: 159
+      requestBody:
+        description: Object combination of nama, harga, kategori, deskripsi
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                nama:
+                  type: string
+                  example: Bola Basket
+                harga:
+                  type: integer
+                  example: 20000
+                kategori:
+                  type: integer
+                  example: 1
+                deskripsi:
+                  type: string
+                  example: Ini bola saya
+                image:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: produk berhasil diperbaharui
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Unauthorized
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+    # Delete Product
+    delete:
+      tags:
+        - CRUD user products
+      summary: Delete Product
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+            example: 159
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: delete produk berhasil
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Unauthorized
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  # find products by kategori
+  /api/v1/filterProducts:
+    get:
+      tags:
+        - CRUD user products
+      summary: list products by iduser
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: iduser
+          schema:
+            type: integer
+            example: 38
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/listProduct'
+        400:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: failed fetch products by iduser
 
-  # list all products
 
-#==============================================================
 components:
   securitySchemes:
     bearerAuth: # arbitrary name for the security scheme
@@ -607,7 +800,6 @@ components:
             minat:
               type: integer
               format: null
-
     listProduct:
       type: object
       properties:
