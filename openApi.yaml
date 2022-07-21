@@ -403,7 +403,60 @@ paths:
                     type: string
                     example: Failed add new product
 
-  # list all products
+   # list all products
+  /api/v1/products:
+    get:
+      tags:
+        - Products
+      summary: list all products
+      responses:
+        200:
+          descripstion: products fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/products'
+        400:
+          descripstion: products not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Products Not Found
+
+  # find products
+  /api/v1/products/{id}:
+    get:
+      tags:
+        - Products
+      summary: list all products
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        200:
+          descripstion: products fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/findProducts'
+        400:
+          descripstion: products not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Products Not Found
 
 #==============================================================
 components:
