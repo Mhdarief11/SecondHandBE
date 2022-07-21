@@ -3,7 +3,8 @@ const app = require("../../../app");
 const productService = require("../../../app/services/productService");
 
 describe("GET /api/v1/products", () => {
-  jest.setTimeout(20000);
+  jest.setTimeout(10000);
+  let accessToken;
 
   beforeEach(async () => {
     accessToken = await request(app).post("/api/v1/auth/login").send({

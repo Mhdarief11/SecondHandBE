@@ -183,6 +183,7 @@ module.exports = {
       })
     }
   },
+  
   getProductByKategori: async (req, res) => {
     try {
       // let tokenPayload = { id: null };
@@ -298,21 +299,26 @@ module.exports = {
       const { id } = req.params
       // const productPic = await productService.findProductPic(id)
       // console.log(productPic)
-      if (id == null) {
+      if (id == null || id == "null") {
         res.status(400).json({
           message: 'gambar produk tidak tersedia',
         })
         return
       }
+
       const getDetails = new ImageKitActions('', '', '')
       result = await getDetails.getImgDetails(id)
       // console.log(result)
-      if (getDetails == '' || getDetails == 'error') {
+      if (result == '' || result == 'error') {
         res.status(422).json({
           message: 'detail gambar gagal diambil',
         })
         return
       }
+
+      /* if (result == null || result == "null") {
+
+      } */
 
       res.status(201).json({
         gambar: result,

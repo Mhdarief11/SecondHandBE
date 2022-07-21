@@ -46,6 +46,7 @@ apiRouter.get(
   '/api/v1/products/picture/:id',
   controllers.api.v1.productController.findProductPic,
 )
+
 apiRouter.get(
   '/api/v1/products/:id',
   controllers.api.v1.productController.getProductById,

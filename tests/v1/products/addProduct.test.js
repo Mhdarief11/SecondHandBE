@@ -2,10 +2,10 @@ const request = require("supertest");
 const app = require("../../../app");
 /* const { barang, gambarbarang } = require("../../../app/models");
 const ImageKitActions = require('../../../app/imageKit/ImageKitActions'); */
-const productService = require('../../../app/services/productService');
+const productService = require("../../../app/services/productService");
 
 describe("POST /api/v1/products", () => {
-    jest.setTimeout(20000);
+  jest.setTimeout(10000);
   let accessToken;
   let imageUpload;
   /* afterAll(async () => {
@@ -14,7 +14,7 @@ describe("POST /api/v1/products", () => {
     return deleteAkun;
   }) */
 
-  console.log(process.cwd())
+  console.log(process.cwd());
 
   beforeAll(async () => {
     accessToken = await request(app).post("/api/v1/auth/login").send({
@@ -24,25 +24,24 @@ describe("POST /api/v1/products", () => {
 
     // imageUpload = fs.readFileSync('tests/v1/products/test_images/Sarif_Ind-Pocket_Secretary.png');
 
-    return accessToken/* , imageUpload */;
+    return accessToken /* , imageUpload */;
   });
 
   afterAll(async () => {
-
     accessToken = await request(app).post("/api/v1/auth/login").send({
-        email: "yehezkielve@mail.com",
-        password: "coba123",
-      });
+      email: "yehezkielve@mail.com",
+      password: "coba123",
+    });
 
     const listProduk = await productService.list();
 
     const produk = listProduk.barang;
 
-    for(let i = 0; i < produk.length; i++) {
-        await request(app).delete(`/api/v1/product/${produk[i].id}`).set("Authorization", `Bearer ${accessToken.body.token}`);
+    for (let i = 0; i < produk.length; i++) {
+      await request(app).delete(`/api/v1/product/${produk[i].id}`).set("Authorization", `Bearer ${accessToken.body.token}`);
     }
 
-   /*  for(const i = 0; i < produk.barang; i++) {
+    /*  for(const i = 0; i < produk.barang; i++) {
         for(const j = 0; j<produk.barang[i].gambarbarangs.length; j++) {
             let deleteImgResponse = await imageKitDelete.deleteImg(produk.barang[i].gambarbarangs[j].gambar);
 
@@ -55,8 +54,7 @@ describe("POST /api/v1/products", () => {
 
     // return barang.destroy({ where: {iduser : 304} })
     return;
-
-  })
+  });
 
   it("should response with 201 as status code", async () => {
     const id = accessToken.body.id;
@@ -84,16 +82,16 @@ describe("POST /api/v1/products", () => {
         );
       }); */
 
-      return request(app)
+    return request(app)
       .post("/api/v1/products")
       .set("Authorization", `Bearer ${accessToken.body.token}`)
       .set("Content-Type", "multipart/form-data")
-      .field('id', id)
-      .field('nama', nama)
-      .field('kategori', kategori)
-      .field('harga', harga)
-      .field('deskripsi', deskripsi)
-      .attach('image', `${__dirname}/test_images/Sarif_Ind-Pocket_Secretary.png`)
+      .field("id", id)
+      .field("nama", nama)
+      .field("kategori", kategori)
+      .field("harga", harga)
+      .field("deskripsi", deskripsi)
+      .attach("image", `${__dirname}/test_images/Sarif_Ind-Pocket_Secretary.png`)
       .then((res) => {
         expect(res.statusCode).toBe(201);
         expect(res.body).toEqual(
@@ -118,12 +116,12 @@ describe("POST /api/v1/products", () => {
       .post("/api/v1/products")
       .set("Authorization", `Bearer ${accessToken.body.token}`)
       .set("Content-Type", "multipart/form-data")
-      .field('id', id)
-      .field('nama', nama)
-      .field('kategori', kategori)
-      .field('harga', harga)
-      .field('deskripsi', deskripsi)
-      .field('image', image)
+      .field("id", id)
+      .field("nama", nama)
+      .field("kategori", kategori)
+      .field("harga", harga)
+      .field("deskripsi", deskripsi)
+      .field("image", image)
       .then((res) => {
         expect(res.statusCode).toBe(400);
         expect(res.body).toEqual(
