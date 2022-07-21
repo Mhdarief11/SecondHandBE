@@ -403,21 +403,23 @@ paths:
                     type: string
                     example: Failed add new product
 
-   # list all products
-  /api/v1/products:
+  # list all products
+
+  # list all transaction
+  /api/v1/transaction:
     get:
       tags:
-        - Products
-      summary: list all products
+        - transaction
+      summary: list all transaction
       responses:
         200:
-          descripstion: products fetched
+          descripstion: transaction fetched
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/products'
+                $ref: '#/components/schemas/transaction'
         400:
-          descripstion: products not found
+          descripstion: transaction not found
           content:
             application/json:
               schema:
@@ -425,14 +427,14 @@ paths:
                 properties:
                   message:
                     type: string
-                    example: Products Not Found
+                    example: Transaction Not Found
 
-  # find products
-  /api/v1/products/{id}:
+  # find transaction by id
+  /api/v1/transaction/{id}:
     get:
       tags:
-        - Products
-      summary: list all products
+        - Transaction
+      summary: search transaction by id
       parameters:
         - in: path
           name: id
@@ -442,13 +444,13 @@ paths:
             minimum: 1
       responses:
         200:
-          descripstion: products fetched
+          descripstion: transaction found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/findProducts'
+                $ref: '#/components/schemas/findTransaction'
         400:
-          descripstion: products not found
+          descripstion: transaction not found
           content:
             application/json:
               schema:
@@ -456,7 +458,7 @@ paths:
                 properties:
                   message:
                     type: string
-                    example: Products Not Found
+                    example: Transaction Not Found
 
 #==============================================================
 components:
