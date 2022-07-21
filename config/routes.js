@@ -45,12 +45,14 @@ apiRouter.get(
   '/api/v1/products/picture/:id',
   controllers.api.v1.productController.findProductPic,
 )
+
+// get product by id
 apiRouter.get(
   '/api/v1/products/:id',
   controllers.api.v1.productController.getProductById,
 )
 
-// get kategori
+// get product by kategori
 apiRouter.get(
   '/api/v1/product/kategori',
   controllers.api.v1.productController.getProductByKategori,
@@ -58,7 +60,7 @@ apiRouter.get(
 
 //delete router
 apiRouter.delete(
-  '/api/v1/product/:id',
+  '/api/v1/products/:id',
   controllers.api.v1.userController.authorize,
   controllers.api.v1.productController.deleteProduct,
 )
@@ -72,19 +74,20 @@ apiRouter.post(
 )
 //update barang
 apiRouter.put(
-  '/api/v1/product/:id',
+  '/api/v1/products/:id',
   controllers.api.v1.userController.authorize,
   uploadOnMemory.array('image', 4),
   controllers.api.v1.productController.updateProduct,
 )
 
-// filter products by user id
+// filter products by not user id
 apiRouter.get(
   '/api/v1/filterProducts',
   controllers.api.v1.userController.authorize,
   controllers.api.v1.productController.filterProductsUser,
 )
 
+// filter product by category and not user id
 apiRouter.get(
   '/api/v1/filterProductsCateg',
   controllers.api.v1.userController.authorize,
