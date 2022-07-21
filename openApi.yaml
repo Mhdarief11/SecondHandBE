@@ -11,11 +11,11 @@ tags:
   - name: City
     description: list all city and search users city
   - name: Category
-    descripstion: list all category and search products category
+    description: list all category and search products category
   - name: Authentication User
-    descripstion: Register and login User
-  - Prodcuts: CRUD user products
-    descripstion: products
+    description: Register and login User
+  - name: CRUD user products
+    description: products
 paths:
   /api/v1/category:
     get:
@@ -24,13 +24,13 @@ paths:
       summary: list all category
       responses:
         200:
-          descripstion: category fetched
+          description: category fetched
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/category'
         400:
-          descripstion: category not found
+          description: category not found
           content:
             application/json:
               schema:
@@ -54,13 +54,13 @@ paths:
             minimum: 1
       responses:
         200:
-          descripstion: category fetched
+          description: category fetched
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/findCategory'
         400:
-          descripstion: category not found
+          description: category not found
           content:
             application/json:
               schema:
@@ -83,7 +83,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/city'
         400:
-          descripstion:
+          description:
           content:
             application/json:
               schema:
@@ -107,13 +107,13 @@ paths:
             minimum: 1
       responses:
         200:
-          descripstion: city found
+          description: city found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/findCity'
         400:
-          descripstion: city not found
+          description: city not found
           content:
             application/json:
               schema:
@@ -147,13 +147,13 @@ paths:
         required: true
       responses:
         201:
-          descripstion: Register successfully
+          description: Register successfully
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/register'
         400:
-          descripstion: email exists
+          description: email exists
           content:
             application/json:
               schema:
@@ -163,7 +163,7 @@ paths:
                     type: string
                     example: Email already exists
         422:
-          descripstion: Register failed
+          description: Register failed
           content:
             application/json:
               schema:
@@ -193,13 +193,13 @@ paths:
         required: true
       responses:
         201:
-          descripstion: Login successfully
+          description: Login successfully
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/login'
         400:
-          descripstion: Login failed
+          description: Login failed
           content:
             application/json:
               schema:
@@ -209,7 +209,7 @@ paths:
                     type: string
                     example: login failed
         401:
-          descripstion: Password incorrect
+          description: Password incorrect
           content:
             application/json:
               schema:
@@ -219,7 +219,7 @@ paths:
                     type: string
                     example: Password incorrect
         404:
-          descripstion: Email not found
+          description: Email not found
           content:
             application/json:
               schema:
@@ -244,7 +244,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/whoami'
         400:
-          descripstion:
+          description:
           content:
             application/json:
               schema:
@@ -293,7 +293,7 @@ paths:
         required: true
       responses:
         201:
-          descripstion: Update successfully
+          description: Update successfully
           content:
             multipart/form-data:
               schema:
@@ -303,7 +303,7 @@ paths:
                     type: string
                     example: OK
         404:
-          descripstion: user email not found
+          description: user email not found
           content:
             multipart/form-data:
               schema:
@@ -313,7 +313,7 @@ paths:
                     type: string
                     example: User Tidak Ditemukan !
         422:
-          descripstion: Update failed
+          description: Update failed
           content:
             multipart/form-data:
               schema:
@@ -323,7 +323,7 @@ paths:
                     type: string
                     example: Update Failed
         401:
-          descripstion: Unauthorized
+          description: Unauthorized
           content:
             application/json:
               schema:
@@ -335,6 +335,7 @@ paths:
 
   # add new products
   /api/v1/products:
+    #--------------------------------- list all products
     get:
       tags:
         - CRUD user products
@@ -387,13 +388,13 @@ paths:
 
       responses:
         201:
-          descripstion: new product added
+          description: new product added
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/addProduct'
         400:
-          descripstion:
+          description:
           content:
             application/json:
               schema:
@@ -403,36 +404,12 @@ paths:
                     type: string
                     example: Failed add new product
 
-   # list all products
-  /api/v1/products:
-    get:
-      tags:
-        - Products
-      summary: list all products
-      responses:
-        200:
-          descripstion: products fetched
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/products'
-        400:
-          descripstion: products not found
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Products Not Found
-
-  # find products
+  # get product by id
   /api/v1/products/{id}:
     get:
       tags:
-        - Products
-      summary: list all products
+        - CRUD user products
+      summary: find product by id
       parameters:
         - in: path
           name: id
@@ -442,13 +419,11 @@ paths:
             minimum: 1
       responses:
         200:
-          descripstion: products fetched
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/findProducts'
+                $ref: '#/components/schemas/findProductById'
         400:
-          descripstion: products not found
           content:
             application/json:
               schema:
@@ -456,7 +431,203 @@ paths:
                 properties:
                   message:
                     type: string
-                    example: Products Not Found
+                    example: produk tidak ditemukan
+
+    # delete product
+    delete:
+      tags:
+        - CRUD user products
+      summary: delete user products
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimun: 1
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: OK
+                  message:
+                    type: string
+                    example: Product Deleted
+        400:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: error message
+
+    # update products
+    put:
+      tags:
+        - CRUD user products
+      summary: update user products
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimun: 1
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                nama:
+                  type: string
+                  example: Bola Basket
+                harga:
+                  type: integer
+                  example: 20000
+                kategori:
+                  type: integer
+                  example: 1
+                deskripsi:
+                  type: string
+                  example: Ini bola saya
+                image:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+      responses:
+        201:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Update success
+                  product:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 210
+                        idbarang:
+                          type: integer
+                          example: 172
+                        gambar:
+                          type: string
+                          example: 62d11f42b048bd90aedbb838
+                        createdAt:
+                          type: string
+                          format: date-time
+                        updatedAt:
+                          type: string
+                          format: date-time
+        400:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: error message
+
+  # get product by kategori
+  /api/v1/product/kategori:
+    get:
+      tags:
+        - CRUD user products
+      summary: filter product by category
+      parameters:
+        - in: query
+          name: idkategori
+          type: integer
+          description: id kategori
+          minimum: 1
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/filterProductByCategory'
+        400:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Produk tidak ditemukan
+
+  # filter product by not user id
+  /api/v1/filterProducts:
+    get:
+      tags:
+        - CRUD user products
+      summary: filter product by not User id
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/filterProductNotUserId'
+        400:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: error message
+
+  # filter product by not user id and category
+  /api/v1/filterProductsCateg:
+    get:
+      tags:
+        - CRUD user products
+      summary: filter products by not user id and category
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: idkategori
+          type: integer
+          minimum: 1
+          description: category id
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/filterProductByUserIdCateg'
+        400:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: error message
 
 #==============================================================
 components:
@@ -731,3 +902,336 @@ components:
                       updatedAt:
                         type: string
                         format: date-time
+
+    # filter product by ID
+    findProductById:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 179
+        iduser:
+          type: integer
+          example: 8
+        idkategori:
+          type: integer
+          example: 2
+        nama:
+          type: string
+          example: Mobil Baru
+        harga:
+          type: integer
+          example: 900000
+        deskripsi:
+          type: string
+          example: ini mobil baru
+        available:
+          type: boolean
+          example: false
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        user:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 8
+            idkota:
+              type: integer
+              example: 46
+            nama:
+              type: string
+              example: Yehezkiel
+            email:
+              type: string
+              example: yehezkielermanto28@gmail.com
+            alamat:
+              type: string
+              example: Perum Citra Fajar Golf AT 2000
+            nohp:
+              type: string
+              example: 089529633429
+            gambar:
+              type: string
+              example: 62d41a34a94e8825f24e755b
+            googleId:
+              type: string
+              example: 107767344266633909261
+            registeredVia:
+              type: string
+              example: google
+            createdAt:
+              type: string
+              example: date-time
+            updatedAt:
+              type: string
+              example: date-time
+        kategori:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 2
+            nama_kategori:
+              type: string
+              example: Kendaraan
+            createdAt:
+              type: string
+              example: date-time
+            updatedAt:
+              type: string
+              example: date-time
+        gambarbarangs:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 228
+              idbarang:
+                type: integer
+                example: 179
+              gambar:
+                type: string
+                example: 62d7e54a11d8f53d187617db
+              createdAt:
+                type: string
+                format: date-time
+              updatedAt:
+                type: string
+                format: date-time
+
+    # filter product by Category
+    filterProductByCategory:
+      type: object
+      properties:
+        barang:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 168
+              iduser:
+                type: integer
+                example: 8
+              idkategori:
+                type: integer
+                example: 1
+              nama:
+                type: string
+                example: Bola Basket
+              harga:
+                type: integer
+                example: 200000
+              deskripsi:
+                type: string
+                example: ini bola Basket
+              available:
+                type: boolean
+                example: false
+              createdAt:
+                type: string
+                format: date-time
+              updatedAt:
+                type: string
+                format: date-time
+              gambarbarangs:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 206
+                    idbarang:
+                      type: integer
+                      example: 168
+                    gambar:
+                      type: string
+                      example: 62d0291dd5bdcd1842d9d520
+                    createdAt:
+                      type: string
+                      format: date-time
+                    updatedAt:
+                      type: string
+                      format: date-time
+              kategori:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  nama_kategori:
+                    type: string
+                    example: Hobi
+                  createdAt:
+                    type: string
+                    format: date-time
+                  updatedAt:
+                    type: string
+                    format: date-time
+
+    filterProductNotUserId:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            barang:
+              type: array
+              items:
+                type: object
+                properties:
+                  barang:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 168
+                        iduser:
+                          type: integer
+                          example: 8
+                        idkategori:
+                          type: integer
+                          example: 1
+                        nama:
+                          type: string
+                          example: Bola Basket
+                        harga:
+                          type: integer
+                          example: 200000
+                        deskripsi:
+                          type: string
+                          example: ini bola Basket
+                        available:
+                          type: boolean
+                          example: false
+                        createdAt:
+                          type: string
+                          format: date-time
+                        updatedAt:
+                          type: string
+                          format: date-time
+                        gambarbarangs:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                                example: 206
+                              idbarang:
+                                type: integer
+                                example: 168
+                              gambar:
+                                type: string
+                                example: 62d0291dd5bdcd1842d9d520
+                              createdAt:
+                                type: string
+                                format: date-time
+                              updatedAt:
+                                type: string
+                                format: date-time
+                        kategori:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            nama_kategori:
+                              type: string
+                              example: Hobi
+                            createdAt:
+                              type: string
+                              format: date-time
+                            updatedAt:
+                              type: string
+                              format: date-time
+
+    filterProductByUserIdCateg:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            barang:
+              type: array
+              items:
+                type: object
+                properties:
+                  barang:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 168
+                        iduser:
+                          type: integer
+                          example: 8
+                        idkategori:
+                          type: integer
+                          example: 1
+                        nama:
+                          type: string
+                          example: Bola Basket
+                        harga:
+                          type: integer
+                          example: 200000
+                        deskripsi:
+                          type: string
+                          example: ini bola Basket
+                        available:
+                          type: boolean
+                          example: false
+                        createdAt:
+                          type: string
+                          format: date-time
+                        updatedAt:
+                          type: string
+                          format: date-time
+                        gambarbarangs:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                                example: 206
+                              idbarang:
+                                type: integer
+                                example: 168
+                              gambar:
+                                type: string
+                                example: 62d0291dd5bdcd1842d9d520
+                              createdAt:
+                                type: string
+                                format: date-time
+                              updatedAt:
+                                type: string
+                                format: date-time
+                        kategori:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            nama_kategori:
+                              type: string
+                              example: Hobi
+                            createdAt:
+                              type: string
+                              format: date-time
+                            updatedAt:
+                              type: string
+                              format: date-time
