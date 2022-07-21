@@ -7,7 +7,7 @@ module.exports = {
   // tampilkan semua barang
   async listAll(req, res) {
     try {
-      const product = await productService.list()
+      const product = await productService.list();
       // console.log(product)
       if (product.totalBarang === 0) {
         res.status(404).json({
@@ -15,9 +15,11 @@ module.exports = {
         })
         return
       }
+
       res.status(200).json({
         data: product,
       })
+
     } catch (error) {
       res.status(400).json({
         message: error.message,
@@ -35,6 +37,7 @@ module.exports = {
         nama: req.body.nama,
         harga: req.body.harga,
         deskripsi: req.body.deskripsi,
+        available: true,
       }
       const addProduct = await productService.addProduct(product)
       console.log('ini request body image')
