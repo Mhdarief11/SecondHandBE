@@ -4,7 +4,7 @@ const app = require("../../../../app");
 // const productService = require("../../../../app/services/productService");
 
 describe("DELETE /api/v1/product/:id", () => {
-  jest.setTimeout(15000);
+  jest.setTimeout(20000);
 
   let accessToken, products;
 
@@ -80,7 +80,7 @@ describe("DELETE /api/v1/product/:id", () => {
     // console.log(products.body)
 
     return request(app)
-      .delete(`/api/v1/product/${products.body.product.id}`)
+      .delete(`/api/v1/products/${products.body.product.id}`)
       .set('Authorization', `Bearer ${accessToken.body.token}`)
       .then((res) => {
         expect(res.statusCode).toBe(200);

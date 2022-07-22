@@ -3,7 +3,7 @@ const request = require("supertest");
 const app = require("../../../../app");
 
 describe("GET /api/v1/product/kategori", () => {
-  jest.setTimeout(15000);
+  jest.setTimeout(20000);
 
   let accessToken, products;
 
@@ -38,7 +38,7 @@ describe("GET /api/v1/product/kategori", () => {
   afterAll(async () => {
     // console.log("AFTER ALL");
 
-    await request(app).delete(`/api/v1/product/${products.body.product.id}`).set("Authorization", `Bearer ${accessToken.body.token}`);
+    await request(app).delete(`/api/v1/products/${products.body.product.id}`).set("Authorization", `Bearer ${accessToken.body.token}`);
 
     return;
   });

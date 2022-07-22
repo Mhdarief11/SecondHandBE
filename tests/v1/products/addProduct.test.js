@@ -5,7 +5,7 @@ const ImageKitActions = require('../../../app/imageKit/ImageKitActions'); */
 const productService = require("../../../app/services/productService");
 
 describe("POST /api/v1/products", () => {
-  jest.setTimeout(15000);
+  jest.setTimeout(20000);
 
   let accessToken;
   // let imageUpload;
@@ -39,7 +39,7 @@ describe("POST /api/v1/products", () => {
     const produk = listProduk.barang;
 
     for (let i = 0; i < produk.length; i++) {
-      await request(app).delete(`/api/v1/product/${produk[i].id}`).set("Authorization", `Bearer ${accessToken.body.token}`);
+      await request(app).delete(`/api/v1/products/${produk[i].id}`).set("Authorization", `Bearer ${accessToken.body.token}`);
     }
 
     /*  for(const i = 0; i < produk.barang; i++) {

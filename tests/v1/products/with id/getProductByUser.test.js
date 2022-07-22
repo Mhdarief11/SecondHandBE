@@ -4,7 +4,7 @@ const app = require("../../../../app");
 const productService = require("../../../../app/services/productService");
 
 describe("GET /api/v1/filterProducts", () => {
-  jest.setTimeout(15000);
+  jest.setTimeout(20000);
 
   let accessToken, products;
 
@@ -39,7 +39,7 @@ describe("GET /api/v1/filterProducts", () => {
   afterAll(async () => {
     // console.log("AFTER ALL");
 
-    await request(app).delete(`/api/v1/product/${products.body.product.id}`).set("Authorization", `Bearer ${accessToken.body.token}`);
+    await request(app).delete(`/api/v1/products/${products.body.product.id}`).set("Authorization", `Bearer ${accessToken.body.token}`);
 
    /*  accessToken = await request(app).post("/api/v1/auth/login").send({
       email: "yehezkielve@mail.com",

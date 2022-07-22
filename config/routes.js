@@ -1,49 +1,50 @@
-const express = require('express')
-const controllers = require('../app/controllers')
-const apiRouter = express.Router()
-const uploadOnMemory = require('../app/services/uploadOnMemory')
-const yaml = require('yamljs')
-const swaggerUi = require('swagger-ui-express')
-const swaggerDocument = yaml.load('./openApi.yaml')
+const express = require("express");
+const controllers = require("../app/controllers");
+const apiRouter = express.Router();
+const uploadOnMemory = require("../app/services/uploadOnMemory");
+const yaml = require("yamljs");
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = yaml.load("./openApi.yaml");
 
 // ---------------------------------ROOT ENDPOINT----------------------
 apiRouter.get('/', controllers.api.v1.userController.handleRoot)
 
 // -----------------------------------AUTH USER-----------------------
 apiRouter.post(
-  '/api/v1/auth/register',
-  controllers.api.v1.userController.register,
-)
+  "/api/v1/auth/register",
+  controllers.api.v1.userController.register
+);
 
 //login
-apiRouter.post('/api/v1/auth/login', controllers.api.v1.userController.login)
-apiRouter.post('/api/v1/auth/google', controllers.api.v1.userController.Google)
+apiRouter.post("/api/v1/auth/login", controllers.api.v1.userController.login);
+apiRouter.post("/api/v1/auth/google", controllers.api.v1.userController.Google);
 
 // ---------------------------------------USER DATA---------------------------
 // GET USER DATA
 apiRouter.get(
-  '/api/v1/users/siapaSaya',
+  "/api/v1/users/siapaSaya",
   controllers.api.v1.userController.authorize,
-  controllers.api.v1.userController.whoAmI,
-)
+  controllers.api.v1.userController.whoAmI
+);
 
 // GET PROFILE IMG DETAILS
 apiRouter.get(
-  '/api/v1/users/profileImg/details/:id',
-  controllers.api.v1.userController.getImg,
-)
+  "/api/v1/users/profileImg/details/:id",
+  controllers.api.v1.userController.getImg
+);
 
 // UPDATE USER PROFILE
 apiRouter.put(
-  '/api/v1/users/update/:id',
+  "/api/v1/users/update/:id",
   controllers.api.v1.userController.authorize,
-  uploadOnMemory.single('gambar'),
-  controllers.api.v1.userController.update,
-)
+  uploadOnMemory.single("gambar"),
+  controllers.api.v1.userController.update
+);
 
 // ------------------------------------PRODUCTS-------------------------------------------
 
 //barang list all
+
 apiRouter.get(
   '/api/v1/products', controllers.api.v1.productController.listAll)
 
@@ -54,78 +55,86 @@ apiRouter.get(
 )
 
 // get product by id
+
 apiRouter.get(
-  '/api/v1/products/:id',
-  controllers.api.v1.productController.getProductById,
-)
+  "/api/v1/products/:id",
+  controllers.api.v1.productController.getProductById
+);
 
 // get product by kategori
 apiRouter.get(
-  '/api/v1/product/kategori',
-  controllers.api.v1.productController.getProductByKategori,
-)
+  "/api/v1/product/kategori",
+  controllers.api.v1.productController.getProductByKategori
+);
+
+apiRouter.get(
+  "/api/v1/product/nama",
+  controllers.api.v1.productController.getProductByName
+);
 
 //delete router
 apiRouter.delete(
   '/api/v1/products/:id',
+
   controllers.api.v1.userController.authorize,
-  controllers.api.v1.productController.deleteProduct,
-)
+  controllers.api.v1.productController.deleteProduct
+);
 
 // tambah barang
 apiRouter.post(
-  '/api/v1/products',
-  uploadOnMemory.array('image', 4),
+  "/api/v1/products",
+  uploadOnMemory.array("image", 4),
   controllers.api.v1.userController.authorize,
-  controllers.api.v1.productController.addProduct,
-)
+  controllers.api.v1.productController.addProduct
+);
 //update barang
 apiRouter.put(
   '/api/v1/products/:id',
+
   controllers.api.v1.userController.authorize,
-  uploadOnMemory.array('image', 4),
-  controllers.api.v1.productController.updateProduct,
-)
+  uploadOnMemory.array("image", 4),
+  controllers.api.v1.productController.updateProduct
+);
 
 // filter products by not user id
 apiRouter.get(
-  '/api/v1/filterProducts',
+  "/api/v1/filterProducts",
   controllers.api.v1.userController.authorize,
-  controllers.api.v1.productController.filterProductsUser,
-)
+  controllers.api.v1.productController.filterProductsUser
+);
 
 // filter product by category and not user id
 apiRouter.get(
-  '/api/v1/filterProductsCateg',
+  "/api/v1/filterProductsCateg",
   controllers.api.v1.userController.authorize,
-  controllers.api.v1.productController.filterCategorybyUserId,
-)
+  controllers.api.v1.productController.filterCategorybyUserId
+);
 
 // ---------------------------------CATEGORY-------------------------
 // add new products category
 apiRouter.post(
-  '/api/v1/category',
-  controllers.api.v1.productController.addCategory,
-)
+  "/api/v1/category",
+  controllers.api.v1.productController.addCategory
+);
 
 // list all category
 apiRouter.get(
-  '/api/v1/category',
-  controllers.api.v1.productController.listCategory,
-)
+  "/api/v1/category",
+  controllers.api.v1.productController.listCategory
+);
 
 // search category
 apiRouter.get(
-  '/api/v1/category/:id',
-  controllers.api.v1.productController.findCategory,
-)
+  "/api/v1/category/:id",
+  controllers.api.v1.productController.findCategory
+);
 
 // --------------------------------CITY--------------------------------------
 // list all city
-apiRouter.get('/api/v1/cities', controllers.api.v1.cityController.listAllCity)
+apiRouter.get("/api/v1/cities", controllers.api.v1.cityController.listAllCity);
 
 // search city by id
-apiRouter.get('/api/v1/cities/:id', controllers.api.v1.cityController.findCity)
+apiRouter.get("/api/v1/cities/:id", controllers.api.v1.cityController.findCity);
 
 //list all city
 apiRouter.get('/api/v1/cities', controllers.api.v1.cityController.listAllCity)
@@ -133,50 +142,50 @@ apiRouter.get('/api/v1/cities', controllers.api.v1.cityController.listAllCity)
 // ------------------------TRANSACTION--------------------------------------
 // list all transaction
 apiRouter.get(
-  '/api/v1/transaction',
-  controllers.api.v1.transactionController.listAll,
-)
+  "/api/v1/transaction",
+  controllers.api.v1.transactionController.listAll
+);
 
 // bid products
 apiRouter.post(
-  '/api/v1/transaction',
+  "/api/v1/transaction",
   controllers.api.v1.userController.authorize,
-  controllers.api.v1.transactionController.createBid,
-)
+  controllers.api.v1.transactionController.createBid
+);
 
 // find spesific bid
 apiRouter.get(
-  '/api/v1/transaction/:id',
-  controllers.api.v1.transactionController.findBid,
-)
+  "/api/v1/transaction/:id",
+  controllers.api.v1.transactionController.findBid
+);
 
 // deniedBid from seller
 apiRouter.put(
-  '/api/v1/transaction/:id',
+  "/api/v1/transaction/:id",
   controllers.api.v1.userController.authorize,
-  controllers.api.v1.transactionController.deniedBid,
-)
+  controllers.api.v1.transactionController.deniedBid
+);
 
 // acceptBid from seller
 apiRouter.put(
-  '/api/v1/transaction/product/:id',
+  "/api/v1/transaction/product/:id",
   controllers.api.v1.userController.authorize,
-  controllers.api.v1.transactionController.acceptBid,
-)
+  controllers.api.v1.transactionController.acceptBid
+);
 
 // sold product
 apiRouter.put(
-  '/api/v1/transaction/doneTrans/:idtrans/:idbarang',
+  "/api/v1/transaction/doneTrans/:idtrans/:idbarang",
   controllers.api.v1.userController.authorize,
-  controllers.api.v1.transactionController.productSold,
-)
+  controllers.api.v1.transactionController.productSold
+);
 
 // decline transaction
 apiRouter.put(
-  '/api/v1/transaction/declineTrans/:idtrans',
+  "/api/v1/transaction/declineTrans/:idtrans",
   controllers.api.v1.userController.authorize,
-  controllers.api.v1.transactionController.declineTrans,
-)
+  controllers.api.v1.transactionController.declineTrans
+);
 
 // make false status_pembelian
 apiRouter.put(
@@ -185,12 +194,18 @@ apiRouter.put(
   controllers.api.v1.transactionController.makeFalse,
 )
 // -----------------------------------------DOCS
-apiRouter.get('/api/v1/docs/swagger.json', (req, res) => {
-  res.status(200).json(swaggerDocument)
-})
-apiRouter.use('/api/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+apiRouter.get("/api/v1/docs/swagger.json", (req, res) => {
+  res.status(200).json(swaggerDocument);
+});
+apiRouter.use(
+  "/api/v1/docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDocument)
+);
+
 
 apiRouter.use(controllers.api.main.onLost)
 apiRouter.use(controllers.api.main.onError)
 
-module.exports = apiRouter
+
+module.exports = apiRouter;
