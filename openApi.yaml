@@ -332,6 +332,38 @@ paths:
                   message:
                     type: string
                     example: Unauthorized
+  /api/v1/users/profileImg/details/{id}:
+    get:
+      tags:
+        - Update User Profile
+      summary: get detail of an profile image from ImageKit
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of a user to get image id
+      responses:
+        201:
+          descripstion: Image Detail Fetched Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/profileImgDetail'   
+        404:
+          descripstion: Image Detail / User Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: OK
+                  dataImg:
+                    type: string
+                    example: error
 
   # add new products
   /api/v1/products:
@@ -404,26 +436,24 @@ paths:
                     type: string
                     example: Failed add new product
 
-  # get product by id
-  /api/v1/products/{id}:
+
+  # list all products
+
+  # list all transaction
+  /api/v1/transaction:
     get:
       tags:
-        - CRUD user products
-      summary: find product by id
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: integer
-            minimum: 1
+        - transaction
+      summary: list all transaction
       responses:
         200:
+          descripstion: transaction fetched
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/findProductById'
+                $ref: '#/components/schemas/transaction'
         400:
+          descripstion: transaction not found
           content:
             application/json:
               schema:
@@ -431,13 +461,15 @@ paths:
                 properties:
                   message:
                     type: string
-                    example: produk tidak ditemukan
 
-    # delete product
-    delete:
+                    example: Transaction Not Found
+
+  # find transaction by id
+  /api/v1/transaction/{id}:
+    get:
       tags:
-        - CRUD user products
-      summary: delete user products
+        - Transaction
+      summary: search transaction by id
       parameters:
         - in: path
           name: id
@@ -615,11 +647,13 @@ paths:
           description: category id
       responses:
         200:
+          descripstion: transaction found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/filterProductByUserIdCateg'
+                $ref: '#/components/schemas/findTransaction'
         400:
+          descripstion: transaction not found
           content:
             application/json:
               schema:
@@ -627,8 +661,8 @@ paths:
                 properties:
                   message:
                     type: string
-                    example: error message
 
+                    example: Transaction Not Found
 #==============================================================
 components:
   securitySchemes:
@@ -755,6 +789,106 @@ components:
             updatedAt:
               type: string
               format: date-time
+
+    profileImgDetail:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "OK"
+        dataImg:
+          type: object
+          properties:
+            type:
+              type: integer
+              example: 36
+            name:
+              type: string
+              example: "profileimgDan1657029775034Dan36_r9GHUt5RP"
+            createdAt:
+              type: string
+              example: "2022-07-05T14:02:57.082Z"
+            updatedAt:
+              type: string
+              example: "2022-07-05T14:02:57.082Z"
+            fileId:
+              type: string
+              example: user-address
+            tags:
+              type: integer
+              example: 555
+            AITags:
+              type: string
+              example: null
+            versionInfo:
+              type: object
+              properties:
+                versionInfo:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      example: "62c444900d00ed42bbbb44e9"
+                    name:
+                      type: string
+                      example: "Version 1"
+            embeddedMetadata:
+              type: object
+              properties:
+                versionInfo:
+                  type: object
+                  properties:
+                    XResolution:
+                      type: integer
+                      format: 96
+                    YResolution:
+                      type: integer
+                      format: 96
+                    ResolutionUnit:
+                      type: string
+                      format: "inches"
+                    DateCreated:
+                      type: string
+                      example: "2022-07-05T14:02:57.082Z"
+                    DateTimeCreated:
+                      type: string
+                      example: "2022-07-05T14:02:57.082Z"
+            customCoordinates:
+              type: string
+              format: null
+            customMetadata:
+              type: object
+              properties:
+            isPrivateFile:
+              type: boolean
+              example: false
+            url:
+              type: string
+              example: "https://ik.imagekit.io/jmprup9kb/userProfile/profileimgDan1657029775034Dan36_r9GHUt5RP"
+            thumbnail:
+              type: string
+              example: "https://ik.imagekit.io/jmprup9kb/tr:n-ik_ml_thumbnail/userProfile/profileimgDan1657029775034Dan36_r9GHUt5RP"
+            fileType:
+              type: string
+              example: "image"
+            filePath:
+              type: string
+              example: "/userProfile/profileimgDan1657029775034Dan36_r9GHUt5RP"
+            height:
+              type: integer
+              example: 1200
+            width:
+              type: integer
+              example: 1920
+            size:
+              type: integer
+              example: 198009
+            hasAlpha:
+              type: boolean
+              example: false
+            mime:
+              type: string
+              example: "image/jpeg"
 
     category:
       type: object
@@ -902,336 +1036,3 @@ components:
                       updatedAt:
                         type: string
                         format: date-time
-
-    # filter product by ID
-    findProductById:
-      type: object
-      properties:
-        id:
-          type: integer
-          example: 179
-        iduser:
-          type: integer
-          example: 8
-        idkategori:
-          type: integer
-          example: 2
-        nama:
-          type: string
-          example: Mobil Baru
-        harga:
-          type: integer
-          example: 900000
-        deskripsi:
-          type: string
-          example: ini mobil baru
-        available:
-          type: boolean
-          example: false
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-        user:
-          type: object
-          properties:
-            id:
-              type: integer
-              example: 8
-            idkota:
-              type: integer
-              example: 46
-            nama:
-              type: string
-              example: Yehezkiel
-            email:
-              type: string
-              example: yehezkielermanto28@gmail.com
-            alamat:
-              type: string
-              example: Perum Citra Fajar Golf AT 2000
-            nohp:
-              type: string
-              example: 089529633429
-            gambar:
-              type: string
-              example: 62d41a34a94e8825f24e755b
-            googleId:
-              type: string
-              example: 107767344266633909261
-            registeredVia:
-              type: string
-              example: google
-            createdAt:
-              type: string
-              example: date-time
-            updatedAt:
-              type: string
-              example: date-time
-        kategori:
-          type: object
-          properties:
-            id:
-              type: integer
-              example: 2
-            nama_kategori:
-              type: string
-              example: Kendaraan
-            createdAt:
-              type: string
-              example: date-time
-            updatedAt:
-              type: string
-              example: date-time
-        gambarbarangs:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: integer
-                example: 228
-              idbarang:
-                type: integer
-                example: 179
-              gambar:
-                type: string
-                example: 62d7e54a11d8f53d187617db
-              createdAt:
-                type: string
-                format: date-time
-              updatedAt:
-                type: string
-                format: date-time
-
-    # filter product by Category
-    filterProductByCategory:
-      type: object
-      properties:
-        barang:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: integer
-                example: 168
-              iduser:
-                type: integer
-                example: 8
-              idkategori:
-                type: integer
-                example: 1
-              nama:
-                type: string
-                example: Bola Basket
-              harga:
-                type: integer
-                example: 200000
-              deskripsi:
-                type: string
-                example: ini bola Basket
-              available:
-                type: boolean
-                example: false
-              createdAt:
-                type: string
-                format: date-time
-              updatedAt:
-                type: string
-                format: date-time
-              gambarbarangs:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                      example: 206
-                    idbarang:
-                      type: integer
-                      example: 168
-                    gambar:
-                      type: string
-                      example: 62d0291dd5bdcd1842d9d520
-                    createdAt:
-                      type: string
-                      format: date-time
-                    updatedAt:
-                      type: string
-                      format: date-time
-              kategori:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                    example: 1
-                  nama_kategori:
-                    type: string
-                    example: Hobi
-                  createdAt:
-                    type: string
-                    format: date-time
-                  updatedAt:
-                    type: string
-                    format: date-time
-
-    filterProductNotUserId:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            barang:
-              type: array
-              items:
-                type: object
-                properties:
-                  barang:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: integer
-                          example: 168
-                        iduser:
-                          type: integer
-                          example: 8
-                        idkategori:
-                          type: integer
-                          example: 1
-                        nama:
-                          type: string
-                          example: Bola Basket
-                        harga:
-                          type: integer
-                          example: 200000
-                        deskripsi:
-                          type: string
-                          example: ini bola Basket
-                        available:
-                          type: boolean
-                          example: false
-                        createdAt:
-                          type: string
-                          format: date-time
-                        updatedAt:
-                          type: string
-                          format: date-time
-                        gambarbarangs:
-                          type: array
-                          items:
-                            type: object
-                            properties:
-                              id:
-                                type: integer
-                                example: 206
-                              idbarang:
-                                type: integer
-                                example: 168
-                              gambar:
-                                type: string
-                                example: 62d0291dd5bdcd1842d9d520
-                              createdAt:
-                                type: string
-                                format: date-time
-                              updatedAt:
-                                type: string
-                                format: date-time
-                        kategori:
-                          type: object
-                          properties:
-                            id:
-                              type: integer
-                              example: 1
-                            nama_kategori:
-                              type: string
-                              example: Hobi
-                            createdAt:
-                              type: string
-                              format: date-time
-                            updatedAt:
-                              type: string
-                              format: date-time
-
-    filterProductByUserIdCateg:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            barang:
-              type: array
-              items:
-                type: object
-                properties:
-                  barang:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: integer
-                          example: 168
-                        iduser:
-                          type: integer
-                          example: 8
-                        idkategori:
-                          type: integer
-                          example: 1
-                        nama:
-                          type: string
-                          example: Bola Basket
-                        harga:
-                          type: integer
-                          example: 200000
-                        deskripsi:
-                          type: string
-                          example: ini bola Basket
-                        available:
-                          type: boolean
-                          example: false
-                        createdAt:
-                          type: string
-                          format: date-time
-                        updatedAt:
-                          type: string
-                          format: date-time
-                        gambarbarangs:
-                          type: array
-                          items:
-                            type: object
-                            properties:
-                              id:
-                                type: integer
-                                example: 206
-                              idbarang:
-                                type: integer
-                                example: 168
-                              gambar:
-                                type: string
-                                example: 62d0291dd5bdcd1842d9d520
-                              createdAt:
-                                type: string
-                                format: date-time
-                              updatedAt:
-                                type: string
-                                format: date-time
-                        kategori:
-                          type: object
-                          properties:
-                            id:
-                              type: integer
-                              example: 1
-                            nama_kategori:
-                              type: string
-                              example: Hobi
-                            createdAt:
-                              type: string
-                              format: date-time
-                            updatedAt:
-                              type: string
-                              format: date-time
