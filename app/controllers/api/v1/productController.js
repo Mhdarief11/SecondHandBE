@@ -18,11 +18,26 @@ module.exports = {
 
       res.status(200).json({
         data: product,
-      });
+
+      })
     } catch (error) {
       res.status(400).json({
         message: error.message,
       });
+    }
+  },
+  //------
+  getProductByName: async (req, res) => {
+    try {
+      const nama = req.query.nama.toLowerCase();
+      const barang = await productService.getByNama(nama);
+      console.log(nama);
+      res.status(200).json(barang);
+    } catch (error) {
+      res.status(500).json({
+        error: error.message,
+      });
+      console.log(error);
     }
   },
 
@@ -47,7 +62,11 @@ module.exports = {
 
         const gambarName = "products" + Date.now() + req.user.id;
         // initialization imagekit
-        const imgAddProduct = new ImageKitActions(picBase64, gambarName, "/userProducts");
+        const imgAddProduct = new ImageKitActions(
+          picBase64,
+          gambarName,
+          "/userProducts"
+        );
         const uploadImg_base64 = await imgAddProduct.createImg();
         console.log(uploadImg_base64.fileId);
         await productService.addImageProduct({
@@ -95,9 +114,15 @@ module.exports = {
           var picBase64 = req.files[i].buffer.toString("base64");
           var gambarName = "products" + Date.now() + req.user.id;
           // initialization imagekit
-          var imgUpdateProduct = new ImageKitActions(picBase64, gambarName, "/userProducts");
+          var imgUpdateProduct = new ImageKitActions(
+            picBase64,
+            gambarName,
+            "/userProducts"
+          );
           //delete old image di imageKit
-          const deleteImg_base64 = await imgUpdateProduct.deleteImg(Product.gambarbarangs[i].gambar);
+          const deleteImg_base64 = await imgUpdateProduct.deleteImg(
+            Product.gambarbarangs[i].gambar
+          );
           console.log(deleteImg_base64);
           console.log(Product.gambarbarangs[i].gambar);
           //delete old image di tabel
@@ -109,9 +134,15 @@ module.exports = {
           var picBase64 = req.files[i].buffer.toString("base64");
           var gambarName = "products" + Date.now() + req.user.id;
           // initialization imagekit
-          var imgUpdateProduct = new ImageKitActions(picBase64, gambarName, "/userProducts");
+          var imgUpdateProduct = new ImageKitActions(
+            picBase64,
+            gambarName,
+            "/userProducts"
+          );
           //delete old image di imageKit
-          const deleteImg_base64 = await imgUpdateProduct.deleteImg(Product.gambarbarangs[i].gambar);
+          const deleteImg_base64 = await imgUpdateProduct.deleteImg(
+            Product.gambarbarangs[i].gambar
+          );
           console.log(deleteImg_base64);
           console.log(Product.gambarbarangs[i].gambar);
           //delete old image di tabel
@@ -126,7 +157,11 @@ module.exports = {
         var picBase64 = req.files[j].buffer.toString("base64");
         var gambarName = "products" + Date.now() + req.user.id;
         // initialization imagekit
-        var imgUpdateProduct = new ImageKitActions(picBase64, gambarName, "/userProducts");
+        var imgUpdateProduct = new ImageKitActions(
+          picBase64,
+          gambarName,
+          "/userProducts"
+        );
 
         //add to imageKit
         const uploadImg_base64 = await imgUpdateProduct.createImg();
@@ -208,10 +243,13 @@ module.exports = {
 
         console.log(Product.gambarbarangs[i].gambar);
 
-        imagekit.deleteFile(Product.gambarbarangs[i].gambar, function (error, result) {
-          if (error) console.log(error);
-          else console.log(result);
-        });
+        imagekit.deleteFile(
+          Product.gambarbarangs[i].gambar,
+          function (error, result) {
+            if (error) console.log(error);
+            else console.log(result);
+          }
+        );
 
         //delete old image di tabel
         await productService.deleteProductPic(Product.gambarbarangs[i].id);
@@ -290,7 +328,8 @@ module.exports = {
       const getDetails = new ImageKitActions("", "", "");
       result = await getDetails.getImgDetails(id);
       // console.log(result)
-      if (result == "" || result == "error") {
+      if (result == '' || result == 'error') {
+
         res.status(422).json({
           message: "detail gambar gagal diambil",
         });
@@ -325,7 +364,10 @@ module.exports = {
   // filter products by category not user id  auth
   async filterCategorybyUserId(req, res) {
     try {
-      const product = await productService.filterCategoryAuth(req.user.id, req.query.idkategori);
+      const product = await productService.filterCategoryAuth(
+        req.user.id,
+        req.query.idkategori
+      );
       res.status(200).json({ data: product });
     } catch (error) {
       res.status(400).json({
