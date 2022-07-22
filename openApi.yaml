@@ -1035,3 +1035,10 @@ components:
                       updatedAt:
                         type: string
                         format: date-time
+
+    transaction:
+      type: object
+      properties:
+        message:
+          type: string
+          example: data terambil
