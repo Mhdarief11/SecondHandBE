@@ -49,12 +49,16 @@ apiRouter.get(
   controllers.api.v1.productController.findProductPic,
 )
 
+<<<<<<< HEAD
+=======
+// get product by id
+>>>>>>> 677f36111565d806479454799ffe7ce42e2653ee
 apiRouter.get(
   '/api/v1/products/:id',
   controllers.api.v1.productController.getProductById,
 )
 
-// get kategori
+// get product by kategori
 apiRouter.get(
   '/api/v1/product/kategori',
   controllers.api.v1.productController.getProductByKategori,
@@ -62,7 +66,7 @@ apiRouter.get(
 
 //delete router
 apiRouter.delete(
-  '/api/v1/product/:id',
+  '/api/v1/products/:id',
   controllers.api.v1.userController.authorize,
   controllers.api.v1.productController.deleteProduct,
 )
@@ -76,19 +80,20 @@ apiRouter.post(
 )
 //update barang
 apiRouter.put(
-  '/api/v1/product/:id',
+  '/api/v1/products/:id',
   controllers.api.v1.userController.authorize,
   uploadOnMemory.array('image', 4),
   controllers.api.v1.productController.updateProduct,
 )
 
-// filter products by user id
+// filter products by not user id
 apiRouter.get(
   '/api/v1/filterProducts',
   controllers.api.v1.userController.authorize,
   controllers.api.v1.productController.filterProductsUser,
 )
 
+// filter product by category and not user id
 apiRouter.get(
   '/api/v1/filterProductsCateg',
   controllers.api.v1.userController.authorize,
@@ -121,11 +126,7 @@ apiRouter.get('/api/v1/cities', controllers.api.v1.cityController.listAllCity)
 // search city by id
 apiRouter.get('/api/v1/cities/:id', controllers.api.v1.cityController.findCity)
 
-// docs
-apiRouter.get('/api/v1/docs/swagger.json', (req, res) => {
-  res.status(200).json(swaggerDocument)
-})
-apiRouter.use('/api/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+//list all city
 apiRouter.get('/api/v1/cities', controllers.api.v1.cityController.listAllCity)
 
 // ------------------------TRANSACTION--------------------------------------
@@ -176,21 +177,17 @@ apiRouter.put(
   controllers.api.v1.transactionController.declineTrans,
 )
 
+// make false status_pembelian
+apiRouter.put(
+  '/api/v1/transaction/makeFalse/:iduser/:idbarang',
+  controllers.api.v1.userController.authorize,
+  controllers.api.v1.transactionController.makeFalse,
+)
 // -----------------------------------------DOCS
 apiRouter.get('/api/v1/docs/swagger.json', (req, res) => {
   res.status(200).json(swaggerDocument)
 })
 apiRouter.use('/api/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
-
-/**
- * TODO: Delete this, this is just a demonstration of
- *       error handler
- */
-// apiRouter.get("/api/v1/errors", () => {
-//   throw new Error(
-//     "The Industrial Revolution and its consequences have been a disaster for the human race."
-//   );
-// });
 
 apiRouter.use(controllers.api.main.onLost)
 apiRouter.use(controllers.api.main.onError)

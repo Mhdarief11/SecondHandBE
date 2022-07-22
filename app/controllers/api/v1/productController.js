@@ -176,27 +176,29 @@ module.exports = {
   getProductById: async (req, res) => {
     try {
       const product = await productService.getById(req.params.id)
+      if (product == null) {
+        res.status(400).json({ message: 'produk tidak ditemukan' })
+        return
+      }
       res.status(200).json(product)
     } catch (error) {
-      res.status(500).json({
+      res.status(400).json({
         error: error.message,
       })
     }
   },
-  
+
+  // find product by kategori
   getProductByKategori: async (req, res) => {
     try {
-      // let tokenPayload = { id: null };
-      // if (req.headers.authorization !== "") {
-      //   const bearerToken = req.headers.authorization;
-      //   const token = bearerToken.split("Bearer ")[1];
-      //   tokenPayload = await verifyToken(token);
-      // }
-
       const product = await productService.getByKategori({
         // id: tokenPayload.id,
         idkategori: req.query.idkategori,
       })
+      if (product == '') {
+        res.status(400).json({ message: 'Produk tidak ditemukan' })
+        return
+      }
       res.status(200).json({ barang: product })
     } catch (error) {
       res.status(500).json({
@@ -330,7 +332,7 @@ module.exports = {
       })
     }
   },
-  // --------------filter products by user id not shown
+  // --------------filter products by not user id shown
   async filterProductsUser(req, res) {
     try {
       const userId = req.user.id
@@ -341,7 +343,7 @@ module.exports = {
     }
   },
 
-  // filter products by category user auth
+  // filter products by category not user id  auth
   async filterCategorybyUserId(req, res) {
     try {
       const product = await productService.filterCategoryAuth(

@@ -49,6 +49,16 @@ module.exports = {
       },
     )
   },
+
+  makeFalse(iduser, idbarang) {
+    return transaksi.update(
+      { status_pembelian: false },
+      {
+        where: { iduser: { [Op.ne]: iduser }, idbarang: { [Op.eq]: idbarang } },
+      },
+    )
+  },
+
   productSold(id, idbarang, idseller) {
     const update = transaksi.update(
       { status_pembelian: true },
