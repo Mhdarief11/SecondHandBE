@@ -7,7 +7,7 @@ module.exports = {
   // tampilkan semua barang
   async listAll(req, res) {
     try {
-      const product = await productService.list()
+      const product = await productService.list();
       // console.log(product)
       if (product.totalBarang === 0) {
         res.status(404).json({
@@ -15,9 +15,11 @@ module.exports = {
         })
         return
       }
+
       res.status(200).json({
         data: product,
       })
+
     } catch (error) {
       res.status(400).json({
         message: error.message,
@@ -35,6 +37,7 @@ module.exports = {
         nama: req.body.nama,
         harga: req.body.harga,
         deskripsi: req.body.deskripsi,
+        available: true,
       }
       const addProduct = await productService.addProduct(product)
       console.log('ini request body image')
@@ -298,21 +301,26 @@ module.exports = {
       const { id } = req.params
       // const productPic = await productService.findProductPic(id)
       // console.log(productPic)
-      if (id == null) {
+      if (id == null || id == "null") {
         res.status(400).json({
           message: 'gambar produk tidak tersedia',
         })
         return
       }
+
       const getDetails = new ImageKitActions('', '', '')
       result = await getDetails.getImgDetails(id)
-      console.log(result)
-      if (getDetails == '' || getDetails == 'error') {
+      // console.log(result)
+      if (result == '' || result == 'error') {
         res.status(422).json({
           message: 'detail gambar gagal diambil',
         })
         return
       }
+
+      /* if (result == null || result == "null") {
+
+      } */
 
       res.status(201).json({
         gambar: result,

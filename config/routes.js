@@ -23,6 +23,7 @@ apiRouter.get(
   controllers.api.v1.userController.whoAmI,
 )
 
+// GET PROFILE IMG DETAILS
 apiRouter.get(
   '/api/v1/users/profileImg/details/:id',
   controllers.api.v1.userController.getImg,
@@ -37,8 +38,10 @@ apiRouter.put(
 )
 
 // ------------------------------------PRODUCTS-------------------------------------------
+
 //barang list all
-apiRouter.get('/api/v1/products', controllers.api.v1.productController.listAll)
+apiRouter.get(
+  '/api/v1/products', controllers.api.v1.productController.listAll)
 
 // get product picture
 apiRouter.get(
