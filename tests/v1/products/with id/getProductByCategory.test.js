@@ -1,9 +1,8 @@
 /* eslint-disable no-undef */
 const request = require("supertest");
 const app = require("../../../../app");
-// const productService = require("../../../../app/services/productService");
 
-describe("GET /api/v1/products/:id", () => {
+describe("GET /api/v1/product/kategori", () => {
   jest.setTimeout(15000);
 
   let accessToken, products;
@@ -31,13 +30,7 @@ describe("GET /api/v1/products/:id", () => {
       .field("kategori", kategori)
       .field("harga", harga)
       .field("deskripsi", deskripsi)
-      .attach("image", `${__dirname}/../test_images/Sarif-Ind_Multitool.png`);
-
-    /* products = await request(app)
-    .get("/api/v1/filterProducts")
-    .set("Authorization", `Bearer ${accessToken.body.token}`); */
-
-    // console.log(products.body)
+      .attach("image", `${__dirname}/../test_images/J.C-Hacking_Scan.jpeg`);
 
     return accessToken, products;
   });
@@ -47,51 +40,20 @@ describe("GET /api/v1/products/:id", () => {
 
     await request(app).delete(`/api/v1/product/${products.body.product.id}`).set("Authorization", `Bearer ${accessToken.body.token}`);
 
-    /* accessToken = await request(app).post("/api/v1/auth/login").send({
-      email: "yehezkielve@mail.com",
-      password: "coba123",
-    }); 
-    
-    const listProduk = await productService.list();
-    const produk = listProduk.barang;
-
-    for (let i = 0; i < produk.length; i++) {
-      await request(app).delete(`/api/v1/product/${produk[i].id}`).set("Authorization", `Bearer ${accessToken.body.token}`);
-    } */
-
     return;
   });
 
   // State what the response should be if status code 201
   it("should response with 200 as status code and show product image details", async () => {
-    // console.log("IT 200");
-
-    // products = await request(app)
-    // .get("/api/v1/products");
-
-    // console.log(products.body.data.barang[0])
-
-    // console.log(products.body.id)
 
     return request(app)
       /* .get(`/api/v1/products/${products.body.data.barang[0].id}`) */
-      .get(`/api/v1/products/${products.body.product.id}`)
+      .get(`/api/v1/product/kategori?idkategori=${products.body.product.idkategori}`)
       .then((res) => {
         expect(res.statusCode).toBe(200);
         expect(res.body).toEqual(
           expect.objectContaining({
-            id: expect.any(Number),
-            iduser: expect.any(Number),
-            idkategori: expect.any(Number),
-            nama: expect.any(String),
-            harga: expect.any(Number),
-            deskripsi: expect.any(String),
-            available: expect.any(Boolean),
-            createdAt: expect.any(String),
-            updatedAt: expect.any(String),
-            user: expect.any(Object),
-            kategori: expect.any(Object),
-            gambarbarangs: expect.any(Object),
+            barang: expect.any(Array),
           })
         );
       });
