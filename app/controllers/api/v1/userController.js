@@ -345,6 +345,12 @@ class userController {
       return
     }
   }
+
+  static async handleRoot(req, res) {
+    res
+      .status(200)
+      .json({ message: 'goto /api/v1/docs to read full documentation' })
+  }
 }
 
 module.exports = userController

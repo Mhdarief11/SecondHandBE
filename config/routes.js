@@ -6,6 +6,10 @@ const yaml = require('yamljs')
 const swaggerUi = require('swagger-ui-express')
 const swaggerDocument = yaml.load('./openApi.yaml')
 
+// ---------------------------------ROOT ENDPOINT----------------------
+apiRouter.get('/', controllers.api.v1.userController.handleRoot)
+
+// -----------------------------------AUTH USER-----------------------
 apiRouter.post(
   '/api/v1/auth/register',
   controllers.api.v1.userController.register,

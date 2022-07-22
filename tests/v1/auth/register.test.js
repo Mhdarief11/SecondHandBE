@@ -5,15 +5,14 @@ describe('POST /api/v1/auth/register', () => {
   function makeUser() {
     var text = ''
     var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 3; i++) {
       text += possible.charAt(Math.floor(Math.random() * possible.length))
       return text
     }
   }
-
   it('should response with 201 as status code', async () => {
     const nama = 'yehezkiel'
-    const email = `${makeUser()}@mail.com`
+    const email = `${makeUser()}`
     const password = 'coba123'
     const registeredVia = 'website'
 
@@ -33,7 +32,7 @@ describe('POST /api/v1/auth/register', () => {
 
   it('should response with 400 as status code', async () => {
     const nama = 'yehezkiel'
-    const email = 'yehezkielve@mail.com'
+    const email = 'yehezkiel@mail.com'
     const password = 'coba123'
     const registeredVia = 'website'
 
