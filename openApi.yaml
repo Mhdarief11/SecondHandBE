@@ -350,7 +350,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/profileImgDetail'   
+                $ref: '#/components/schemas/profileImgDetail'
         404:
           descripstion: Image Detail / User Not Found
           content:
@@ -446,7 +446,7 @@ paths:
       summary: list all transaction
       responses:
         200:
-          descripstion: transaction fetched
+          description: transaction fetched
           content:
             application/json:
               schema:
@@ -794,7 +794,7 @@ components:
       properties:
         status:
           type: string
-          example: "OK"
+          example: 'OK'
         dataImg:
           type: object
           properties:
@@ -803,13 +803,13 @@ components:
               example: 36
             name:
               type: string
-              example: "profileimgDan1657029775034Dan36_r9GHUt5RP"
+              example: 'profileimgDan1657029775034Dan36_r9GHUt5RP'
             createdAt:
               type: string
-              example: "2022-07-05T14:02:57.082Z"
+              example: '2022-07-05T14:02:57.082Z'
             updatedAt:
               type: string
-              example: "2022-07-05T14:02:57.082Z"
+              example: '2022-07-05T14:02:57.082Z'
             fileId:
               type: string
               example: user-address
@@ -827,10 +827,10 @@ components:
                   properties:
                     id:
                       type: string
-                      example: "62c444900d00ed42bbbb44e9"
+                      example: '62c444900d00ed42bbbb44e9'
                     name:
                       type: string
-                      example: "Version 1"
+                      example: 'Version 1'
             embeddedMetadata:
               type: object
               properties:
@@ -845,13 +845,13 @@ components:
                       format: 96
                     ResolutionUnit:
                       type: string
-                      format: "inches"
+                      format: 'inches'
                     DateCreated:
                       type: string
-                      example: "2022-07-05T14:02:57.082Z"
+                      example: '2022-07-05T14:02:57.082Z'
                     DateTimeCreated:
                       type: string
-                      example: "2022-07-05T14:02:57.082Z"
+                      example: '2022-07-05T14:02:57.082Z'
             customCoordinates:
               type: string
               format: null
@@ -863,16 +863,16 @@ components:
               example: false
             url:
               type: string
-              example: "https://ik.imagekit.io/jmprup9kb/userProfile/profileimgDan1657029775034Dan36_r9GHUt5RP"
+              example: 'https://ik.imagekit.io/jmprup9kb/userProfile/profileimgDan1657029775034Dan36_r9GHUt5RP'
             thumbnail:
               type: string
-              example: "https://ik.imagekit.io/jmprup9kb/tr:n-ik_ml_thumbnail/userProfile/profileimgDan1657029775034Dan36_r9GHUt5RP"
+              example: 'https://ik.imagekit.io/jmprup9kb/tr:n-ik_ml_thumbnail/userProfile/profileimgDan1657029775034Dan36_r9GHUt5RP'
             fileType:
               type: string
-              example: "image"
+              example: 'image'
             filePath:
               type: string
-              example: "/userProfile/profileimgDan1657029775034Dan36_r9GHUt5RP"
+              example: '/userProfile/profileimgDan1657029775034Dan36_r9GHUt5RP'
             height:
               type: integer
               example: 1200
@@ -887,7 +887,7 @@ components:
               example: false
             mime:
               type: string
-              example: "image/jpeg"
+              example: 'image/jpeg'
 
     category:
       type: object
@@ -1035,3 +1035,10 @@ components:
                       updatedAt:
                         type: string
                         format: date-time
+
+    transaction:
+      type: object
+      properties:
+        message:
+          type: string
+          example: data terambil
