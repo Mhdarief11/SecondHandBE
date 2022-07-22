@@ -11,11 +11,11 @@ tags:
   - name: City
     description: list all city and search users city
   - name: Category
-    descripstion: list all category and search products category
+    description: list all category and search products category
   - name: Authentication User
-    descripstion: Register and login User
-  - Prodcuts: CRUD user products
-    descripstion: products
+    description: Register and login User
+  - name: CRUD user products
+    description: products
 paths:
   /api/v1/category:
     get:
@@ -24,13 +24,13 @@ paths:
       summary: list all category
       responses:
         200:
-          descripstion: category fetched
+          description: category fetched
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/category'
         400:
-          descripstion: category not found
+          description: category not found
           content:
             application/json:
               schema:
@@ -54,13 +54,13 @@ paths:
             minimum: 1
       responses:
         200:
-          descripstion: category fetched
+          description: category fetched
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/findCategory'
         400:
-          descripstion: category not found
+          description: category not found
           content:
             application/json:
               schema:
@@ -83,7 +83,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/city'
         400:
-          descripstion:
+          description:
           content:
             application/json:
               schema:
@@ -107,13 +107,13 @@ paths:
             minimum: 1
       responses:
         200:
-          descripstion: city found
+          description: city found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/findCity'
         400:
-          descripstion: city not found
+          description: city not found
           content:
             application/json:
               schema:
@@ -147,13 +147,13 @@ paths:
         required: true
       responses:
         201:
-          descripstion: Register successfully
+          description: Register successfully
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/register'
         400:
-          descripstion: email exists
+          description: email exists
           content:
             application/json:
               schema:
@@ -163,7 +163,7 @@ paths:
                     type: string
                     example: Email already exists
         422:
-          descripstion: Register failed
+          description: Register failed
           content:
             application/json:
               schema:
@@ -193,13 +193,13 @@ paths:
         required: true
       responses:
         201:
-          descripstion: Login successfully
+          description: Login successfully
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/login'
         400:
-          descripstion: Login failed
+          description: Login failed
           content:
             application/json:
               schema:
@@ -209,7 +209,7 @@ paths:
                     type: string
                     example: login failed
         401:
-          descripstion: Password incorrect
+          description: Password incorrect
           content:
             application/json:
               schema:
@@ -219,7 +219,7 @@ paths:
                     type: string
                     example: Password incorrect
         404:
-          descripstion: Email not found
+          description: Email not found
           content:
             application/json:
               schema:
@@ -244,7 +244,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/whoami'
         400:
-          descripstion:
+          description:
           content:
             application/json:
               schema:
@@ -293,7 +293,7 @@ paths:
         required: true
       responses:
         201:
-          descripstion: Update successfully
+          description: Update successfully
           content:
             multipart/form-data:
               schema:
@@ -303,7 +303,7 @@ paths:
                     type: string
                     example: OK
         404:
-          descripstion: user email not found
+          description: user email not found
           content:
             multipart/form-data:
               schema:
@@ -313,7 +313,7 @@ paths:
                     type: string
                     example: User Tidak Ditemukan !
         422:
-          descripstion: Update failed
+          description: Update failed
           content:
             multipart/form-data:
               schema:
@@ -323,7 +323,7 @@ paths:
                     type: string
                     example: Update Failed
         401:
-          descripstion: Unauthorized
+          description: Unauthorized
           content:
             application/json:
               schema:
@@ -332,9 +332,42 @@ paths:
                   message:
                     type: string
                     example: Unauthorized
+  /api/v1/users/profileImg/details/{id}:
+    get:
+      tags:
+        - Update User Profile
+      summary: get detail of an profile image from ImageKit
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of a user to get image id
+      responses:
+        201:
+          descripstion: Image Detail Fetched Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/profileImgDetail'   
+        404:
+          descripstion: Image Detail / User Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: OK
+                  dataImg:
+                    type: string
+                    example: error
 
   # add new products
   /api/v1/products:
+    #--------------------------------- list all products
     get:
       tags:
         - CRUD user products
@@ -387,13 +420,13 @@ paths:
 
       responses:
         201:
-          descripstion: new product added
+          description: new product added
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/addProduct'
         400:
-          descripstion:
+          description:
           content:
             application/json:
               schema:
@@ -403,8 +436,233 @@ paths:
                     type: string
                     example: Failed add new product
 
+
   # list all products
 
+  # list all transaction
+  /api/v1/transaction:
+    get:
+      tags:
+        - transaction
+      summary: list all transaction
+      responses:
+        200:
+          descripstion: transaction fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/transaction'
+        400:
+          descripstion: transaction not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+                    example: Transaction Not Found
+
+  # find transaction by id
+  /api/v1/transaction/{id}:
+    get:
+      tags:
+        - Transaction
+      summary: search transaction by id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimun: 1
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: OK
+                  message:
+                    type: string
+                    example: Product Deleted
+        400:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: error message
+
+    # update products
+    put:
+      tags:
+        - CRUD user products
+      summary: update user products
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimun: 1
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                nama:
+                  type: string
+                  example: Bola Basket
+                harga:
+                  type: integer
+                  example: 20000
+                kategori:
+                  type: integer
+                  example: 1
+                deskripsi:
+                  type: string
+                  example: Ini bola saya
+                image:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+      responses:
+        201:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Update success
+                  product:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 210
+                        idbarang:
+                          type: integer
+                          example: 172
+                        gambar:
+                          type: string
+                          example: 62d11f42b048bd90aedbb838
+                        createdAt:
+                          type: string
+                          format: date-time
+                        updatedAt:
+                          type: string
+                          format: date-time
+        400:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: error message
+
+  # get product by kategori
+  /api/v1/product/kategori:
+    get:
+      tags:
+        - CRUD user products
+      summary: filter product by category
+      parameters:
+        - in: query
+          name: idkategori
+          type: integer
+          description: id kategori
+          minimum: 1
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/filterProductByCategory'
+        400:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Produk tidak ditemukan
+
+  # filter product by not user id
+  /api/v1/filterProducts:
+    get:
+      tags:
+        - CRUD user products
+      summary: filter product by not User id
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/filterProductNotUserId'
+        400:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: error message
+
+  # filter product by not user id and category
+  /api/v1/filterProductsCateg:
+    get:
+      tags:
+        - CRUD user products
+      summary: filter products by not user id and category
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: idkategori
+          type: integer
+          minimum: 1
+          description: category id
+      responses:
+        200:
+          descripstion: transaction found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/findTransaction'
+        400:
+          descripstion: transaction not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+                    example: Transaction Not Found
 #==============================================================
 components:
   securitySchemes:
@@ -531,6 +789,106 @@ components:
             updatedAt:
               type: string
               format: date-time
+
+    profileImgDetail:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "OK"
+        dataImg:
+          type: object
+          properties:
+            type:
+              type: integer
+              example: 36
+            name:
+              type: string
+              example: "profileimgDan1657029775034Dan36_r9GHUt5RP"
+            createdAt:
+              type: string
+              example: "2022-07-05T14:02:57.082Z"
+            updatedAt:
+              type: string
+              example: "2022-07-05T14:02:57.082Z"
+            fileId:
+              type: string
+              example: user-address
+            tags:
+              type: integer
+              example: 555
+            AITags:
+              type: string
+              example: null
+            versionInfo:
+              type: object
+              properties:
+                versionInfo:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      example: "62c444900d00ed42bbbb44e9"
+                    name:
+                      type: string
+                      example: "Version 1"
+            embeddedMetadata:
+              type: object
+              properties:
+                versionInfo:
+                  type: object
+                  properties:
+                    XResolution:
+                      type: integer
+                      format: 96
+                    YResolution:
+                      type: integer
+                      format: 96
+                    ResolutionUnit:
+                      type: string
+                      format: "inches"
+                    DateCreated:
+                      type: string
+                      example: "2022-07-05T14:02:57.082Z"
+                    DateTimeCreated:
+                      type: string
+                      example: "2022-07-05T14:02:57.082Z"
+            customCoordinates:
+              type: string
+              format: null
+            customMetadata:
+              type: object
+              properties:
+            isPrivateFile:
+              type: boolean
+              example: false
+            url:
+              type: string
+              example: "https://ik.imagekit.io/jmprup9kb/userProfile/profileimgDan1657029775034Dan36_r9GHUt5RP"
+            thumbnail:
+              type: string
+              example: "https://ik.imagekit.io/jmprup9kb/tr:n-ik_ml_thumbnail/userProfile/profileimgDan1657029775034Dan36_r9GHUt5RP"
+            fileType:
+              type: string
+              example: "image"
+            filePath:
+              type: string
+              example: "/userProfile/profileimgDan1657029775034Dan36_r9GHUt5RP"
+            height:
+              type: integer
+              example: 1200
+            width:
+              type: integer
+              example: 1920
+            size:
+              type: integer
+              example: 198009
+            hasAlpha:
+              type: boolean
+              example: false
+            mime:
+              type: string
+              example: "image/jpeg"
 
     category:
       type: object

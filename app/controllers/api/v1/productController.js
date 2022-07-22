@@ -15,9 +15,11 @@ module.exports = {
         });
         return;
       }
+
       res.status(200).json({
         data: product,
-      });
+
+      })
     } catch (error) {
       res.status(400).json({
         message: error.message,
@@ -49,9 +51,10 @@ module.exports = {
         nama: req.body.nama,
         harga: req.body.harga,
         deskripsi: req.body.deskripsi,
-      };
-      const addProduct = await productService.addProduct(product);
-      console.log("ini request body image");
+        available: true,
+      }
+      const addProduct = await productService.addProduct(product)
+      console.log('ini request body image')
 
       // array to
       for (let i = 0; i < req.files.length; i++) {
@@ -186,28 +189,31 @@ module.exports = {
   // -----------------id-------------------------------
   getProductById: async (req, res) => {
     try {
-      const product = await productService.getById(req.params.id);
-      res.status(200).json(product);
+      const product = await productService.getById(req.params.id)
+      if (product == null) {
+        res.status(400).json({ message: 'produk tidak ditemukan' })
+        return
+      }
+      res.status(200).json(product)
     } catch (error) {
-      res.status(500).json({
+      res.status(400).json({
         error: error.message,
       });
     }
   },
+
+  // find product by kategori
   getProductByKategori: async (req, res) => {
     try {
-      // let tokenPayload = { id: null };
-      // if (req.headers.authorization !== "") {
-      //   const bearerToken = req.headers.authorization;
-      //   const token = bearerToken.split("Bearer ")[1];
-      //   tokenPayload = await verifyToken(token);
-      // }
-
       const product = await productService.getByKategori({
         // id: tokenPayload.id,
         idkategori: req.query.idkategori,
-      });
-      res.status(200).json({ barang: product });
+      })
+      if (product == '') {
+        res.status(400).json({ message: 'Produk tidak ditemukan' })
+        return
+      }
+      res.status(200).json({ barang: product })
     } catch (error) {
       res.status(500).json({
         error: error.message,
@@ -309,21 +315,27 @@ module.exports = {
       const { id } = req.params;
       // const productPic = await productService.findProductPic(id)
       // console.log(productPic)
-      if (id == null) {
+      if (id == null || id == "null") {
         res.status(400).json({
           message: "gambar produk tidak tersedia",
         });
         return;
       }
-      const getDetails = new ImageKitActions("", "", "");
-      result = await getDetails.getImgDetails(id);
-      console.log(result);
-      if (getDetails == "" || getDetails == "error") {
+
+      const getDetails = new ImageKitActions('', '', '')
+      result = await getDetails.getImgDetails(id)
+      // console.log(result)
+      if (result == '' || result == 'error') {
+
         res.status(422).json({
           message: "detail gambar gagal diambil",
         });
         return;
       }
+
+      /* if (result == null || result == "null") {
+
+      } */
 
       res.status(201).json({
         gambar: result,
@@ -335,7 +347,7 @@ module.exports = {
       });
     }
   },
-  // --------------filter products by user id not shown
+  // --------------filter products by not user id shown
   async filterProductsUser(req, res) {
     try {
       const userId = req.user.id;
@@ -346,7 +358,7 @@ module.exports = {
     }
   },
 
-  // filter products by category user auth
+  // filter products by category not user id  auth
   async filterCategorybyUserId(req, res) {
     try {
       const product = await productService.filterCategoryAuth(

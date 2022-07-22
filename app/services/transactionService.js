@@ -44,4 +44,9 @@ module.exports = {
   declineTrans(id, idseller) {
     return transactionRepository.declineTrans(id, idseller)
   },
+
+  //make transaction false (status_pembelian = false)
+  makeFalse(iduser, idbarang) {
+    return transactionRepository.makeFalse(iduser, idbarang)
+  },
 }

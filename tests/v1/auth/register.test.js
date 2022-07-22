@@ -1,7 +1,9 @@
 const request = require('supertest')
 const app = require('../../../app')
+const { user } = require("../../../app/models");
 
 describe('POST /api/v1/auth/register', () => {
+  let email;
   function makeUser() {
     var text = ''
     var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
@@ -11,9 +13,15 @@ describe('POST /api/v1/auth/register', () => {
     }
   }
 
+  afterAll(async () => {
+    const deleteAkun = await user.destroy({ where: { email: email, } });
+
+    return deleteAkun;
+  })
+
   it('should response with 201 as status code', async () => {
     const nama = 'yehezkiel'
-    const email = `${makeUser()}@mail.com`
+    email = `${makeUser()}@mail.com`
     const password = 'coba123'
     const registeredVia = 'website'
 
