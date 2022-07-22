@@ -332,6 +332,38 @@ paths:
                   message:
                     type: string
                     example: Unauthorized
+  /api/v1/users/profileImg/details/{id}:
+    get:
+      tags:
+        - Update User Profile
+      summary: get detail of an profile image from ImageKit
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of a user to get image id
+      responses:
+        201:
+          descripstion: Image Detail Fetched Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/profileImgDetail'   
+        404:
+          descripstion: Image Detail / User Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: OK
+                  dataImg:
+                    type: string
+                    example: error
 
   # add new products
   /api/v1/products:
@@ -756,6 +788,106 @@ components:
             updatedAt:
               type: string
               format: date-time
+
+    profileImgDetail:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "OK"
+        dataImg:
+          type: object
+          properties:
+            type:
+              type: integer
+              example: 36
+            name:
+              type: string
+              example: "profileimgDan1657029775034Dan36_r9GHUt5RP"
+            createdAt:
+              type: string
+              example: "2022-07-05T14:02:57.082Z"
+            updatedAt:
+              type: string
+              example: "2022-07-05T14:02:57.082Z"
+            fileId:
+              type: string
+              example: user-address
+            tags:
+              type: integer
+              example: 555
+            AITags:
+              type: string
+              example: null
+            versionInfo:
+              type: object
+              properties:
+                versionInfo:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      example: "62c444900d00ed42bbbb44e9"
+                    name:
+                      type: string
+                      example: "Version 1"
+            embeddedMetadata:
+              type: object
+              properties:
+                versionInfo:
+                  type: object
+                  properties:
+                    XResolution:
+                      type: integer
+                      format: 96
+                    YResolution:
+                      type: integer
+                      format: 96
+                    ResolutionUnit:
+                      type: string
+                      format: "inches"
+                    DateCreated:
+                      type: string
+                      example: "2022-07-05T14:02:57.082Z"
+                    DateTimeCreated:
+                      type: string
+                      example: "2022-07-05T14:02:57.082Z"
+            customCoordinates:
+              type: string
+              format: null
+            customMetadata:
+              type: object
+              properties:
+            isPrivateFile:
+              type: boolean
+              example: false
+            url:
+              type: string
+              example: "https://ik.imagekit.io/jmprup9kb/userProfile/profileimgDan1657029775034Dan36_r9GHUt5RP"
+            thumbnail:
+              type: string
+              example: "https://ik.imagekit.io/jmprup9kb/tr:n-ik_ml_thumbnail/userProfile/profileimgDan1657029775034Dan36_r9GHUt5RP"
+            fileType:
+              type: string
+              example: "image"
+            filePath:
+              type: string
+              example: "/userProfile/profileimgDan1657029775034Dan36_r9GHUt5RP"
+            height:
+              type: integer
+              example: 1200
+            width:
+              type: integer
+              example: 1920
+            size:
+              type: integer
+              example: 198009
+            hasAlpha:
+              type: boolean
+              example: false
+            mime:
+              type: string
+              example: "image/jpeg"
 
     category:
       type: object
