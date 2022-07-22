@@ -243,11 +243,11 @@ module.exports = {
 
         console.log(Product.gambarbarangs[i].gambar);
 
-        imagekit.deleteFile(
+        await imagekit.deleteFile(
           Product.gambarbarangs[i].gambar,
           function (error, result) {
-            if (error) console.log(error);
-            else console.log(result);
+            if (error) return error;
+            else return result;
           }
         );
 
