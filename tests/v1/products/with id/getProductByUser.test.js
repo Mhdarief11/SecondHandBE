@@ -4,11 +4,13 @@ const app = require("../../../../app");
 const productService = require("../../../../app/services/productService");
 
 describe("GET /api/v1/filterProducts", () => {
+  jest.setTimeout(15000);
 
-  let accessToken;
+  let accessToken, products;
 
   beforeAll(async () => {
-    console.log("BEFORE ALL");
+    // console.log("BEFORE ALL");
+
     accessToken = await request(app).post("/api/v1/auth/login").send({
       email: "yehezkielve@mail.com",
       password: "coba123",
@@ -20,7 +22,7 @@ describe("GET /api/v1/filterProducts", () => {
     const harga = "5000000";
     const deskripsi = "Lorem Ipsum";
 
-    await request(app)
+    products = await request(app)
       .post("/api/v1/products")
       .set("Authorization", `Bearer ${accessToken.body.token}`)
       .set("Content-Type", "multipart/form-data")
@@ -31,16 +33,15 @@ describe("GET /api/v1/filterProducts", () => {
       .field("deskripsi", deskripsi)
       .attach("image", `${__dirname}/../test_images/VersaLife-Hypostim.jpeg`);
 
-    /* products = await request(app)
-    .get("/api/v1/filterProducts")
-    .set("Authorization", `Bearer ${accessToken.body.token}`); */
-
-    return accessToken/* , products */;
+    return accessToken, products;
   });
 
   afterAll(async () => {
-    console.log("AFTER ALL");
-    accessToken = await request(app).post("/api/v1/auth/login").send({
+    // console.log("AFTER ALL");
+
+    await request(app).delete(`/api/v1/product/${products.body.product.id}`).set("Authorization", `Bearer ${accessToken.body.token}`);
+
+   /*  accessToken = await request(app).post("/api/v1/auth/login").send({
       email: "yehezkielve@mail.com",
       password: "coba123",
     });
@@ -50,14 +51,14 @@ describe("GET /api/v1/filterProducts", () => {
 
     for (let i = 0; i < produk.length; i++) {
       await request(app).delete(`/api/v1/product/${produk[i].id}`).set("Authorization", `Bearer ${accessToken.body.token}`);
-    }
+    } */
 
     return;
   });
 
   // State what the response should be if status code 201
   it("should response with 200 as status code and show product image details", async () => {
-    console.log("IT 200");
+    // console.log("IT 200");
 
     return request(app)
       .get(`/api/v1/filterProducts`)

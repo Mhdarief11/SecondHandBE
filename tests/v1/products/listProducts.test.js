@@ -3,7 +3,7 @@ const app = require("../../../app");
 const productService = require("../../../app/services/productService");
 
 describe("GET /api/v1/products", () => {
-  jest.setTimeout(10000);
+  jest.setTimeout(15000);
   let accessToken;
 
   beforeEach(async () => {
@@ -15,10 +15,10 @@ describe("GET /api/v1/products", () => {
   });
 
   afterEach(async () => {
-    accessToken = await request(app).post("/api/v1/auth/login").send({
+    /* accessToken = await request(app).post("/api/v1/auth/login").send({
       email: "yehezkielve@mail.com",
       password: "coba123",
-    });
+    }); */
 
     const listProduk = await productService.list();
     const produk = listProduk.barang;

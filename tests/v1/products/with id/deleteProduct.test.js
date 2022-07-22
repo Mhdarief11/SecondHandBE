@@ -3,7 +3,7 @@ const request = require("supertest");
 const app = require("../../../../app");
 // const productService = require("../../../../app/services/productService");
 
-describe("GET /api/v1/products/picture/:id", () => {
+describe("DELETE /api/v1/product/:id", () => {
   jest.setTimeout(15000);
 
   let accessToken, products;
@@ -31,23 +31,32 @@ describe("GET /api/v1/products/picture/:id", () => {
       .field("kategori", kategori)
       .field("harga", harga)
       .field("deskripsi", deskripsi)
-      .attach("image", `${__dirname}/../test_images/Sarif-Ind_Multitool.png`);
+      .attach("image", `${__dirname}/../test_images/JC-Hacking_Stop.jpeg`);
 
-    /* products = await request(app)
-    .get("/api/v1/filterProducts")
-    .set("Authorization", `Bearer ${accessToken.body.token}`); */
+    /* const id = accessToken.body.id;
+    const kategori = 4;
+    const nama = "Pocket Secretary";
+    const harga = "5000000";
+    const deskripsi = "Lorem Ipsum";
 
+    await request(app)
+      .post("/api/v1/products")
+      .set("Authorization", `Bearer ${accessToken.body.token}`)
+      .set("Content-Type", "multipart/form-data")
+      .field("id", id)
+      .field("nama", nama)
+      .field("kategori", kategori)
+      .field("harga", harga)
+      .field("deskripsi", deskripsi)
+      .attach("image", `${__dirname}/../test_images/JC-Hacking_Stop.jpeg`); */
+    
     return accessToken, products;
   });
 
-  afterAll(async () => {
+  /* afterAll(async () => {
     // console.log("AFTER ALL");
 
-    // console.log(products.body.product)
-
-    await request(app).delete(`/api/v1/product/${products.body.product.id}`).set("Authorization", `Bearer ${accessToken.body.token}`);
-
-    /* accessToken = await request(app).post("/api/v1/auth/login").send({
+    accessToken = await request(app).post("/api/v1/auth/login").send({
       email: "yehezkielve@mail.com",
       password: "coba123",
     });
@@ -57,55 +66,47 @@ describe("GET /api/v1/products/picture/:id", () => {
 
     for (let i = 0; i < produk.length; i++) {
       await request(app).delete(`/api/v1/product/${produk[i].id}`).set("Authorization", `Bearer ${accessToken.body.token}`);
-    } */
+    }
 
     return;
-  });
+  }); */
 
   // State what the response should be if status code 201
-  it("should response with 201 as status code and show product image details", async () => {
-    // console.log("IT 200");
+  it("should response with 200 as status code and show product image details", async () => {
 
-    const getProducts = await request(app)
-    .get("/api/v1/products");
+    // products = await request(app)
+    // .get("/api/v1/products");
 
-    // console.log(getProducts.body.data.barang[0])
+    // console.log(products.body)
 
     return request(app)
-      .get(`/api/v1/products/picture/${getProducts.body.data.barang[0].gambarbarangs[0].gambar}`)
+      .delete(`/api/v1/product/${products.body.product.id}`)
+      .set('Authorization', `Bearer ${accessToken.body.token}`)
       .then((res) => {
-        expect(res.statusCode).toBe(201);
+        expect(res.statusCode).toBe(200);
         expect(res.body).toEqual(
           expect.objectContaining({
-            gambar: expect.any(Object),
-          })
-        );
-      });
-  });
-
-  it("should response with 422 as status code and show error", async () => {
-    return request(app)
-      .get("/api/v1/products/picture/6969")
-      .then((res) => {
-        expect(res.statusCode).toBe(422);
-        expect(res.body).toEqual(
-          expect.objectContaining({
+            status: expect.any(String),
             message: expect.any(String),
           })
         );
       });
   });
 
-  it("should response with 400 as status code and show error", async () => {
+ /*  // State what the response should be if status code 500
+  it("should response with 500 as status code and show product image details", async () => {
+
     return request(app)
-      .get("/api/v1/products/picture/null")
+      .delete(`/api/v1/product/`)
+      .set('Authorization', `Bearer ${accessToken.body.token}`)
       .then((res) => {
-        expect(res.statusCode).toBe(400);
+        expect(res.statusCode).toBe(500);
         expect(res.body).toEqual(
           expect.objectContaining({
-            message: expect.any(String),
+            error: expect.any(String),
           })
         );
       });
   });
+ */
 });

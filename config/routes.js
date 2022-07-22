@@ -38,6 +38,7 @@ apiRouter.put(
 )
 
 // ------------------------------------PRODUCTS-------------------------------------------
+
 //barang list all
 apiRouter.get('/api/v1/products', controllers.api.v1.productController.listAll)
 

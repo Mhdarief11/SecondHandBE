@@ -5,9 +5,10 @@ const ImageKitActions = require('../../../app/imageKit/ImageKitActions'); */
 const productService = require("../../../app/services/productService");
 
 describe("POST /api/v1/products", () => {
-  jest.setTimeout(10000);
+  jest.setTimeout(15000);
+
   let accessToken;
-  let imageUpload;
+  // let imageUpload;
   /* afterAll(async () => {
     const deleteAkun = await user.destroy({ where: { email: email, } });
 
