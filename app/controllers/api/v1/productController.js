@@ -52,9 +52,9 @@ module.exports = {
         harga: req.body.harga,
         deskripsi: req.body.deskripsi,
         available: true,
-      }
-      const addProduct = await productService.addProduct(product)
-      console.log('ini request body image')
+      };
+      const addProduct = await productService.addProduct(product);
+      console.log("ini request body image");
 
       // array to
       for (let i = 0; i < req.files.length; i++) {
@@ -189,12 +189,12 @@ module.exports = {
   // -----------------id-------------------------------
   getProductById: async (req, res) => {
     try {
-      const product = await productService.getById(req.params.id)
+      const product = await productService.getById(req.params.id);
       if (product == null) {
-        res.status(400).json({ message: 'produk tidak ditemukan' })
-        return
+        res.status(400).json({ message: "produk tidak ditemukan" });
+        return;
       }
-      res.status(200).json(product)
+      res.status(200).json(product);
     } catch (error) {
       res.status(400).json({
         error: error.message,
@@ -208,12 +208,12 @@ module.exports = {
       const product = await productService.getByKategori({
         // id: tokenPayload.id,
         idkategori: req.query.idkategori,
-      })
-      if (product == '') {
-        res.status(400).json({ message: 'Produk tidak ditemukan' })
-        return
+      });
+      if (product == "") {
+        res.status(400).json({ message: "Produk tidak ditemukan" });
+        return;
       }
-      res.status(200).json({ barang: product })
+      res.status(200).json({ barang: product });
     } catch (error) {
       res.status(500).json({
         error: error.message,
@@ -224,9 +224,12 @@ module.exports = {
   async deleteProduct(req, res) {
     try {
       var imagekit = new ImageKit({
-        publicKey: process.env.IMAGEKITPUBLIC,
+        /* publicKey: process.env.IMAGEKITPUBLIC,
         privateKey: process.env.IMAGEKITPRIVATE,
-        urlEndpoint: process.env.IMAGEKITPRIVATE,
+        urlEndpoint: process.env.IMAGEKITPRIVATE, */
+        publicKey: "public_b7fWahY809+IvS1HfCSCWGxdYQA=",
+        privateKey: "private_pBTB5FrC5NcJPAcBgXsyRhJuXo0=",
+        urlEndpoint: "https://ik.imagekit.io/jmprup9kb",
       });
       const id = req.params.id;
 
@@ -322,8 +325,8 @@ module.exports = {
         return;
       }
 
-      const getDetails = new ImageKitActions('', '', '')
-      result = await getDetails.getImgDetails(id)
+      const getDetails = new ImageKitActions("", "", "");
+      result = await getDetails.getImgDetails(id);
       // console.log(result)
       if (result == '' || result == 'error') {
 
