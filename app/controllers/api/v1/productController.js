@@ -246,8 +246,8 @@ module.exports = {
         await imagekit.deleteFile(
           Product.gambarbarangs[i].gambar,
           function (error, result) {
-            if (error) console.log(error);
-            else console.log(result);
+            if (error) return error;
+            else return result;
           }
         );
 
