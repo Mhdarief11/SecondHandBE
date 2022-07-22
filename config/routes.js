@@ -49,10 +49,7 @@ apiRouter.get(
   controllers.api.v1.productController.findProductPic,
 )
 
-<<<<<<< HEAD
-=======
 // get product by id
->>>>>>> 677f36111565d806479454799ffe7ce42e2653ee
 apiRouter.get(
   '/api/v1/products/:id',
   controllers.api.v1.productController.getProductById,
