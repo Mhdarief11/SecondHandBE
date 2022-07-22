@@ -92,21 +92,4 @@ describe("DELETE /api/v1/product/:id", () => {
         );
       });
   });
-
- /*  // State what the response should be if status code 500
-  it("should response with 500 as status code and show product image details", async () => {
-
-    return request(app)
-      .delete(`/api/v1/product/`)
-      .set('Authorization', `Bearer ${accessToken.body.token}`)
-      .then((res) => {
-        expect(res.statusCode).toBe(500);
-        expect(res.body).toEqual(
-          expect.objectContaining({
-            error: expect.any(String),
-          })
-        );
-      });
-  });
- */
 });
