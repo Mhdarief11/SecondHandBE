@@ -9,9 +9,12 @@ const FormData = require("form-data");
 require("dotenv").config();
 
 const configImageKit = {
-  publicKey: process.env.IMAGEKITPUBLIC,
+  /* publicKey: process.env.IMAGEKITPUBLIC,
   privateKey: process.env.IMAGEKITPRIVATE,
-  urlEndpoint: process.env.IMAGEKITURL,
+  urlEndpoint: process.env.IMAGEKITURL, */
+  publicKey: "public_b7fWahY809+IvS1HfCSCWGxdYQA=",
+  privateKey: "private_pBTB5FrC5NcJPAcBgXsyRhJuXo0=",
+  urlEndpoint: "https://ik.imagekit.io/jmprup9kb",
 };
 
 class ImageKitActions {
@@ -59,7 +62,8 @@ class ImageKitActions {
       method: 'delete',
       url: `https://api.imagekit.io/v1/files/${fileId}`,
       headers: {
-        Authorization: `Basic ${process.env.IMAGEKITAUTH}`,
+        /* Authorization: `Basic ${process.env.IMAGEKITAUTH}`, */
+        Authorization: `Basic cHJpdmF0ZV9wQlRCNUZyQzVOY0pQQWNCZ1hzeVJoSnVYbzA9OiNDMDBsaW1hZ2VraXRtM24=`,
         Cookie: '_csrf=KZAEYsgpMNbtLozyfc3768uM',
       },
       data: data,
