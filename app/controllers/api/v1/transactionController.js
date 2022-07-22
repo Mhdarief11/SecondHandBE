@@ -54,10 +54,15 @@ module.exports = {
     }
   },
 
+  // find bid
   async findBid(req, res) {
     try {
       let idBid = req.params.id
       const bid = await transactionService.findBid(idBid)
+      if (bid.bid == null) {
+        res.status(404).json({ message: 'Transaksi belum ada' })
+        return
+      }
       res.status(200).json({ bid })
     } catch (error) {
       res.status(400).json({ message: error.message })
@@ -69,6 +74,10 @@ module.exports = {
     try {
       let idBid = req.params.id
       const bid = await transactionService.deniedBid(idBid, req.user.id)
+      if (bid[0] == 0) {
+        res.status(404).json({ message: 'Transaksi tidak ditemukan' })
+        return
+      }
       res.status(201).json({ bid })
     } catch (error) {
       res.status(400).json({ message: error.message })
@@ -80,6 +89,10 @@ module.exports = {
     try {
       let idBarang = req.params.id
       const bid = await transactionService.acceptBid(idBarang, req.user.id)
+      if (bid[0] == 0) {
+        res.status(404).json({ message: 'Transaksi tidak ditemukan' })
+        return
+      }
       res.status(201).json({ bid })
     } catch (error) {
       res.status(400).json({ message: error.message })
@@ -99,6 +112,10 @@ module.exports = {
           idbarang,
           idseller,
         )
+        if (sold[0] == 0) {
+          res.status(404).json({ message: 'Transaksi tidak ditemukan' })
+          return
+        }
         res.status(201).json({ sold })
       }
     } catch (error) {
@@ -115,6 +132,10 @@ module.exports = {
       console.log(id)
       if (idseller !== '' && id != '') {
         const decline = await transactionService.declineTrans(id, idseller)
+        if (decline[0] == 0) {
+          res.status(404).json({ message: 'Transaksi tidak ditemukan' })
+          return
+        }
         res.status(201).json({ decline })
       }
     } catch (error) {
@@ -131,6 +152,10 @@ module.exports = {
         iduser,
         idbarang,
       )
+      if (falseStatusPembelian[0] == 0) {
+        res.status(404).json({ message: 'Transaksi tidak ditemukan' })
+        return
+      }
       res.status(201).json({ falseStatusPembelian })
     } catch (error) {
       res.status(400).json({ message: error.message })
