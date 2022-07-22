@@ -576,12 +576,12 @@ paths:
       summary: list products by iduser
       security:
         - bearerAuth: []
-      parameters:
-        - in: query
-          name: iduser
-          schema:
-            type: integer
-            example: 38
+      # parameters:
+      #   - in: query
+      #     name: iduser
+      #     schema:
+      #       type: integer
+      #       example: 38
       responses:
         200:
           content:
@@ -602,15 +602,15 @@ paths:
     get:
       tags:
         - CRUD user products
-      summary: list products by iduser
+      summary: list products by iduser and category
       security:
         - bearerAuth: []
       parameters:
-        - in: query
-          name: iduser
-          schema:
-            type: integer
-            example: 38
+        # - in: query
+        #   name: iduser
+        #   schema:
+        #     type: integer
+        #     example: 38
         - in: query
           name: idkategori
           schema:
@@ -659,6 +659,9 @@ paths:
                   message:
                     type: string
                     example: failed fetch gambar product by id gambar
+
+
+
 components:
   securitySchemes:
     bearerAuth: # arbitrary name for the security scheme
