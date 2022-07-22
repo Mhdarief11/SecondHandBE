@@ -404,14 +404,13 @@ paths:
                     type: string
                     example: Failed add new product
 
-
   # list all products
 
   # list all transaction
   /api/v1/transaction:
     get:
       tags:
-        - transaction
+        - Transaction
       summary: list all transaction
       responses:
         200:
