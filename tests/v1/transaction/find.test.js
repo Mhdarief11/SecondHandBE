@@ -9,6 +9,7 @@ let price = 20000
 let response
 
 afterAll(async () => {
+  jest.setTimeout(20000)
   const listProduk = await productService.list()
 
   const produk = listProduk.barang

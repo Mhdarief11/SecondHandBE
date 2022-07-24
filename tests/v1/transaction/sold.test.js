@@ -8,6 +8,7 @@ let price = 20000
 let response
 
 afterAll(async () => {
+  jest.setTimeout(20000)
   const listProduk = await productService.list()
 
   const produk = listProduk.barang
@@ -25,7 +26,7 @@ beforeAll(async () => {
   response = await request(app)
     .post('/api/v1/auth/login')
     .set('Content-Type', 'application/json')
-    .send({ email: 'yehezkielve@mail.com', password: 'coba123' })
+    .send({ email: 'yehezkiel@mail.com', password: 'coba123' })
   const id = response.body.id
   const kategori = 4
   const nama = 'Pocket Secretary'
@@ -82,7 +83,7 @@ describe('PUT /api/v1/transaction/doneTrans/:idtrans/:idbarang', () => {
     const idbarang = ''
     const idtrans = ''
     return request(app)
-      .put(`/api/v1/transaction/${idtrans}/${idbarang}`)
+      .put(`/api/v1/transaction/doneTrans/${idtrans}/${idbarang}`)
       .set({ Authorization: `Bearer ${response.body.token}` })
       .then((res) => {
         expect(res.statusCode).toBe(404)
@@ -95,14 +96,27 @@ describe('PUT /api/v1/transaction/doneTrans/:idtrans/:idbarang', () => {
   })
 
   it('should response 404 as status code', async () => {
-    const idProduct = 969
+    const idProduct = 0
     return request(app)
       .put(
-        `/api/v1/transaction/${transaction.body.bidProduct.bidProduct.id}/${idProduct}`,
+        `/api/v1/transaction/doneTrans/${transaction.body.bidProduct.bidProduct.id}/${idProduct}`,
       )
       .set({ Authorization: `Bearer ${response.body.token}` })
       .then((res) => {
         expect(res.statusCode).toBe(404)
+        expect(res.body).toEqual(expect.any(Object))
+      })
+  })
+
+  it('should response 201 as status code', async () => {
+    // const idProduct = 969
+    return request(app)
+      .put(
+        `/api/v1/transaction/doneTrans/${transaction.body.bidProduct.bidProduct.id}/${products.body.product.id}`,
+      )
+      .set({ Authorization: `Bearer ${response.body.token}` })
+      .then((res) => {
+        expect(res.statusCode).toBe(201)
         expect(res.body).toEqual(expect.any(Object))
       })
   })

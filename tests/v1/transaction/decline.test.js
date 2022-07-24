@@ -78,10 +78,23 @@ describe('PUT /api/v1/transaction/declineTrans/:idtrans', () => {
 
   it('should response 201 as status code', async () => {
     return request(app)
-      .put(`/api/v1/transaction/${transaction.body.bidProduct.bidProduct.id}`)
+      .put(
+        `/api/v1/transaction/declineTrans/${transaction.body.bidProduct.bidProduct.id}`,
+      )
       .set({ Authorization: `Bearer ${response.body.token}` })
       .then((res) => {
         expect(res.statusCode).toBe(201)
+        expect(res.body).toEqual(expect.any(Object))
+      })
+  })
+
+  it('should response 404 as status code', async () => {
+    const emptyId = null
+    return request(app)
+      .put(`/api/v1/transaction/declineTrans/${emptyId}`)
+      .set({ Authorization: `Bearer ${response.body.token}` })
+      .then((res) => {
+        expect(res.statusCode).toBe(404)
         expect(res.body).toEqual(expect.any(Object))
       })
   })

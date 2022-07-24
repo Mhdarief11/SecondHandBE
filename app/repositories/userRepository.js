@@ -1,9 +1,9 @@
-const { user, kota } = require("../models");
+const { user, kota } = require('../models')
 
 module.exports = {
   create(createArgs) {
-    console.log("user crate repo");
-    return user.create(createArgs);
+    console.log('user crate repo')
+    return user.create(createArgs)
   },
   find(email) {
     // console.log("\n find email repo \n");
@@ -22,9 +22,9 @@ module.exports = {
     try {
       return user.findOne({
         where: { email },
-      });
+      })
     } catch (err) {
-      throw err.message;
+      throw err.message
     }
   },
   update(id, data) {
@@ -47,40 +47,19 @@ module.exports = {
         where: {
           id,
         },
-      });
+      })
     } catch (err) {
-      throw err.message;
+      throw err.message
     }
   },
-  listCities() {
-    return kota
-      .findAll()
-      .then(() => {
-        console.log("CITY LIST FETCHED SUCCESSFULL");
-      })
-      .catch((err) => {
-        console.log(err.message);
-        throw err.message;
-      });
-  },
-  citiesCount() {
-    return kota
-      .count()
-      .then(() => {
-        console.log("CITY's COUNTED");
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-  },
   findPKUser(id) {
-    console.log("REPO FINDBYPK, " + id);
+    console.log('REPO FINDBYPK, ' + id)
     try {
       return user.findOne({
         where: { id },
-      });
+      })
     } catch (error) {
-      throw error.message;
+      throw error.message
     }
     /* return user
       .findByPk(id)
@@ -102,4 +81,4 @@ module.exports = {
           console.log(err.message);
         }); */
   },
-};
+}
