@@ -225,14 +225,18 @@ class userController {
         nohp = User.nohp;
       }
 
-      // console.log("GAMBAR BODY, -" + req.body.gambar);
+      console.log("GAMBAR BODY, -" + req.file);
 
       let profilePic, picToSend;
 
       /* Process to check if user has Profile Image */
-      if (req.body.gambar === "" || req.body.gambar === null || req.body.gambar == "undefined" || req.body.gambar == undefined) {
+      /* if (req.body.gambar === "" || req.body.gambar === null || req.body.gambar == "undefined" || req.body.gambar == undefined) { */
+      if (req.file === "" || req.file === null || req.file == "undefined" || req.file == undefined) {
+
+        // console.log("NO PICTURE FROM FORM")
 
         if (User.gambar === "" || User.gambar === null) {
+          // console.log("NO IMG ORIGINAL")
           profilePic = "";
 
         } else {
