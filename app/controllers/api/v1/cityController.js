@@ -8,20 +8,17 @@ module.exports = {
         allCity,
       })
 
-      if (allCity == null || allCity == "null" || allCity == undefined || allCity == "undefined") {
-        res.status(400).json({
-          status: "FAILED",
-          message: "Cities Empty",
-        })
-        return;
+      if (
+        allCity == null ||
+        allCity == 'null' ||
+        allCity == undefined ||
+        allCity == 'undefined'
+      ) {
+        console.log('city is empty')
+        return
       }
-
-      
     } catch (error) {
-      res.status(400).json({
-        status: "FAILED",
-        message: error.message,
-      })
+      console.log(error.message)
     }
   },
 
@@ -29,24 +26,25 @@ module.exports = {
     try {
       const city = await cityService.find(req.params.id)
 
-      if (city == null || city == "null" || city == undefined || city == "undefined") {
+      if (
+        city == null ||
+        city == 'null' ||
+        city == undefined ||
+        city == 'undefined'
+      ) {
         res.status(404).json({
-          status: "FAILED",
+          status: 'FAILED',
           message: "City Not Found / Doesn't Exist",
         })
-        
-        return;
+
+        return
       }
 
       res.status(200).json({
         city,
       })
-
     } catch (error) {
-      res.status(404).json({
-        status: "FAILED",
-        message: "City Not Found / Doesn't Exist",
-      })
+      console.log(error.message)
     }
   },
 }
