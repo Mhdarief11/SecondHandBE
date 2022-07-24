@@ -10,9 +10,7 @@ module.exports = {
       const listTransaction = await transactionService.list()
       res.status(200).json(listTransaction)
     } catch (error) {
-      res.status(400).json({
-        message: error.message,
-      })
+      console.log(error.message)
     }
   },
 
@@ -48,9 +46,7 @@ module.exports = {
         }
       }
     } catch (error) {
-      res.status(400).json({
-        message: error.message,
-      })
+      console.log(error.message)
     }
   },
 
@@ -139,7 +135,7 @@ module.exports = {
         res.status(201).json({ decline })
       }
     } catch (error) {
-      res.status(400).json({ message: error.message })
+      console.log(error.message)
     }
   },
 
@@ -158,7 +154,7 @@ module.exports = {
       }
       res.status(201).json({ falseStatusPembelian })
     } catch (error) {
-      res.status(400).json({ message: error.message })
+      console.log(error.message)
     }
   },
 }
